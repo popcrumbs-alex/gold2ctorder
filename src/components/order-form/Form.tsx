@@ -1,4 +1,4 @@
-import React, { Fragment, useState } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 import styled from "styled-components";
 import { FC } from "react";
 import { StaticImage } from "gatsby-plugin-image";
@@ -9,6 +9,15 @@ import { Select, TextInput } from "../../reusable/Inputs";
 import states from "../../reusable/states";
 import OrderBumps from "./OrderBumps";
 import ProductSelector from "./ProductSelector";
+import { useAppDispatch, useAppSelector } from "../../hooks/reduxHooks";
+import { RootState } from "../../redux/store";
+import {
+  selectOrderState,
+  updateContactInfo,
+  updateContactInfoAsync,
+  updateShippingInfo,
+} from "../../redux/reducers/order.reducer";
+import { useDispatch } from "react-redux";
 
 const Container = styled.section`
   display: flex;
@@ -146,6 +155,12 @@ type ShippingState = {
 
 const Form: FC = () => {
   const context = useContext<Theme>(ThemeContext);
+  //Order Reducer State// Not needed at the moment
+  const orderState = useAppSelector(selectOrderState);
+  //actions
+  const dispatch = useAppDispatch();
+
+  //combine data across components
   const [customerData, combineData] = useState<ContactState & ShippingState>({
     firstName: "",
     lastName: "",
@@ -156,15 +171,26 @@ const Form: FC = () => {
     address: "",
   });
 
-  console.log("customer data", customerData);
+  const { firstName, lastName, email, zip, city, state, address } =
+    customerData;
 
   const handleInputChange = (
     e: React.FormEvent<HTMLInputElement | HTMLSelectElement>
-  ) =>
+  ) => {
     combineData({
       ...customerData,
       [e.currentTarget.name]: e.currentTarget.value,
     });
+  };
+  //update redux store for contact info
+  useEffect(() => {
+    dispatch(updateContactInfo({ firstName, lastName, email }));
+  }, [firstName, lastName, email]);
+
+  //update redux store for shipping info
+  useEffect(() => {
+    dispatch(updateShippingInfo({ zip, city, state, address }));
+  }, [zip, city, state, address]);
   return (
     <Container>
       <Content>

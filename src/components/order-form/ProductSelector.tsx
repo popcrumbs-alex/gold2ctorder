@@ -1,6 +1,11 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
+import { useAppDispatch, useAppSelector } from "../../hooks/reduxHooks";
 import { ProductProps, ProductSelectorItems } from "../../product/ProductData";
+import {
+  addProductToOrder,
+  selectOrderState,
+} from "../../redux/reducers/order.reducer";
 
 const Container = styled.div`
   display: flex;
@@ -62,6 +67,30 @@ const Text = styled.p`
 `;
 
 const ProductSelector = () => {
+  //action dispatcher to store hook
+  const dispatch = useAppDispatch();
+  //get order state
+  const orderState = useAppSelector(selectOrderState);
+  console.log("order state", orderState);
+  //select products withint the product data array by utilitizing the index values
+  const [productSelected, selectProduct] = useState<number>(1);
+
+  const handleChange = (e: React.FormEvent<HTMLInputElement>) =>
+    selectProduct(parseFloat(e.currentTarget.value));
+
+  console.log();
+
+  useEffect(() => {
+    dispatch(
+      addProductToOrder({
+        sku: "",
+        title: ProductSelectorItems[productSelected].title,
+        type: "main",
+        price: ProductSelectorItems[productSelected].numPrice,
+        displayPrice: ProductSelectorItems[productSelected].displayPrice,
+      })
+    );
+  }, [productSelected]);
   return (
     <Container>
       <Row>
@@ -75,7 +104,13 @@ const ProductSelector = () => {
           <ProductSelect key={key} color={item.bestDeal ? "#fcfae8" : null}>
             <Column>
               <Row>
-                <RadioButton type="radio" name="product" />
+                <RadioButton
+                  type="radio"
+                  name="product"
+                  value={key}
+                  onChange={handleChange}
+                  checked={productSelected === key}
+                />
                 <Column>
                   {item.bestDeal && (
                     <BestDealHeadline>{item.dealHeadline}</BestDealHeadline>

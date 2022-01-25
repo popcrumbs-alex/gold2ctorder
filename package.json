@@ -15,6 +15,8 @@
     "clean": "gatsby clean"
   },
   "dependencies": {
+    "@reduxjs/toolkit": "^1.7.1",
+    "@types/react-redux": "^7.1.22",
     "babel-plugin-styled-components": "^2.0.2",
     "gatsby": "^4.5.4",
     "gatsby-plugin-google-analytics": "^4.5.0",
@@ -29,6 +31,9 @@
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
     "react-helmet": "^6.1.0",
+    "react-redux": "^7.2.6",
+    "redux": "^4.1.2",
+    "redux-thunk": "^2.4.1",
     "styled-components": "^5.3.3"
   }
 }
