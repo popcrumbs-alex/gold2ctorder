@@ -1,8 +1,12 @@
-import React, { FC } from "react";
-import PropTypes from "prop-types";
+import React, { Dispatch, FC, useCallback, useEffect, useState } from "react";
 import styled from "styled-components";
-import { GatsbyImage } from "gatsby-plugin-image";
 import { BumpProps, orderBumps } from "../../product/ProductData";
+import { useAppDispatch } from "../../hooks/reduxHooks";
+import {
+  addBumpInOrder,
+  removeBumpFromOrder,
+} from "../../redux/reducers/order.reducer";
+import { AnyAction } from "redux";
 
 const Bumps = styled.div`
   display: flex;
@@ -54,31 +58,85 @@ const Divider = styled.div`
   margin: 3% 0;
 `;
 
-const OrderBumps: FC = ({}) => {
+const OrderBumps: FC = () => {
   const bumpData: Array<BumpProps> = orderBumps;
+
+  //dispatch for product addition
+  const dispatch = useAppDispatch();
+
   return (
     <Bumps>
       {bumpData.map((bump: BumpProps, key: number) => {
         return (
-          <Bump key={key}>
-            <OTOImage src={bump.imgSrc} alt="product" />
-            <CheckBoxContainer color={bump.checkboxColor}>
-              <Content>
-                <CheckBox type="checkbox" />{" "}
-                <ProductHeadline>{bump.checkboxHeadline}</ProductHeadline>
-              </Content>
-            </CheckBoxContainer>
-            <TextContainer>
-              <OTOText>
-                <OTOHeadline>{bump.otoHeadline}&nbsp;</OTOHeadline>
-                {bump.otoText}
-              </OTOText>
-            </TextContainer>
-            <Divider />
-          </Bump>
+          <BumpComponent
+            bump={bump}
+            key={key}
+            index={key}
+            dispatch={dispatch}
+          />
         );
       })}
     </Bumps>
+  );
+};
+
+const BumpComponent = ({
+  index,
+  bump,
+  dispatch,
+}: {
+  index: number;
+  bump: BumpProps;
+  dispatch: Dispatch<AnyAction>;
+}) => {
+  const [selected, selectItem] = useState<boolean>(index === 1);
+
+  const handleProductAddition = () => {
+    const selectedBump = {
+      title: orderBumps[index].orderSummaryText,
+      price: orderBumps[index].numPrice,
+      displayPrice: orderBumps[index].displayPrice,
+      sku: "",
+      type: "bump",
+    };
+    if (selected) {
+      dispatch(addBumpInOrder(selectedBump));
+    } else {
+      dispatch(removeBumpFromOrder(selectedBump));
+    }
+  };
+
+  console.log("order bump select", selected, index);
+  const handleProductSelection = (e: React.FormEvent<HTMLInputElement>) =>
+    selectItem(e.currentTarget.checked);
+
+  useEffect(() => {
+    handleProductAddition();
+  }, [selected]);
+
+  return (
+    <Bump key={index}>
+      <OTOImage src={bump.imgSrc} alt="product" />
+      <CheckBoxContainer color={bump.checkboxColor}>
+        <Content>
+          <CheckBox
+            type="checkbox"
+            name={bump.otoHeadline}
+            value={index}
+            defaultChecked={index === 1}
+            onChange={handleProductSelection}
+          />{" "}
+          <ProductHeadline>{bump.checkboxHeadline}</ProductHeadline>
+        </Content>
+      </CheckBoxContainer>
+      <TextContainer>
+        <OTOText>
+          <OTOHeadline>{bump.otoHeadline}&nbsp;</OTOHeadline>
+          {bump.otoText}
+        </OTOText>
+      </TextContainer>
+      <Divider />
+    </Bump>
   );
 };
 

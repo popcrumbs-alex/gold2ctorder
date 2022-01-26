@@ -78,8 +78,6 @@ const ProductSelector = () => {
   const handleChange = (e: React.FormEvent<HTMLInputElement>) =>
     selectProduct(parseFloat(e.currentTarget.value));
 
-  console.log();
-
   useEffect(() => {
     dispatch(
       addProductToOrder({

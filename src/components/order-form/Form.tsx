@@ -18,6 +18,8 @@ import {
   updateShippingInfo,
 } from "../../redux/reducers/order.reducer";
 import { useDispatch } from "react-redux";
+import OrderSummary from "./OrderSummary";
+import useOrderTotal from "../../hooks/useOrderTotal";
 
 const Container = styled.section`
   display: flex;
@@ -159,7 +161,8 @@ const Form: FC = () => {
   const orderState = useAppSelector(selectOrderState);
   //actions
   const dispatch = useAppDispatch();
-
+  //handle order total update upon product changes
+  const orderTotal = useOrderTotal();
   //combine data across components
   const [customerData, combineData] = useState<ContactState & ShippingState>({
     firstName: "",
@@ -271,7 +274,11 @@ const Form: FC = () => {
                   </span>
                 </Text>
                 <Divider />
+                {/* Main product only one per order select */}
                 <ProductSelector />
+                <Divider />
+                {/*  array of selected products */}
+                <OrderSummary />
               </FormContainer>
             </ColumnContent>
           </Column>

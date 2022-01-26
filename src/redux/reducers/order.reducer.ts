@@ -67,18 +67,37 @@ const orderSlice = createSlice({
       //TODO write tests for this to make sure singular item is being stored
       state.myOrder.products = [...filtered, action.payload];
     },
-
+    addBumpInOrder: (state, action: PayloadAction<ProductProp>) => {
+      state.myOrder.products.push(action.payload);
+    },
+    removeBumpFromOrder: (state, action: PayloadAction<ProductProp>) => {
+      let filtered = state.myOrder.products.filter(
+        (product: ProductProp) => product.title !== action.payload.title
+      );
+      console.log("god damn products", filtered);
+      state.myOrder.products = filtered;
+    },
     updateContactInfo: (state, action: PayloadAction<ContactInfoProps>) => {
       state.myOrder.contactInfo = action.payload;
     },
     updateShippingInfo: (state, action: PayloadAction<ShippingProps>) => {
       state.myOrder.shippingInfo = action.payload;
     },
+    updateOrderTotal: (state, action: PayloadAction<number>) => {
+      console.log("set state", action.payload);
+      state.myOrder.orderTotal = action.payload;
+    },
   },
 });
 
-export const { addProductToOrder, updateContactInfo, updateShippingInfo } =
-  orderSlice.actions;
+export const {
+  addProductToOrder,
+  updateContactInfo,
+  updateShippingInfo,
+  updateOrderTotal,
+  addBumpInOrder,
+  removeBumpFromOrder,
+} = orderSlice.actions;
 
 //async contact dispatch action
 export const updateContactInfoAsync =
