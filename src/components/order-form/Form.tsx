@@ -20,6 +20,8 @@ import {
 import { useDispatch } from "react-redux";
 import OrderSummary from "./OrderSummary";
 import useOrderTotal from "../../hooks/useOrderTotal";
+import SecureOrder from "./SecureOrder";
+import CreditCardForm from "./CreditCardForm";
 
 const Container = styled.section`
   display: flex;
@@ -279,6 +281,11 @@ const Form: FC = () => {
                 <Divider />
                 {/*  array of selected products */}
                 <OrderSummary />
+                {/* small text section */}
+                <Divider />
+                <SecureOrder />
+                {/* credit card form */}
+                <CreditCardForm />
               </FormContainer>
             </ColumnContent>
           </Column>
