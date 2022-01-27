@@ -1,3 +1,4 @@
+import Cleave from "cleave.js/react";
 import React from "react";
 import styled from "styled-components";
 
@@ -16,6 +17,15 @@ const Input = styled.input`
   background: #eee;
   border: 1px solid #ddd;
   margin-top: 5px;
+  &::-webkit-outer-spin-button,
+  &::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+
+  /* Firefox */
+
+  -moz-appearance: textfield;
 `;
 
 const SelectInput = styled.select`
@@ -92,3 +102,30 @@ export const Select = ({
     </InputColumn>
   );
 };
+
+export const CleaveInput = ({
+  label,
+  name,
+  value,
+  callback,
+  placeholder,
+  isRequired,
+}) => (
+  <InputColumn>
+    {label && <Label>{label}</Label>}
+    <Cleave
+      placeholder="Enter your credit card number"
+      options={{ creditCard: true }}
+      onChange={callback}
+      value={value}
+      required={isRequired}
+      style={{
+        padding: "15px",
+        borderRadius: "5px",
+        background: "#eee",
+        border: "1px solid #ddd",
+        marginTop: "5px",
+      }}
+    />
+  </InputColumn>
+);

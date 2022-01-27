@@ -16,8 +16,10 @@
   },
   "dependencies": {
     "@reduxjs/toolkit": "^1.7.1",
+    "@types/cleave.js": "^1.4.6",
     "@types/react-redux": "^7.1.22",
     "babel-plugin-styled-components": "^2.0.2",
+    "cleave.js": "^1.6.0",
     "gatsby": "^4.5.4",
     "gatsby-plugin-google-analytics": "^4.5.0",
     "gatsby-plugin-image": "^2.5.2",
