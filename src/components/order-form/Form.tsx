@@ -35,12 +35,19 @@ const Content = styled.div`
   width: 70%;
   display: flex;
   flex-direction: column;
+  @media screen and (max-width: 760px) {
+    width: 100%;
+  }
 `;
 
 const Row = styled.div`
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 2rem;
+  @media screen and (max-width: 760px) {
+    display: flex;
+    flex-direction: column;
+  }
 `;
 const Column = styled.div`
   display: flex;
@@ -57,7 +64,6 @@ const Security = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  // background-color: ${(props) => (props.color ? props.color : "inherit")};
   border-top-left-radius: 10px;
   border-top-right-radius: 10px;
   width: 100%;
@@ -95,6 +101,9 @@ const FormContainer = styled.div`
   border-radius: 4px;
   display: flex;
   flex-direction: column;
+  @media screen and (max-width: 760px) {
+    width: auto;
+  }
 `;
 const FormColumn = styled.div`
   display: flex;
@@ -118,6 +127,9 @@ const InputRow = styled.div`
   display: flex;
   width: 100%;
   justify-content: space-between;
+  @media screen and (max-width: 760px) {
+    flex-wrap: wrap;
+  }
 `;
 
 const Text = styled.p`

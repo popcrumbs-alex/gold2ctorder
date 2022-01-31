@@ -23,7 +23,7 @@ export const orderBumps: Array<BumpProps> = [
     otoHeadline: "One Time Deal, Add On Now For This Discounted Price:",
     otoText:
       "Get our matching 14K gold vermeil lab diamond pendant with 14 inch gold chain with 4 inch extender. This is a MUST HAVE accessory to our solitaire earrings. (Originally $89.95). You can only get this at $28 when added on today",
-    sku: "",
+    sku: "sbubc",
     checkboxColor: "#eeeeee",
     orderSummaryText: "Gold Stud Pendant",
     displayPrice: "$28.00",
@@ -36,7 +36,7 @@ export const orderBumps: Array<BumpProps> = [
     otoHeadline: "Become a Part of our Insiders Club and Get This For FREE:",
     otoText:
       "Every month we curate a different piece of outstanding jewelry and ship it at no obligation to you (Return items you do not like), pieces are made with pure sterling silver, 14k gold or other precious metals. These are pieces that will last a lifetime and grow in value over time. For just $59.95 a month you’ll get first access to our very best pieces, try it for 10 days and get your first piece (the 18 inch tennis necklace) sent at no cost to you",
-    sku: "",
+    sku: "sbubc",
     checkboxColor: "#ffe300",
     orderSummaryText: "Free Tennis Necklace With Insiders Club",
     displayPrice: "FREE",
@@ -50,7 +50,7 @@ export const orderBumps: Array<BumpProps> = [
     otoHeadline: "{Almost Sold Out} - Discount Ends Soon:",
     otoText:
       "On sale today for only $24 more, get our signature Lulu Rose earrings with matching 2CT pendant in sterling silver Vermeil. Purchased separately these cost over $140 but today you get them for only $24 when added on to this order only.",
-    sku: "",
+    sku: "sbubc",
     checkboxColor: "#eeeeee",
     orderSummaryText: "Silver Earrings and Pendant",
     displayPrice: "$24.00",
@@ -69,7 +69,7 @@ export interface ProductProps {
 
 export const ProductSelectorItems: Array<ProductProps> = [
   {
-    sku: "",
+    sku: "dasdasd",
     title:
       "1 - Pair of FREE Gold 2ct Lab Diamond Earrings - (Originally $89.95) - Just Pay $9.98 Shipping",
     displayPrice: "Free + $9.98 S/H",
@@ -78,7 +78,7 @@ export const ProductSelectorItems: Array<ProductProps> = [
     dealHeadline: undefined,
   },
   {
-    sku: "",
+    sku: "dasdasd",
     title: `3 - Pairs of Lab Diamond Earrings (14K Gold, 14K Rose Gold, Sterling Silver) - Only $27`,
     displayPrice: "$9/Pair + Free Shipping",
     numPrice: 27.0,
@@ -86,7 +86,7 @@ export const ProductSelectorItems: Array<ProductProps> = [
     dealHeadline: `VALENTINE'S DAY DEAL`,
   },
   {
-    sku: "",
+    sku: "dasdasd",
     title: `5 - Pairs of Gold 2ct Lab Diamond Earrings (Originally $475) Over 92% Off - Only $40`,
     displayPrice: "$8/Ea + Free Shipping",
     numPrice: 40.0,

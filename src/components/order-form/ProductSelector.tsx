@@ -81,7 +81,7 @@ const ProductSelector = () => {
   useEffect(() => {
     dispatch(
       addProductToOrder({
-        sku: "",
+        sku: ProductSelectorItems[productSelected].sku,
         title: ProductSelectorItems[productSelected].title,
         type: "main",
         price: ProductSelectorItems[productSelected].numPrice,

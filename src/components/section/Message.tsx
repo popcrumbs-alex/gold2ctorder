@@ -18,6 +18,10 @@ const Content = styled.div`
   background-color: rgba(255, 227, 0, 0.2);
   border: 2px dashed #333;
   border-radius: 5px;
+  @media screen and (max-width: 760px) {
+    width: 90%;
+    padding: 0.5rem;
+  }
 `;
 const Heading = styled.h2`
   font-weight: 300;
@@ -27,6 +31,9 @@ const Heading = styled.h2`
   & span {
     color: ${(props) => props.color};
     font-weight: 700;
+  }
+  @media screen and (max-width: 760px) {
+    font-size: 1rem;
   }
 `;
 

@@ -96,7 +96,7 @@ const BumpComponent = ({
       title: orderBumps[index].orderSummaryText,
       price: orderBumps[index].numPrice,
       displayPrice: orderBumps[index].displayPrice,
-      sku: "",
+      sku: orderBumps[index].sku,
       type: "bump",
     };
     if (selected) {

@@ -6,6 +6,8 @@ import Nav from "../components/nav/Nav";
 import Form from "../components/order-form/Form";
 import Message from "../components/section/Message";
 import Colors from "../constants/Colors";
+import { Helmet } from "react-helmet";
+import Loox from "../components/reviews/Loox";
 
 const Main = styled.main``;
 
@@ -27,11 +29,18 @@ const IndexPage = () => {
   return (
     <ThemeContext.Provider value={Colors}>
       <Globalstyle />
+      <Helmet>
+        <script
+          async
+          src="//loox.io/widget/loox.js?shop=luciana-rose-couture.myshopify.com"
+        ></script>
+      </Helmet>
       <Nav />
       <Main>
         <Hero />
         <Message />
         <Form />
+        <Loox />
         <Footer />
       </Main>
     </ThemeContext.Provider>

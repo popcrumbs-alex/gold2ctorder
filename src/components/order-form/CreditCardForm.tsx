@@ -1,5 +1,7 @@
+import { useMutation } from "@apollo/client";
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
+import { CREATE_ORDER } from "../../graphql/mutations/order.mutation";
 import { useAppSelector } from "../../hooks/reduxHooks";
 import { selectOrderState } from "../../redux/reducers/order.reducer";
 import { CleaveInput, TextInput } from "../../reusable/Inputs";
@@ -15,11 +17,19 @@ const Row = styled.div`
 const Column = styled.div`
   display: flex;
   width: 100%;
+  @media screen and (max-width: 760px) {
+    width: auto;
+  }
 `;
 const Grid = styled.div`
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 1rem;
+  @media screen and (max-width: 760px) {
+    display: flex;
+    gap: 0;
+    flex-direction: column;
+  }
 `;
 
 const Button = styled.button`
@@ -50,6 +60,8 @@ const CreditCardForm = () => {
     expiry: "",
     cvc: "",
   });
+
+  const [createOrder, { error, data, loading }] = useMutation(CREATE_ORDER);
 
   const orderState = useAppSelector(selectOrderState);
 
@@ -82,14 +94,29 @@ const CreditCardForm = () => {
     e.currentTarget.value.split("").length < 6 &&
     setCardFormState({ ...cardForm, cvc: e.currentTarget.value });
 
-  const submitOrder = (
+  const submitOrder = async (
     e: React.FormEvent<HTMLButtonElement> | React.FormEvent
   ) => {
     e.preventDefault();
-    console.log("card state", cardForm, orderState.myOrder);
-  };
 
-  console.log("cards", cardForm);
+    const orderToSubmitData = {
+      ...orderState.myOrder.contactInfo,
+      ...orderState.myOrder.shippingInfo,
+      products: [...orderState.myOrder.products],
+      orderTotal: orderState.myOrder.orderTotal,
+    };
+    console.log("order submit", orderToSubmitData);
+    try {
+      const response = await createOrder({
+        variables: { createOrderInput: orderToSubmitData },
+      });
+
+      console.log("response", response);
+    } catch (error) {
+      console.error("error creating order:", error);
+    }
+  };
+  console.log("error", error?.extraInfo);
   return (
     <Container onSubmit={(e) => submitOrder(e)}>
       <Row>

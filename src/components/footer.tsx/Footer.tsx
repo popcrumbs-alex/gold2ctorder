@@ -15,10 +15,18 @@ const Content = styled.div`
   width: 70%;
   display: flex;
   justify-content: space-between;
+  @media screen and (max-width: 760px) {
+    width: 95%;
+    flex-direction: column;
+    align-items: center;
+  }
 `;
 const Column = styled.div`
   display: flex;
   flex-direction: column;
+  @media screen and (max-width: 760px) {
+    margin-top: 1rem;
+  }
 `;
 
 const Heading = styled.h4`
@@ -26,12 +34,20 @@ const Heading = styled.h4`
   font-weight: 700;
   font-size: 1.3rem;
   margin: 0.2rem 0;
+  @media screen and (max-width: 760px) {
+    text-align: center;
+    font-size: 1rem;
+  }
 `;
 
 const Text = styled.p`
   color: ${(props) => props.color};
   font-size: 1rem;
   margin: 0.2rem 0;
+  @media screen and (max-width: 760px) {
+    text-align: center;
+    font-size: 0.8rem;
+  }
 `;
 
 const Footer = (props) => {
@@ -44,7 +60,7 @@ const Footer = (props) => {
           alt="logo"
           placeholder="blurred"
           objectFit="contain"
-          imgStyle={{ width: "200px" }}
+          imgStyle={{ width: "100%" }}
         />
         <Column>
           <Heading color={context.text}>Need Support?</Heading>
