@@ -10,6 +10,12 @@ export const CREATE_ORDER = gql`
         lastName
         address
         city
+        orderTotal
+        products {
+          displayPrice
+          price
+          title
+        }
       }
     }
   }
