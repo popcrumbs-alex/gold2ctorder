@@ -1,9 +1,11 @@
 import { configureStore } from "@reduxjs/toolkit";
+import alertReducer from "./reducers/alert.reducer";
 import orderReducer from "./reducers/order.reducer";
 
 export const store = configureStore({
   reducer: {
     orders: orderReducer,
+    alerts: alertReducer,
   },
 });
 

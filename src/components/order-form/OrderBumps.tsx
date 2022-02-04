@@ -1,6 +1,6 @@
 import React, { Dispatch, FC, useCallback, useEffect, useState } from "react";
 import styled from "styled-components";
-import { BumpProps, orderBumps } from "../../product/ProductData";
+import { BumpProps, orderBumps, SelectedBump } from "../../product/ProductData";
 import { useAppDispatch } from "../../hooks/reduxHooks";
 import {
   addBumpInOrder,
@@ -92,12 +92,14 @@ const BumpComponent = ({
   const [selected, selectItem] = useState<boolean>(index === 1);
 
   const handleProductAddition = () => {
-    const selectedBump = {
+    const selectedBump: SelectedBump = {
       title: orderBumps[index].orderSummaryText,
       price: orderBumps[index].numPrice,
       displayPrice: orderBumps[index].displayPrice,
       sku: orderBumps[index].sku,
       type: "bump",
+      id: orderBumps[index].id,
+      isRecurring: orderBumps[index].isRecurring,
     };
     if (selected) {
       dispatch(addBumpInOrder(selectedBump));
@@ -106,7 +108,6 @@ const BumpComponent = ({
     }
   };
 
-  console.log("order bump select", selected, index);
   const handleProductSelection = (e: React.FormEvent<HTMLInputElement>) =>
     selectItem(e.currentTarget.checked);
 

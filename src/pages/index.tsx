@@ -8,6 +8,7 @@ import Message from "../components/section/Message";
 import Colors from "../constants/Colors";
 import { Helmet } from "react-helmet";
 import Loox from "../components/reviews/Loox";
+import Alert from "../components/alert/Alert";
 
 const Main = styled.main``;
 
@@ -37,6 +38,7 @@ const IndexPage = () => {
       </Helmet>
       <Nav />
       <Main>
+        <Alert />
         <Hero />
         <Message />
         <Form />

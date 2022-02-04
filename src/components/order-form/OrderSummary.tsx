@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import { useAppSelector } from "../../hooks/reduxHooks";
+import useOrderTotal from "../../hooks/useOrderTotal";
 import {
   ProductProp,
   selectOrderState,
@@ -71,6 +72,9 @@ const OrderSummary = () => {
   const orderState = useAppSelector(selectOrderState);
 
   const { myOrder } = orderState;
+
+  const orderTotal = useOrderTotal();
+
   console.log("my order sum", myOrder);
 
   return (

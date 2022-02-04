@@ -1,4 +1,10 @@
-import React, { Fragment, useEffect, useState } from "react";
+import React, {
+  Fragment,
+  MutableRefObject,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import styled from "styled-components";
 import { FC } from "react";
 import { StaticImage } from "gatsby-plugin-image";
@@ -10,18 +16,14 @@ import states from "../../reusable/states";
 import OrderBumps from "./OrderBumps";
 import ProductSelector from "./ProductSelector";
 import { useAppDispatch, useAppSelector } from "../../hooks/reduxHooks";
-import { RootState } from "../../redux/store";
 import {
-  selectOrderState,
   updateContactInfo,
-  updateContactInfoAsync,
   updateShippingInfo,
 } from "../../redux/reducers/order.reducer";
-import { useDispatch } from "react-redux";
 import OrderSummary from "./OrderSummary";
-import useOrderTotal from "../../hooks/useOrderTotal";
 import SecureOrder from "./SecureOrder";
 import CreditCardForm from "./CreditCardForm";
+import { selectAlert } from "../../redux/reducers/alert.reducer";
 
 const Container = styled.section`
   display: flex;
@@ -171,12 +173,14 @@ type ShippingState = {
 
 const Form: FC = () => {
   const context = useContext<Theme>(ThemeContext);
-  //Order Reducer State// Not needed at the moment
-  const orderState = useAppSelector(selectOrderState);
   //actions
   const dispatch = useAppDispatch();
-  //handle order total update upon product changes
-  const orderTotal = useOrderTotal();
+
+  const alertState = useAppSelector(selectAlert);
+
+  //ref needed to scroll to when an error occurs in the form fields
+  const sectionRef = useRef(null);
+
   //combine data across components
   const [customerData, combineData] = useState<ContactState & ShippingState>({
     firstName: "",
@@ -208,13 +212,20 @@ const Form: FC = () => {
   useEffect(() => {
     dispatch(updateShippingInfo({ zip, city, state, address }));
   }, [zip, city, state, address]);
+
+  //scroll to errors in form fields!
+  //TODO set an alert for when user possibly misspells email
+  useEffect(() => {
+    if (alertState.localAlertNames.length > 0 && sectionRef.current) {
+      sectionRef.current.scrollIntoView({ top: 0, behavior: "smooth" });
+    }
+  }, [alertState.localAlertNames, sectionRef]);
   return (
-    <Container>
+    <Container ref={sectionRef}>
       <Content>
         <Row>
           <Column>
             <ColumnContent>
-              {" "}
               <Security color={context.main}>
                 <Heading>Secure Order Form</Heading>
                 <SubHeading>

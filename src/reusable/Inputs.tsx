@@ -1,6 +1,13 @@
 import Cleave from "cleave.js/react";
-import React from "react";
+import React, { useContext, useEffect, useMemo } from "react";
 import styled from "styled-components";
+import Colors, { Theme } from "../constants/Colors";
+import { useAppDispatch, useAppSelector } from "../hooks/reduxHooks";
+import { ThemeContext } from "../pages";
+import {
+  removeFormFieldFromErrors,
+  selectAlert,
+} from "../redux/reducers/alert.reducer";
 
 const InputColumn = styled.div`
   display: flex;
@@ -59,6 +66,21 @@ export const TextInput = ({
   isRequired,
   type,
 }: TextInputProps) => {
+  const context = useContext<Theme>(ThemeContext);
+
+  const alertState = useAppSelector(selectAlert);
+
+  const dispatch = useAppDispatch();
+
+  //once input value is added, remove errors until next check
+  useMemo(() => {
+    if (value) {
+      dispatch(removeFormFieldFromErrors(name));
+    }
+  }, [value]);
+
+  // console.log("alert state", alertState, value);
+
   return (
     <InputColumn>
       {label && <Label>{label}</Label>}
@@ -69,6 +91,13 @@ export const TextInput = ({
         placeholder={placeholder}
         type={type}
         required={isRequired ? true : false}
+        style={{
+          boxShadow: `0 0 0 3px ${
+            alertState.localAlertNames.includes(name)
+              ? context.danger
+              : "transparent"
+          }`,
+        }}
       />
     </InputColumn>
   );
@@ -84,6 +113,19 @@ export const Select = ({
   type,
   options,
 }) => {
+  const context = useContext<Theme>(ThemeContext);
+
+  const alertState = useAppSelector(selectAlert);
+
+  const dispatch = useAppDispatch();
+
+  //once input value is added, remove errors until next check
+  useMemo(() => {
+    if (value) {
+      dispatch(removeFormFieldFromErrors(name));
+    }
+  }, [value]);
+
   return (
     <InputColumn>
       {label && <Label>{label}</Label>}
@@ -93,6 +135,13 @@ export const Select = ({
         onChange={callback}
         placeholder={placeholder}
         required={isRequired ? true : false}
+        style={{
+          boxShadow: `0 0 0 3px ${
+            alertState.localAlertNames.includes(name)
+              ? context.danger
+              : "transparent"
+          }`,
+        }}
       >
         <option>{placeholder}</option>
         {options.map((opt: { name: string }, key: number) => {

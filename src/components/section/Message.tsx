@@ -42,7 +42,7 @@ const Message = () => {
   return (
     <Container>
       <Content>
-        <Heading color={context.main}>
+        <Heading color={context.danger}>
           Supplies are <span>limited, so you must act now</span> to ensure you
           don’t miss out on this opportunity 👇
         </Heading>

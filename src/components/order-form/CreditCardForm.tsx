@@ -2,8 +2,12 @@ import { useMutation } from "@apollo/client";
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { CREATE_ORDER } from "../../graphql/mutations/order.mutation";
-import { useAppSelector } from "../../hooks/reduxHooks";
-import { selectOrderState } from "../../redux/reducers/order.reducer";
+import { useAppDispatch, useAppSelector } from "../../hooks/reduxHooks";
+import { setAlert, setFormError } from "../../redux/reducers/alert.reducer";
+import {
+  OrderStateProps,
+  selectOrderState,
+} from "../../redux/reducers/order.reducer";
 import { CleaveInput, TextInput } from "../../reusable/Inputs";
 
 const Container = styled.form`
@@ -33,7 +37,7 @@ const Grid = styled.div`
 `;
 
 const Button = styled.button`
-  background-color: rgb(253, 92, 86);
+  background-color: #111;
   color: #fff;
   border-radius: 5px;
   padding: 1rem;
@@ -42,33 +46,47 @@ const Button = styled.button`
   margin-top: 10px;
   font-size: 1.2rem;
   transition: all 0.3s ease-in-out;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  box-shadow: 0 1px 20px #44444420;
   &:hover {
     cursor: pointer;
-    background-color: rgb(223, 92, 86);
+    background-color: #333;
+  }
+  & span {
+    font-size: 0.9rem;
+    font-weight: 300;
+    color: #666;
+    margin-top: 10px;
   }
 `;
 
 type CardStateProps = {
-  creditCardNum: string;
+  creditCardNumber: string;
   expiry: string;
   cvc: string;
 };
 
 const CreditCardForm = () => {
+  //redux dispatch action
+  const dispatch = useAppDispatch();
+
+  const orderState = useAppSelector(selectOrderState);
+
   const [cardForm, setCardFormState] = useState<CardStateProps>({
-    creditCardNum: "",
+    creditCardNumber: "",
     expiry: "",
     cvc: "",
   });
 
+  //graphql data
   const [createOrder, { error, data, loading }] = useMutation(CREATE_ORDER);
 
-  const orderState = useAppSelector(selectOrderState);
-
-  const { creditCardNum, expiry, cvc } = cardForm;
+  const { creditCardNumber, expiry, cvc } = cardForm;
 
   const handleCardNumber = (e: React.FormEvent<HTMLInputElement>) =>
-    setCardFormState({ ...cardForm, creditCardNum: e.currentTarget.value });
+    setCardFormState({ ...cardForm, creditCardNumber: e.currentTarget.value });
 
   const handleExpiry = (e: React.FormEvent<HTMLInputElement>) => {
     const removeLetters = new RegExp(/[0-9]|\//, "g");
@@ -94,29 +112,70 @@ const CreditCardForm = () => {
     e.currentTarget.value.split("").length < 6 &&
     setCardFormState({ ...cardForm, cvc: e.currentTarget.value });
 
+  const handleAnyFormError = async (formData: OrderStateProps) => {
+    const { myOrder } = formData;
+
+    //combine data to single object in order to loop through
+    const objectToCheckForErrors = {
+      ...myOrder.contactInfo,
+      ...myOrder.shippingInfo,
+    };
+
+    try {
+      for (let formField in objectToCheckForErrors) {
+        ////////////////////////////////////////////////
+        if (objectToCheckForErrors[formField] === "") {
+          //set alert to focus on one specific form element
+          dispatch(setFormError(formField));
+        }
+      }
+    } catch (error) {
+      console.error(error);
+      return error;
+    }
+  };
+
   const submitOrder = async (
     e: React.FormEvent<HTMLButtonElement> | React.FormEvent
   ) => {
     e.preventDefault();
 
-    const orderToSubmitData = {
-      ...orderState.myOrder.contactInfo,
-      ...orderState.myOrder.shippingInfo,
-      products: [...orderState.myOrder.products],
-      orderTotal: orderState.myOrder.orderTotal,
-    };
-    console.log("order submit", orderToSubmitData);
     try {
+      //first make sure to handle any front end form errors that don't require backend validation
+      await handleAnyFormError(orderState);
+
+      const cardInfo = {
+        creditCardNumber: Number(creditCardNumber.replace(/\s/g, "")),
+        expiry: expiry.replace(/\//g, ""),
+        cvc: Number(cvc),
+      };
+
       const response = await createOrder({
-        variables: { createOrderInput: orderToSubmitData },
+        variables: {
+          createOrderInput: {
+            ...orderState.myOrder.contactInfo,
+            ...orderState.myOrder.shippingInfo,
+            products: [...orderState.myOrder.products],
+            orderTotal: orderState.myOrder.orderTotal,
+            ...cardInfo,
+          },
+        },
       });
 
       console.log("response", response);
     } catch (error) {
       console.error("error creating order:", error);
+      return error;
     }
   };
-  console.log("error", error?.extraInfo);
+
+  //if theres an error porcessing order, send alert to redux store
+  useEffect(() => {
+    if (error) {
+      dispatch(setAlert({ message: error.message, type: "danger" }));
+    }
+  }, [error]);
+
   return (
     <Container onSubmit={(e) => submitOrder(e)}>
       <Row>
@@ -124,7 +183,7 @@ const CreditCardForm = () => {
           label="Credit Card Number*"
           placeholder="Card Number"
           isRequired={true}
-          value={creditCardNum}
+          value={creditCardNumber}
           callback={handleCardNumber}
           name="creditCardNumber"
         />
@@ -155,6 +214,7 @@ const CreditCardForm = () => {
       </Grid>
       <Button onSubmit={(e) => submitOrder(e)}>
         Submit My Order For RUSH Shipping
+        <span>Click Here</span>
       </Button>
     </Container>
   );

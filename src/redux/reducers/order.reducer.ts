@@ -7,6 +7,8 @@ export type ProductProp = {
   title: string;
   displayPrice: string;
   type: string;
+  id: number;
+  isRecurring: boolean;
 };
 
 export type ContactInfoProps = {
@@ -22,12 +24,19 @@ export type ShippingProps = {
   zip: string;
 };
 
-export type InitialStateProps = {
+export type CardProps = {
+  creditCardNumber: number | null;
+  expiry: number | null;
+  cvc: number | null;
+};
+
+export type OrderStateProps = {
   myOrder: {
     products: Array<ProductProp>;
     orderTotal: number;
     contactInfo: ContactInfoProps;
     shippingInfo: ShippingProps;
+    cardInfo: CardProps;
   };
 };
 
@@ -36,7 +45,7 @@ export type ActionProps = {
   payload: any;
 };
 
-const initialState: InitialStateProps = {
+const initialState: OrderStateProps = {
   myOrder: {
     products: [],
     orderTotal: 0.0,
@@ -50,6 +59,11 @@ const initialState: InitialStateProps = {
       city: "",
       state: "",
       zip: "",
+    },
+    cardInfo: {
+      creditCardNumber: null,
+      expiry: null,
+      cvc: null,
     },
   },
 };
@@ -67,6 +81,7 @@ const orderSlice = createSlice({
       //TODO write tests for this to make sure singular item is being stored
       state.myOrder.products = [...filtered, action.payload];
     },
+
     addBumpInOrder: (state, action: PayloadAction<ProductProp>) => {
       state.myOrder.products.push(action.payload);
     },
@@ -87,6 +102,9 @@ const orderSlice = createSlice({
       console.log("set state", action.payload);
       state.myOrder.orderTotal = action.payload;
     },
+    updateCardInfo: (state, action: PayloadAction<CardProps>) => {
+      state.myOrder.cardInfo = action.payload;
+    },
   },
 });
 
@@ -97,6 +115,7 @@ export const {
   updateOrderTotal,
   addBumpInOrder,
   removeBumpFromOrder,
+  updateCardInfo,
 } = orderSlice.actions;
 
 //async contact dispatch action

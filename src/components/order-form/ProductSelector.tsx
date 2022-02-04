@@ -71,7 +71,6 @@ const ProductSelector = () => {
   const dispatch = useAppDispatch();
   //get order state
   const orderState = useAppSelector(selectOrderState);
-  console.log("order state", orderState);
   //select products withint the product data array by utilitizing the index values
   const [productSelected, selectProduct] = useState<number>(1);
 
@@ -86,9 +85,12 @@ const ProductSelector = () => {
         type: "main",
         price: ProductSelectorItems[productSelected].numPrice,
         displayPrice: ProductSelectorItems[productSelected].displayPrice,
+        id: ProductSelectorItems[productSelected].id,
+        isRecurring: ProductSelectorItems[productSelected].isRecurring,
       })
     );
   }, [productSelected]);
+
   return (
     <Container>
       <Row>

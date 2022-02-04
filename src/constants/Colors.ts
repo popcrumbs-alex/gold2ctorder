@@ -1,9 +1,11 @@
 export type Theme = {
   main: string;
   text: string;
+  danger: string;
 };
 
 export default {
-  main: "rgb(253, 92, 86)",
+  main: "#939393",
   text: "#fefefe",
+  danger: "#D62246",
 };
