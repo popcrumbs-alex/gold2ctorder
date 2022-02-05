@@ -1,11 +1,14 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import { useAppDispatch, useAppSelector } from "../../hooks/reduxHooks";
-import { ProductProps, ProductSelectorItems } from "../../product/ProductData";
+import { useAppDispatch, useAppSelector } from "../../../hooks/reduxHooks";
+import {
+  ProductProps,
+  ProductSelectorItems,
+} from "../../../product/ProductData";
 import {
   addProductToOrder,
   selectOrderState,
-} from "../../redux/reducers/order.reducer";
+} from "../../../redux/reducers/order.reducer";
 
 const Container = styled.div`
   display: flex;

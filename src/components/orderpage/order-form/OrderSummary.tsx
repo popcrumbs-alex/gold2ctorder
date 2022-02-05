@@ -1,11 +1,11 @@
 import React from "react";
 import styled from "styled-components";
-import { useAppSelector } from "../../hooks/reduxHooks";
-import useOrderTotal from "../../hooks/useOrderTotal";
+import { useAppSelector } from "../../../hooks/reduxHooks";
+import useOrderTotal from "../../../hooks/useOrderTotal";
 import {
   ProductProp,
   selectOrderState,
-} from "../../redux/reducers/order.reducer";
+} from "../../../redux/reducers/order.reducer";
 
 const Container = styled.div`
   display: flex;

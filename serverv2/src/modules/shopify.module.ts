@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 import { config } from 'dotenv';
-import Shopify from 'shopify-api-node';
+import Shopify = require('shopify-api-node');
 import { ShopifyService } from 'src/services/shopify.service';
 config();
 
@@ -18,6 +18,6 @@ const shopifyProvider = {
 
 @Module({
   providers: [shopifyProvider, ShopifyService],
-  exports: ['SHOPIFY'],
+  exports: ['SHOPIFY', ShopifyService],
 })
 export class ShopifyModule {}

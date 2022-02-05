@@ -1,14 +1,16 @@
 import { useMutation } from "@apollo/client";
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import { CREATE_ORDER } from "../../graphql/mutations/order.mutation";
-import { useAppDispatch, useAppSelector } from "../../hooks/reduxHooks";
-import { setAlert, setFormError } from "../../redux/reducers/alert.reducer";
+import { CREATE_ORDER } from "../../../graphql/mutations/order.mutation";
+import { useAppDispatch, useAppSelector } from "../../../hooks/reduxHooks";
+import { setAlert, setFormError } from "../../../redux/reducers/alert.reducer";
 import {
   OrderStateProps,
   selectOrderState,
-} from "../../redux/reducers/order.reducer";
-import { CleaveInput, TextInput } from "../../reusable/Inputs";
+} from "../../../redux/reducers/order.reducer";
+import { CleaveInput, TextInput } from "../../../reusable/Inputs";
+import { navigate } from "gatsby";
+import LoadingSpinner from "../../loading/LoadingSpinner";
 
 const Container = styled.form`
   display: flex;
@@ -60,6 +62,12 @@ const Button = styled.button`
     color: #666;
     margin-top: 10px;
   }
+`;
+
+const LoadingContainer = styled.div`
+  display: flex;
+  align-items: center;
+  width: 100%;
 `;
 
 type CardStateProps = {
@@ -150,6 +158,8 @@ const CreditCardForm = () => {
         cvc: Number(cvc),
       };
 
+      console.log("card info", cardInfo);
+
       const response = await createOrder({
         variables: {
           createOrderInput: {
@@ -161,7 +171,9 @@ const CreditCardForm = () => {
           },
         },
       });
-
+      if (response.data.createOrder.success) {
+        navigate("/otos/Oto1");
+      }
       console.log("response", response);
     } catch (error) {
       console.error("error creating order:", error);
@@ -212,10 +224,17 @@ const CreditCardForm = () => {
           />
         </Column>
       </Grid>
-      <Button onSubmit={(e) => submitOrder(e)}>
-        Submit My Order For RUSH Shipping
-        <span>Click Here</span>
-      </Button>
+      {loading ? (
+        <LoadingContainer>
+          <LoadingSpinner />
+          <p style={{ marginLeft: "20px" }}>Processing Order</p>
+        </LoadingContainer>
+      ) : (
+        <Button onSubmit={(e) => submitOrder(e)}>
+          Submit My Order For RUSH Shipping
+          <span>Click Here</span>
+        </Button>
+      )}
     </Container>
   );
 };

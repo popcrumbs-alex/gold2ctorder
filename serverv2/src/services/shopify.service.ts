@@ -36,4 +36,7 @@ export class ShopifyService {
   async createOrder(orderObject: OrderObjectParams): Promise<any> {
     return await this.shopify.order.create(orderObject);
   }
+  async locateOrder(id: string) {
+    return await this.shopify.order.get(id);
+  }
 }

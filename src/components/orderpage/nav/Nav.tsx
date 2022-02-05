@@ -1,10 +1,10 @@
 import React from "react";
 import styled from "styled-components";
 import { useContext } from "react";
-import { ThemeContext } from "../../pages";
+import { ThemeContext } from "../../../pages";
 import { StaticImage } from "gatsby-plugin-image";
 import { FC } from "react";
-import { Theme } from "../../constants/Colors";
+import { Theme } from "../../../constants/Colors";
 
 const NavContainer = styled.nav`
   width: 100%;

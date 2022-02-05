@@ -1,8 +1,8 @@
 import React from "react";
 import { useContext } from "react";
 import styled from "styled-components";
-import { Theme } from "../../constants/Colors";
-import { ThemeContext } from "../../pages";
+import { Theme } from "../../../constants/Colors";
+import { ThemeContext } from "../../../pages";
 
 const Container = styled.section`
   width: 100%;

@@ -1,4 +1,5 @@
-import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
+import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
+import * as mongoose from 'mongoose';
 
 export interface Product {
   sku: string;
@@ -30,6 +31,10 @@ export class Order {
   orderTotal: number;
   @Prop()
   transactionId: string;
+  @Prop()
+  shopifyOrderId: string;
+  @Prop({ type: mongoose.Schema.Types.Date })
+  orderStartTime: mongoose.Schema.Types.Date;
   @Prop()
   products: Product[];
 }

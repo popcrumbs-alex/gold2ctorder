@@ -1,10 +1,10 @@
 import * as React from "react";
 import styled, { createGlobalStyle } from "styled-components";
 import Footer from "../components/footer.tsx/Footer";
-import Hero from "../components/hero/Hero";
-import Nav from "../components/nav/Nav";
-import Form from "../components/order-form/Form";
-import Message from "../components/section/Message";
+import Hero from "../components/orderpage/hero/Hero";
+import Nav from "../components/orderpage/nav/Nav";
+import Form from "../components/orderpage/order-form/Form";
+import Message from "../components/orderpage/section/Message";
 import Colors from "../constants/Colors";
 import { Helmet } from "react-helmet";
 import Loox from "../components/reviews/Loox";

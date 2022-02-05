@@ -2,8 +2,8 @@ import { useQuery } from "@apollo/client";
 import { StaticImage } from "gatsby-plugin-image";
 import React from "react";
 import styled from "styled-components";
-import { TEST_ENDPOINT } from "../../graphql/queries/order.query";
-import ProductData from "../../product/ProductData";
+import { TEST_ENDPOINT } from "../../../graphql/queries/order.query";
+import ProductData from "../../../product/ProductData";
 import Timer from "./Timer";
 
 const Container = styled.header`

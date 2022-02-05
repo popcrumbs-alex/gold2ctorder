@@ -14,6 +14,7 @@ export class CustomerService {
     customerInput: CustomerCreationProps,
   ): Promise<Customer> {
     try {
+      //error handling fields
       for (let cstmerIndex in customerInput) {
         if (customerInput[cstmerIndex] === '') {
           throw new Error(`A ${customerInput[cstmerIndex]} is required`);
@@ -31,7 +32,14 @@ export class CustomerService {
 
       customerFields.orders.push(order);
 
-      return;
-    } catch (error) {}
+      const newCustomer = new this.customerModel(customerFields);
+
+      await newCustomer.save();
+
+      return newCustomer;
+    } catch (error) {
+      console.error(error);
+      return error;
+    }
   }
 }

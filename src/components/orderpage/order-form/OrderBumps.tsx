@@ -1,11 +1,15 @@
 import React, { Dispatch, FC, useCallback, useEffect, useState } from "react";
 import styled from "styled-components";
-import { BumpProps, orderBumps, SelectedBump } from "../../product/ProductData";
-import { useAppDispatch } from "../../hooks/reduxHooks";
+import {
+  BumpProps,
+  orderBumps,
+  SelectedBump,
+} from "../../../product/ProductData";
+import { useAppDispatch } from "../../../hooks/reduxHooks";
 import {
   addBumpInOrder,
   removeBumpFromOrder,
-} from "../../redux/reducers/order.reducer";
+} from "../../../redux/reducers/order.reducer";
 import { AnyAction } from "redux";
 
 const Bumps = styled.div`

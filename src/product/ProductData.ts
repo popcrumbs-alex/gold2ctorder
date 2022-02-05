@@ -35,7 +35,7 @@ export const orderBumps: Array<BumpProps> = [
     otoHeadline: "One Time Deal, Add On Now For This Discounted Price:",
     otoText:
       "Get our most exclusive piece at our biggest discount, ever! Made in 18K white gold vermeil our tennis necklace has over 5CT’s of Luciana’s roses exclusive diamond like stones. At 18 inches in length this necklace shines like no other. Add it for only $99.95. Get 90 days to return it for a full refund if you are not happy with it.",
-    sku: "TNNCL",
+    sku: "TNNCK",
     checkboxColor: "#eeeeee",
     orderSummaryText: "Tennis Necklace - 99.95",
     displayPrice: "$99.95",
@@ -118,5 +118,46 @@ export const ProductSelectorItems: Array<ProductProps> = [
     dealHeadline: undefined,
     id: 5595271987357,
     isRecurring: false,
+  },
+];
+
+export type OTOProps = {
+  imgOrVideoSrc: string;
+  displayPrice: string;
+  numPrice: number;
+  id: number;
+  sku: string;
+  options: Array<any> | undefined;
+};
+
+export const OtoDATA: Array<OTOProps> = [
+  {
+    imgOrVideoSrc:
+      "https://images.clickfunnels.com/2a/8d7f08b8e74dfab9731ca1f66011ee/IMG_3408.jpg",
+    sku: "TNNCK",
+    displayPrice: "$10.00",
+    numPrice: 10.0,
+    id: 0,
+    options: undefined,
+  },
+  {
+    imgOrVideoSrc:
+      "https://images.clickfunnels.com/d4/d4ae06729b4e6091f05fcf25d88261/Gif-4.gif",
+    sku: "TNNCK",
+    displayPrice: "$10.00",
+    numPrice: 10.0,
+    id: 0,
+    options: [
+      { ring_size: 5, id: 0 },
+      { ring_size: 6, id: 0 },
+      { ring_size: 7, id: 0 },
+      { ring_size: 8, id: 0 },
+      { ring_size: 9, id: 0 },
+      { ring_size: 10, id: 0 },
+      { ring_size: 6.5, id: 0 },
+      { ring_size: 7.5, id: 0 },
+      { ring_size: 8.5, id: 0 },
+      { ring_size: 9.5, id: 0 },
+    ],
   },
 ];

@@ -37,6 +37,7 @@ export type OrderStateProps = {
     contactInfo: ContactInfoProps;
     shippingInfo: ShippingProps;
     cardInfo: CardProps;
+    otos: Array<ProductProp>;
   };
 };
 
@@ -48,6 +49,7 @@ export type ActionProps = {
 const initialState: OrderStateProps = {
   myOrder: {
     products: [],
+    otos: [],
     orderTotal: 0.0,
     contactInfo: {
       firstName: "",
@@ -89,7 +91,6 @@ const orderSlice = createSlice({
       let filtered = state.myOrder.products.filter(
         (product: ProductProp) => product.title !== action.payload.title
       );
-      console.log("god damn products", filtered);
       state.myOrder.products = filtered;
     },
     updateContactInfo: (state, action: PayloadAction<ContactInfoProps>) => {
@@ -105,6 +106,9 @@ const orderSlice = createSlice({
     updateCardInfo: (state, action: PayloadAction<CardProps>) => {
       state.myOrder.cardInfo = action.payload;
     },
+    addOtoToOrder: (state, action: PayloadAction<ProductProp>) => {
+      state.myOrder.otos.push(action.payload);
+    },
   },
 });
 
@@ -116,6 +120,7 @@ export const {
   addBumpInOrder,
   removeBumpFromOrder,
   updateCardInfo,
+  addOtoToOrder,
 } = orderSlice.actions;
 
 //async contact dispatch action

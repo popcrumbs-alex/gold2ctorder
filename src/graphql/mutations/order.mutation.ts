@@ -20,3 +20,24 @@ export const CREATE_ORDER = gql`
     }
   }
 `;
+
+export const UPDATE_ORDER = gql`
+  mutation updateOrder($updateOrderInput: UpdateOrderInput!) {
+    updateOrder(updateOrderInput: $updateOrderInput) {
+      success
+      message
+      Order {
+        firstName
+        lastName
+        address
+        city
+        orderTotal
+        products {
+          displayPrice
+          price
+          title
+        }
+      }
+    }
+  }
+`;

@@ -1,0 +1,80 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type ProductType {
+  sku: String!
+  price: Float!
+  title: String!
+  type: String!
+  displayPrice: String!
+  id: Float!
+  isRecurring: Boolean!
+}
+
+type OrderTypeDef {
+  _id: String!
+  firstName: String!
+  lastName: String!
+  email: String!
+  address: String!
+  city: String!
+  products: [ProductType!]!
+  state: String!
+  zip: String!
+  orderTotal: Float!
+}
+
+type CreateOrderResponse {
+  message: String!
+  success: Boolean!
+  Order: OrderTypeDef!
+}
+
+type UpdateOrderResponse {
+  message: String!
+  success: Boolean!
+  Order: OrderTypeDef!
+}
+
+type Query {
+  findOrder: OrderTypeDef!
+}
+
+type Mutation {
+  createOrder(createOrderInput: CreateOrderInput!): CreateOrderResponse!
+  updateOrder(updateOrderInput: UpdateOrderInput!): UpdateOrderResponse!
+}
+
+input CreateOrderInput {
+  creditCardNumber: Float!
+  expiry: String!
+  cvc: Float!
+  firstName: String!
+  lastName: String!
+  email: String!
+  address: String!
+  city: String!
+  state: String!
+  zip: String!
+  orderTotal: Float!
+  products: [ProductInput!]!
+}
+
+input ProductInput {
+  sku: String!
+  price: Float!
+  title: String!
+  type: String!
+  displayPrice: String!
+  id: Float!
+  isRecurring: Boolean!
+}
+
+input UpdateOrderInput {
+  shopifyOrderId: String!
+  paymentTransactionId: Float!
+  product: ProductInput!
+  updatedOrderTotal: Float!
+  orderId: String!
+}

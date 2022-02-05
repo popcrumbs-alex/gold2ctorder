@@ -1,6 +1,6 @@
-import { Prop, raw, Schema } from "@nestjs/mongoose";
-import mongoose from "mongoose";
-import { Order } from "./order.model";
+import { Prop, raw, Schema, SchemaFactory } from '@nestjs/mongoose';
+import * as mongoose from 'mongoose';
+import { Order } from './order.model';
 
 @Schema()
 export class Customer {
@@ -11,9 +11,11 @@ export class Customer {
   @Prop()
   email: string;
   @Prop(
-    raw([{ order_id: { type: mongoose.Schema.Types.ObjectId, ref: "Order" } }])
+    raw([{ order_id: { type: mongoose.Schema.Types.ObjectId, ref: 'Order' } }]),
   )
   orders: Order[];
 }
 
 export type CustomerDocument = Customer & Document;
+
+export const CustomerSchema = SchemaFactory.createForClass(Customer);

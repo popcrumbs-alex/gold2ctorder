@@ -9,21 +9,21 @@ import styled from "styled-components";
 import { FC } from "react";
 import { StaticImage } from "gatsby-plugin-image";
 import { useContext } from "react";
-import { ThemeContext } from "../../pages";
-import { Theme } from "../../constants/Colors";
-import { Select, TextInput } from "../../reusable/Inputs";
-import states from "../../reusable/states";
+import { ThemeContext } from "../../../pages";
+import { Theme } from "../../../constants/Colors";
+import { Select, TextInput } from "../../../reusable/Inputs";
+import states from "../../../reusable/states";
 import OrderBumps from "./OrderBumps";
 import ProductSelector from "./ProductSelector";
-import { useAppDispatch, useAppSelector } from "../../hooks/reduxHooks";
+import { useAppDispatch, useAppSelector } from "../../../hooks/reduxHooks";
 import {
   updateContactInfo,
   updateShippingInfo,
-} from "../../redux/reducers/order.reducer";
+} from "../../../redux/reducers/order.reducer";
 import OrderSummary from "./OrderSummary";
 import SecureOrder from "./SecureOrder";
 import CreditCardForm from "./CreditCardForm";
-import { selectAlert } from "../../redux/reducers/alert.reducer";
+import { selectAlert } from "../../../redux/reducers/alert.reducer";
 
 const Container = styled.section`
   display: flex;
