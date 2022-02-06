@@ -5,11 +5,13 @@ import { GraphQLModule } from '@nestjs/graphql';
 import { OrderModule } from './modules/order.module';
 import { MongooseModule } from '@nestjs/mongoose';
 import { config } from 'dotenv';
-import { Shopify } from '@shopify/shopify-api';
+import { ScheduleModule } from '@nestjs/schedule';
+import { TaskService } from './services/task.service';
 
 config();
 @Module({
   imports: [
+    ScheduleModule.forRoot(),
     GraphQLModule.forRoot({
       autoSchemaFile: 'schema.gql',
       debug: true,
@@ -32,6 +34,6 @@ config();
     }),
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService, TaskService],
 })
 export class AppModule {}

@@ -6,7 +6,10 @@ import {
   CreateOrderInput,
   UpdateOrderInput,
 } from 'src/graphql/inputs/order.input';
-import { OrderResponse } from '../graphql/responses/order.response';
+import {
+  OrderResponse,
+  PendingOrdersResponse,
+} from '../graphql/responses/order.response';
 import {
   CustomerType,
   OrderObjectParams,
@@ -29,6 +32,26 @@ export class OrderService {
   async test({ req, res }) {
     return this.shopify.testGraphql({ req, res });
   }
+
+  async loadPendingOrders(): Promise<PendingOrdersResponse> {
+    try {
+      const foundOrders = await this.orderModel.find();
+
+      const pendingOrders = [...foundOrders].filter((order: Order) => {
+        return order.status === 'pending';
+      });
+
+      return {
+        message: 'Found pending orders',
+        success: true,
+        Orders: pendingOrders,
+      };
+    } catch (error) {
+      console.error(error);
+      return error;
+    }
+  }
+
   async loadOrder(id: string): Promise<OrderResponse> {
     try {
       const foundOrder = await this.orderModel.findById(id);
@@ -239,6 +262,7 @@ export class OrderService {
       return error;
     }
   }
+
   async closeOrder(closeOrderInput: CloseOrderInput): Promise<OrderResponse> {
     try {
       const { orderId } = closeOrderInput;

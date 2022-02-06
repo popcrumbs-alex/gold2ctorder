@@ -2,7 +2,6 @@ import { Inject, Injectable } from '@nestjs/common';
 import { OrderObjectParams } from '../interfaces/order.interface';
 import { Product } from 'src/mongo/schemas/order.model';
 import { UpdateShopifyOrderInput } from 'src/graphql/inputs/shopify.input';
-import { Shopify } from '@shopify/shopify-api';
 import { TestResponse } from 'src/graphql/responses/order.response';
 import axios from 'axios';
 @Injectable()

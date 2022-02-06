@@ -140,6 +140,7 @@ export class PaymentService {
       const { transactionId, updatedOrderTotal } = input;
 
       console.log('updated order total', updatedOrderTotal);
+      //create a new authorized payment
       const request = await axios({
         url: `${this.nmiAPIString}security_key=${process.env.NMI_KEY}&type=auth&transactionid=${transactionId}&amount=${updatedOrderTotal}`,
         method: 'POST',
@@ -156,6 +157,21 @@ export class PaymentService {
 
       if (responseObject['response_code'] !== '100')
         throw new Error(responseObject['responsetext']);
+
+      //void out previous authorized transaction
+      const voidRequest = await axios({
+        url: `${this.nmiAPIString}security_key=${process.env.NMI_KEY}&type=void&transactionid=${transactionId}`,
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+        },
+      });
+
+      const voidResponseObject = this.formatPaymentGatewayResponse(
+        voidRequest.data,
+      );
+
+      console.log('void request response!', voidResponseObject);
 
       return { newTransactionId: responseObject.transactionid };
     } catch (error) {

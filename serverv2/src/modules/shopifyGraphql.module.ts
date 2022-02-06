@@ -3,6 +3,7 @@ import { config } from 'dotenv';
 import { ApiVersion, Shopify } from '@shopify/shopify-api';
 config();
 
+//Not sure this is needed
 const shopifyGraphqlFactory = {
   provide: 'SHOPIFY_GRAPHQL',
   useFactory: () => {

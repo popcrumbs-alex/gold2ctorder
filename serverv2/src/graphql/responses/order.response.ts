@@ -13,6 +13,16 @@ export class OrderResponse {
 }
 
 @ObjectType()
+export class PendingOrdersResponse {
+  @Field()
+  message: string;
+  @Field()
+  success: boolean;
+  @Field(() => [OrderTypeDef])
+  Orders: Order[];
+}
+
+@ObjectType()
 export class TestProduct {
   @Field()
   id: string;
