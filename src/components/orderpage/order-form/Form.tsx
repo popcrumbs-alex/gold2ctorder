@@ -232,7 +232,7 @@ const Form: FC = () => {
                   Protected by Secure 256-Bit SSL Technology
                 </SubHeading>
                 <StaticImage
-                  src="../../images/secure.png"
+                  src="../../../images/secure.png"
                   alt="secure"
                   placeholder="blurred"
                   objectFit="contain"
@@ -267,7 +267,7 @@ const Form: FC = () => {
                     account!
                   </Text>
                   <StaticImage
-                    src="../../images/Shield_guarant.png"
+                    src="../../../images/Shield_guarant.png"
                     alt="guarantee"
                     placeholder="blurred"
                     objectFit="contain"

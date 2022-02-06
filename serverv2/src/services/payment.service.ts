@@ -107,13 +107,6 @@ export class PaymentService {
         saleResponse.data,
       );
 
-      if (containsRecurringItem) {
-        await this.handleRecurringItem({
-          ...saleInput,
-          sourceTransactionId: responseObject.transactionid,
-        });
-      }
-
       console.log(
         'sale response!',
         saleResponse.data,
@@ -122,6 +115,13 @@ export class PaymentService {
 
       if (responseObject['response_code'] !== '100')
         throw new Error(responseObject['responsetext']);
+
+      if (containsRecurringItem) {
+        await this.handleRecurringItem({
+          ...saleInput,
+          sourceTransactionId: responseObject.transactionid,
+        });
+      }
 
       return {
         statusMessage: 'SUCCESS',
@@ -133,23 +133,65 @@ export class PaymentService {
       return error;
     }
   }
-  async updateTransaction(input: UpdateTransactionInput): Promise<any> {
+  async updateTransaction(
+    input: UpdateTransactionInput,
+  ): Promise<{ newTransactionId: string }> {
     try {
       const { transactionId, updatedOrderTotal } = input;
+
+      console.log('updated order total', updatedOrderTotal);
       const request = await axios({
-        url: `${this.nmiAPIString}security_key=${process.env.NMI_KEY}&type=update&transactionid=${transactionId}&amount=${updatedOrderTotal}`,
+        url: `${this.nmiAPIString}security_key=${process.env.NMI_KEY}&type=auth&transactionid=${transactionId}&amount=${updatedOrderTotal}`,
         method: 'POST',
         headers: {
           'Content-Type': 'application/x-www-form-urlencoded',
         },
       });
 
-      const responseObject = this.formatPaymentGatewayResponse(request.data);
+      const responseObject: any = this.formatPaymentGatewayResponse(
+        request.data,
+      );
 
-      console.log('recurring response', responseObject);
+      console.log('update response', responseObject);
 
       if (responseObject['response_code'] !== '100')
         throw new Error(responseObject['responsetext']);
+
+      return { newTransactionId: responseObject.transactionid };
+    } catch (error) {
+      console.error(error);
+      return error;
+    }
+  }
+
+  async captureSale(transactionId: number): Promise<{
+    statusMessage: string;
+    transactionId: string;
+    responseObject: any;
+  }> {
+    try {
+      const saleResponse = await axios({
+        url: `${this.nmiAPIString}security_key=${process.env.NMI_KEY}&type=capture&transactionid=${transactionId}`,
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+        },
+      });
+
+      const responseObject: any = this.formatPaymentGatewayResponse(
+        saleResponse.data,
+      );
+
+      console.log('sale response!', saleResponse.data, responseObject);
+
+      if (responseObject['response_code'] !== '100')
+        throw new Error(responseObject['responsetext']);
+
+      return {
+        statusMessage: 'SUCCESS',
+        transactionId: responseObject.transactionid,
+        responseObject,
+      };
     } catch (error) {
       console.error(error);
       return error;

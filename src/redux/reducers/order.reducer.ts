@@ -30,6 +30,8 @@ export type CardProps = {
   cvc: number | null;
 };
 
+export type OrderStorageParams = { id: string };
+
 export type OrderStateProps = {
   myOrder: {
     products: Array<ProductProp>;
@@ -109,6 +111,9 @@ const orderSlice = createSlice({
     addOtoToOrder: (state, action: PayloadAction<ProductProp>) => {
       state.myOrder.otos.push(action.payload);
     },
+    addOrderToStorage: (state, action: PayloadAction<OrderStorageParams>) => {
+      localStorage.setItem("order_id", action.payload.id);
+    },
   },
 });
 
@@ -121,6 +126,7 @@ export const {
   removeBumpFromOrder,
   updateCardInfo,
   addOtoToOrder,
+  addOrderToStorage,
 } = orderSlice.actions;
 
 //async contact dispatch action

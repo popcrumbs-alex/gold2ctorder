@@ -1,5 +1,6 @@
 import React, { FC } from "react";
 import styled, { createGlobalStyle } from "styled-components";
+import Alert from "../../components/alert/Alert";
 import OtoScreen from "../../components/otos/oto1/OtoScreen";
 
 const Main = styled.main``;
@@ -20,6 +21,7 @@ const Oto1: FC = () => {
   return (
     <Main>
       <Globalstyle />
+      <Alert />
       <OtoScreen />
     </Main>
   );

@@ -48,14 +48,20 @@ export class CreateOrderInput {
 
 @InputType()
 export class UpdateOrderInput {
-  @Field()
-  shopifyOrderId: string;
-  @Field()
-  paymentTransactionId: number;
   @Field(() => ProductInput)
   product: ProductInput;
   @Field()
-  updatedOrderTotal: number;
+  orderId: string;
+}
+
+@InputType()
+export class FindOrderInput {
+  @Field()
+  id: string;
+}
+
+@InputType()
+export class CloseOrderInput {
   @Field()
   orderId: string;
 }

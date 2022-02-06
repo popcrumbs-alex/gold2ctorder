@@ -6,3 +6,9 @@ export const TEST_ENDPOINT = gql`
     test
   }
 `;
+
+export const LOAD_ORDER = gql`
+  query findOrder($id: string!) {
+    findOrder(id: $id)
+  }
+`;

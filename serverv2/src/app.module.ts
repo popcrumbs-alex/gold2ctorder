@@ -5,8 +5,8 @@ import { GraphQLModule } from '@nestjs/graphql';
 import { OrderModule } from './modules/order.module';
 import { MongooseModule } from '@nestjs/mongoose';
 import { config } from 'dotenv';
-import { PaymentModule } from './modules/payment.module';
-import { ShopifyModule } from './modules/shopify.module';
+import { Shopify } from '@shopify/shopify-api';
+
 config();
 @Module({
   imports: [
@@ -21,8 +21,8 @@ config();
       buildSchemaOptions: {
         dateScalarMode: 'timestamp',
       },
-      context: ({ req }) => {
-        return req;
+      context: async ({ req, res }) => {
+        return { req, res };
       },
     }),
     OrderModule,

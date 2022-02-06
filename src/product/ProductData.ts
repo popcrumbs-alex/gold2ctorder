@@ -128,17 +128,21 @@ export type OTOProps = {
   id: number;
   sku: string;
   options: Array<any> | undefined;
+  title: string;
+  type: string;
 };
 
 export const OtoDATA: Array<OTOProps> = [
   {
     imgOrVideoSrc:
       "https://images.clickfunnels.com/2a/8d7f08b8e74dfab9731ca1f66011ee/IMG_3408.jpg",
-    sku: "TNNCK",
+    sku: "6MMGOLD",
     displayPrice: "$10.00",
     numPrice: 10.0,
-    id: 0,
+    id: 5778303189149,
     options: undefined,
+    title: "1CT Gold Studs",
+    type: "OTO",
   },
   {
     imgOrVideoSrc:
@@ -147,6 +151,8 @@ export const OtoDATA: Array<OTOProps> = [
     displayPrice: "$10.00",
     numPrice: 10.0,
     id: 0,
+    title: "",
+    type: "OTO",
     options: [
       { ring_size: 5, id: 0 },
       { ring_size: 6, id: 0 },

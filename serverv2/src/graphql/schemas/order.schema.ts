@@ -23,6 +23,10 @@ export class OrderTypeDef {
   @Field()
   _id: string;
   @Field()
+  shopifyOrderId: string;
+  @Field()
+  transactionId: string;
+  @Field()
   firstName: string;
   @Field()
   lastName: string;

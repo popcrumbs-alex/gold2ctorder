@@ -13,6 +13,8 @@ export interface Product {
 
 @Schema()
 export class Order {
+  @Prop({ type: String, default: 'pending' })
+  status: string;
   @Prop()
   firstName: string;
   @Prop()

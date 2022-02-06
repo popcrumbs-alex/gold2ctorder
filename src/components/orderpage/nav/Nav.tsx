@@ -63,7 +63,7 @@ const Nav: FC = () => {
     <NavContainer color={context.main}>
       <Content>
         <StaticImage
-          src="../../images/lululogo.png"
+          src="../../../images/lululogo.png"
           alt="logo"
           placeholder="blurred"
           objectFit="contain"

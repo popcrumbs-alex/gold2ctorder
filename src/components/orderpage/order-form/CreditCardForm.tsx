@@ -5,6 +5,7 @@ import { CREATE_ORDER } from "../../../graphql/mutations/order.mutation";
 import { useAppDispatch, useAppSelector } from "../../../hooks/reduxHooks";
 import { setAlert, setFormError } from "../../../redux/reducers/alert.reducer";
 import {
+  addOrderToStorage,
   OrderStateProps,
   selectOrderState,
 } from "../../../redux/reducers/order.reducer";
@@ -172,6 +173,11 @@ const CreditCardForm = () => {
         },
       });
       if (response.data.createOrder.success) {
+        //need to set the order id in storage in order to load it in the next steps
+        dispatch(
+          addOrderToStorage({ id: response.data.createOrder.Order._id })
+        );
+
         navigate("/otos/Oto1");
       }
       console.log("response", response);

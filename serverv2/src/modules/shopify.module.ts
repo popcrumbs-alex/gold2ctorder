@@ -2,6 +2,7 @@ import { Module } from '@nestjs/common';
 import { config } from 'dotenv';
 import Shopify = require('shopify-api-node');
 import { ShopifyService } from 'src/services/shopify.service';
+import { ShopifyGraphqlModule } from './shopifyGraphql.module';
 config();
 
 const shopifyProvider = {
@@ -17,6 +18,7 @@ const shopifyProvider = {
 };
 
 @Module({
+  imports: [ShopifyGraphqlModule],
   providers: [shopifyProvider, ShopifyService],
   exports: ['SHOPIFY', ShopifyService],
 })

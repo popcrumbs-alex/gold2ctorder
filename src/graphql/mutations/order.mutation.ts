@@ -11,6 +11,9 @@ export const CREATE_ORDER = gql`
         address
         city
         orderTotal
+        _id
+        shopifyOrderId
+        transactionId
         products {
           displayPrice
           price

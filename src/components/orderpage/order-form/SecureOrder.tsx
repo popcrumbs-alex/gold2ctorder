@@ -23,7 +23,7 @@ const SecureOrder = () => {
     <Container>
       <Heading>Your Order Is Safe & Secure 🔒</Heading>
       <StaticImage
-        src="../../images/credit-only.png"
+        src="../../../images/credit-only.png"
         alt="secure"
         placeholder="blurred"
         width={200}
@@ -31,7 +31,7 @@ const SecureOrder = () => {
       />
       <Row>
         <StaticImage
-          src="../../images/shield.png"
+          src="../../../images/shield.png"
           alt="secure"
           placeholder="blurred"
           width={150}

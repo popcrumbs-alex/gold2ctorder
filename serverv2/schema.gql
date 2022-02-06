@@ -14,6 +14,8 @@ type ProductType {
 
 type OrderTypeDef {
   _id: String!
+  shopifyOrderId: String!
+  transactionId: String!
   firstName: String!
   lastName: String!
   email: String!
@@ -25,25 +27,37 @@ type OrderTypeDef {
   orderTotal: Float!
 }
 
-type CreateOrderResponse {
+type OrderResponse {
   message: String!
   success: Boolean!
   Order: OrderTypeDef!
 }
 
-type UpdateOrderResponse {
+type TestProduct {
+  id: String!
+  title: String!
+  descriptionHtml: String!
+}
+
+type TestResponse {
   message: String!
   success: Boolean!
-  Order: OrderTypeDef!
+  products: [TestProduct!]!
 }
 
 type Query {
-  findOrder: OrderTypeDef!
+  findOrder(findOrderInput: FindOrderInput!): OrderResponse!
+  testShopifyGraphl(input: String!): TestResponse!
+}
+
+input FindOrderInput {
+  id: String!
 }
 
 type Mutation {
-  createOrder(createOrderInput: CreateOrderInput!): CreateOrderResponse!
-  updateOrder(updateOrderInput: UpdateOrderInput!): UpdateOrderResponse!
+  createOrder(createOrderInput: CreateOrderInput!): OrderResponse!
+  updateOrder(updateOrderInput: UpdateOrderInput!): OrderResponse!
+  cloaseOrder(closeOrderInput: CloseOrderInput!): OrderResponse!
 }
 
 input CreateOrderInput {
@@ -72,9 +86,10 @@ input ProductInput {
 }
 
 input UpdateOrderInput {
-  shopifyOrderId: String!
-  paymentTransactionId: Float!
   product: ProductInput!
-  updatedOrderTotal: Float!
+  orderId: String!
+}
+
+input CloseOrderInput {
   orderId: String!
 }

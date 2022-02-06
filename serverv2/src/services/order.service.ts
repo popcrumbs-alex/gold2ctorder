@@ -2,13 +2,11 @@ import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import {
+  CloseOrderInput,
   CreateOrderInput,
   UpdateOrderInput,
 } from 'src/graphql/inputs/order.input';
-import {
-  CreateOrderResponse,
-  UpdateOrderResponse,
-} from '../graphql/responses/order.response';
+import { OrderResponse } from '../graphql/responses/order.response';
 import {
   CustomerType,
   OrderObjectParams,
@@ -28,25 +26,28 @@ export class OrderService {
     private readonly customerService: CustomerService,
   ) {}
 
-  async test() {
-    console.log('this is a test', this.paymentService.getApiString());
-    return 'this is a test';
+  async test({ req, res }) {
+    return this.shopify.testGraphql({ req, res });
   }
-  async loadOrder(id: string): Promise<Order> {
+  async loadOrder(id: string): Promise<OrderResponse> {
     try {
       const foundOrder = await this.orderModel.findById(id);
 
-      return foundOrder;
+      return { message: 'Located order', success: true, Order: foundOrder };
     } catch (error) {
       console.error(error);
       return error;
     }
   }
   calculateOrderTotal(prices: number[]): number {
-    return prices.reduce((accumulator, nextNum) => accumulator + nextNum, 0);
+    return Number(
+      prices
+        .reduce((accumulator, nextNum) => accumulator + nextNum, 0)
+        .toFixed(2),
+    );
   }
 
-  async createOrder(input: CreateOrderInput): Promise<CreateOrderResponse> {
+  async createOrder(input: CreateOrderInput): Promise<OrderResponse> {
     try {
       const {
         firstName,
@@ -118,7 +119,7 @@ export class OrderService {
         shipping_address,
         billing_address: shipping_address,
         total_tax: 0,
-        financial_status: 'paid',
+        financial_status: 'pending',
         tax_lines: [{ price: 0, rate: 'n/a', title: 'Tax' }],
         transactions: [
           {
@@ -163,7 +164,7 @@ export class OrderService {
 
       await newOrder.save();
 
-      const newCustomer = await this.customerService.createCustomer({
+      await this.customerService.createCustomer({
         firstName,
         lastName,
         email,
@@ -182,29 +183,88 @@ export class OrderService {
   }
   async updateOrder(
     updateOrderInput: UpdateOrderInput,
-  ): Promise<UpdateOrderResponse> {
+  ): Promise<OrderResponse> {
     try {
-      const {
-        shopifyOrderId,
-        paymentTransactionId,
-        updatedOrderTotal,
-        orderId,
-      } = updateOrderInput;
+      const { product, orderId } = updateOrderInput;
 
-      //Step 1 update transaction amount
-      //step 2 update shopify order
+      //Step 1 find order in db
+      const foundOrder = await this.orderModel.findById(orderId);
+
+      if (!foundOrder) throw new Error('Could not locate a current order');
+
+      //add new product to current product array
+      const currentProductPrices = [...foundOrder.products, product].map(
+        (product: Product) => product.price,
+      );
+
+      //Step 2 update transaction amount
+      const newOrderTotal = this.calculateOrderTotal(currentProductPrices);
+      //now add product to db
+      foundOrder.products = [...foundOrder.products, product];
+
+      foundOrder.orderTotal = newOrderTotal;
+      //save in order to get current product total
+      await foundOrder.save();
+
+      console.log('updated order', foundOrder.products);
+      //step 3 update transaction auth amount in payment gatewat
       const updateTransaction = await this.paymentService.updateTransaction({
-        updatedOrderTotal,
-        transactionId: paymentTransactionId,
+        updatedOrderTotal: newOrderTotal,
+        transactionId: Number(foundOrder.transactionId),
       });
 
-      const foundShopifyOrder = await this.shopify.locateOrder(shopifyOrderId);
+      if (!updateTransaction.newTransactionId)
+        throw new Error('Transaction id does not exist');
+      //the new transaction auth returns a new transactionid
+      foundOrder.transactionId = updateTransaction.newTransactionId;
+      //save the transaction id to the db
+      await foundOrder.save();
 
-      const foundDBOrder = await this.orderModel.findById(orderId);
+      //TODO update shopiify order
+      //step 4 get order in shopify and then update
+      const orderToUpdateInShopify = await this.shopify.updatePendingOrder({
+        order_id: foundOrder.shopifyOrderId,
+        products: [...foundOrder.products],
+      });
 
-      console.log('updated transaction', updateTransaction, foundShopifyOrder);
+      console.log(
+        'updated transaction',
+        updateTransaction,
+        orderToUpdateInShopify,
+      );
 
-      return { message: 'Hello', success: true, Order: foundDBOrder };
+      return { message: 'Hello', success: true, Order: foundOrder };
+    } catch (error) {
+      console.error(error);
+      return error;
+    }
+  }
+  async closeOrder(closeOrderInput: CloseOrderInput): Promise<OrderResponse> {
+    try {
+      const { orderId } = closeOrderInput;
+
+      const foundOrder = await this.orderModel.findById(orderId);
+
+      if (!foundOrder) throw new Error('Could not locate an order');
+
+      const closePaymentRequest = await this.paymentService.captureSale(
+        Number(foundOrder.transactionId),
+      );
+
+      console.log('payment capture response', closePaymentRequest);
+      if (closePaymentRequest.statusMessage !== 'SUCCESS')
+        throw new Error('Error capturing transaction');
+
+      foundOrder.status = 'closed';
+
+      await foundOrder.save();
+      //TODO need to update and close out shopify order as well to proceed with fulfillment
+
+      return {
+        message: 'Payment captured successfully',
+        success: true,
+        Order: foundOrder,
+      };
     } catch (error) {
       console.error(error);
       return error;

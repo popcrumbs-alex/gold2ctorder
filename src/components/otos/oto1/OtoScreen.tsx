@@ -1,13 +1,15 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import styled from "styled-components";
 import Timer from "../../orderpage/hero/Timer";
 import { OtoDATA } from "../../../product/ProductData";
-import { Link } from "gatsby";
+import { Link, navigate } from "gatsby";
 import { useAppDispatch } from "../../../hooks/reduxHooks";
 import { addOtoToOrder } from "../../../redux/reducers/order.reducer";
 import { useMutation } from "@apollo/client";
 import { UPDATE_ORDER } from "../../../graphql/mutations/order.mutation";
+import { setAlert } from "../../../redux/reducers/alert.reducer";
+import LoadingSpinner from "../../loading/LoadingSpinner";
 const Section = styled.section`
   width: 100%;
   display: flex;
@@ -82,29 +84,53 @@ const OtoScreen = () => {
   const [updateOrder, { error, data, loading }] = useMutation(UPDATE_ORDER);
 
   //TODO Pass order into storage to continue order processing
-  const handleAddOTOTToOrder = () => {
-    dispatch(
-      addOtoToOrder({
-        price: OtoDATA[currentOtoIndex].numPrice,
-        title: "1Ct Gold Studs",
-        type: "OTO",
-        isRecurring: false,
-        id: OtoDATA[currentOtoIndex].id,
-        displayPrice: OtoDATA[currentOtoIndex].displayPrice,
-        sku: OtoDATA[currentOtoIndex].sku,
-      })
-    );
+  const handleAddOTOTToOrder = async () => {
+    const currentOrderId = localStorage.getItem("order_id");
+    try {
+      dispatch(
+        addOtoToOrder({
+          price: OtoDATA[currentOtoIndex].numPrice,
+          title: "1Ct Gold Studs",
+          type: "OTO",
+          isRecurring: false,
+          id: OtoDATA[currentOtoIndex].id,
+          displayPrice: OtoDATA[currentOtoIndex].displayPrice,
+          sku: OtoDATA[currentOtoIndex].sku,
+        })
+      );
 
-    updateOrder({
-      variables: {
-        shopifyOrderId: "",
-        paymentTransactionId: 0,
-        product: "",
-        updatedOrderTotal: 0,
-        orderId: 0,
-      },
-    });
+      const request = await updateOrder({
+        variables: {
+          updateOrderInput: {
+            product: {
+              displayPrice: OtoDATA[currentOtoIndex].displayPrice,
+              price: OtoDATA[currentOtoIndex].numPrice,
+              title: "1CT Gold Studs",
+              sku: OtoDATA[currentOtoIndex].sku,
+              isRecurring: false,
+              type: "OTO",
+              id: OtoDATA[currentOtoIndex].id,
+            },
+            orderId: currentOrderId,
+          },
+        },
+      });
+
+      console.log("request!", request);
+      if (request.data.updateOrder.success) {
+        navigate("/otos/Oto2");
+      }
+    } catch (error) {
+      console.error(error);
+      return error;
+    }
   };
+
+  useEffect(() => {
+    if (error) {
+      dispatch(setAlert({ message: error.message, type: "danger" }));
+    }
+  }, [error]);
 
   return (
     <Section>
@@ -122,9 +148,16 @@ const OtoScreen = () => {
         <Timer />
         <Image src={OtoDATA[currentOtoIndex].imgOrVideoSrc} alt="product" />
 
-        <Button onClick={() => handleAddOTOTToOrder()}>
-          YES! Add The 1CT Gold Studs For Only $10 <span>Click Only Once</span>
-        </Button>
+        {!loading ? (
+          <Button onClick={() => handleAddOTOTToOrder()}>
+            YES! Add The 1CT Gold Studs For Only $10{" "}
+            <span>Click Only Once</span>
+          </Button>
+        ) : (
+          <>
+            <LoadingSpinner /> <p>Processing...</p>
+          </>
+        )}
 
         <Link to="/otos/Oto2">No thanks I don't need this now</Link>
       </Content>
