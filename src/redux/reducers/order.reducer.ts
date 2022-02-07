@@ -112,7 +112,7 @@ const orderSlice = createSlice({
       state.myOrder.otos.push(action.payload);
     },
     addOrderToStorage: (state, action: PayloadAction<OrderStorageParams>) => {
-      localStorage.setItem("order_id", action.payload.id);
+      window.localStorage.setItem("order_id", action.payload.id);
     },
   },
 });

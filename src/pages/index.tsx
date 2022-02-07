@@ -29,8 +29,8 @@ const Globalstyle = createGlobalStyle`
 
 const IndexPage = () => {
   useEffect(() => {
-    if (localStorage.getItem("order_id")) {
-      localStorage.removeItem("order_id");
+    if (window.localStorage.getItem("order_id")) {
+      window.localStorage.removeItem("order_id");
     }
   }, []);
   return (

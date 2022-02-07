@@ -1,13 +1,7 @@
 import React from "react";
-import PropTypes from "prop-types";
 import styled from "styled-components";
 import { StaticImage } from "gatsby-plugin-image";
-import { useAppSelector } from "../../hooks/reduxHooks";
-import {
-  ProductProp,
-  selectOrderState,
-} from "../../redux/reducers/order.reducer";
-import { ProductProps } from "../../product/ProductData";
+import { ProductProp } from "../../redux/reducers/order.reducer";
 import { useMutation, useQuery } from "@apollo/client";
 import { LOAD_ORDER } from "../../graphql/queries/order.query";
 import { useContext } from "react";
@@ -102,7 +96,9 @@ const ThankyouPage = () => {
   const context = useContext<Theme>(ThemeContext);
 
   const { error, data, loading } = useQuery(LOAD_ORDER, {
-    variables: { findOrderInput: { id: localStorage.getItem("order_id") } },
+    variables: {
+      findOrderInput: { id: window.localStorage.getItem("order_id") },
+    },
   });
 
   useEffect(() => {
