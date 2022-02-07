@@ -95,14 +95,25 @@ const Price = styled.p`
 const ThankyouPage = () => {
   const context = useContext<Theme>(ThemeContext);
 
-  const { error, data, loading } = useQuery(LOAD_ORDER, {
+  const orderId =
+    typeof window !== "undefined"
+      ? window.localStorage.getItem("order_id")
+      : null;
+
+  const { error, data, loading, refetch } = useQuery(LOAD_ORDER, {
     variables: {
-      findOrderInput: { id: window.localStorage.getItem("order_id") },
+      findOrderInput: { id: orderId },
     },
   });
 
   useEffect(() => {
-    if (!localStorage.getItem("order_id")) {
+    if (typeof window !== "undefined") {
+      refetch();
+    }
+  }, [window]);
+
+  useEffect(() => {
+    if (!orderId) {
       navigate("/");
     }
   }, []);
