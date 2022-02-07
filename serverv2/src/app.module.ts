@@ -21,6 +21,7 @@ import { TaskService } from './services/task.service';
           'http://localhost:8000',
           'https://serene-jennings-9dcb5a.netlify.app',
           'offers.lucianarose.store',
+          'https://funnel-server.herokuapp.com/',
         ],
         credentials: true,
       },
