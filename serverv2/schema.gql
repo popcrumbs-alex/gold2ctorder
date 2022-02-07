@@ -39,15 +39,8 @@ type TestProduct {
   descriptionHtml: String!
 }
 
-type TestResponse {
-  message: String!
-  success: Boolean!
-  products: [TestProduct!]!
-}
-
 type Query {
   findOrder(findOrderInput: FindOrderInput!): OrderResponse!
-  testShopifyGraphl(input: String!): TestResponse!
 }
 
 input FindOrderInput {
@@ -57,7 +50,7 @@ input FindOrderInput {
 type Mutation {
   createOrder(createOrderInput: CreateOrderInput!): OrderResponse!
   updateOrder(updateOrderInput: UpdateOrderInput!): OrderResponse!
-  cloaseOrder(closeOrderInput: CloseOrderInput!): OrderResponse!
+  closeOrder(closeOrderInput: CloseOrderInput!): OrderResponse!
 }
 
 input CreateOrderInput {

@@ -37,3 +37,8 @@ export interface ShippingAddress {
   province_code: string;
   zip: string;
 }
+
+export interface ShopifyUpdateOrderParams {
+  orderId: string;
+  newOrderTotal: number;
+}

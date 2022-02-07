@@ -18,14 +18,6 @@ export class OrderResolver {
     return this.orderService.loadOrder(findOrderInput.id);
   }
 
-  @Query(() => TestResponse)
-  async testShopifyGraphl(
-    @Args('input') input: string,
-    @GraphqlContext() context: any,
-  ) {
-    return this.orderService.test({ req: context.req, res: context.res });
-  }
-
   @Mutation(() => OrderResponse)
   async createOrder(
     @Args('createOrderInput') createOrderInput: CreateOrderInput,
@@ -41,7 +33,7 @@ export class OrderResolver {
   }
 
   @Mutation(() => OrderResponse)
-  async cloaseOrder(@Args('closeOrderInput') closeOrderInput: CloseOrderInput) {
+  async closeOrder(@Args('closeOrderInput') closeOrderInput: CloseOrderInput) {
     return this.orderService.closeOrder(closeOrderInput);
   }
 }

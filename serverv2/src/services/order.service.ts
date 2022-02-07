@@ -29,10 +29,6 @@ export class OrderService {
     private readonly customerService: CustomerService,
   ) {}
 
-  async test({ req, res }) {
-    return this.shopify.testGraphql({ req, res });
-  }
-
   async loadPendingOrders(): Promise<PendingOrdersResponse> {
     try {
       const foundOrders = await this.orderModel.find();
@@ -76,17 +72,11 @@ export class OrderService {
         firstName,
         lastName,
         email,
-        address,
-        city,
         products,
-        state,
-        zip,
         creditCardNumber,
         expiry,
         cvc,
       } = input;
-
-      console.log('input', input);
 
       if (products.length === 0) {
         throw new Error('Must have products in order to purchase?');
@@ -109,51 +99,7 @@ export class OrderService {
         [...products].filter((product: Product) => product.isRecurring).length >
         0;
 
-      //return products selected as formatted shopify line items
-      const lineItems = await this.shopify.getProducts(products);
-
       console.log('is there a subscription item?', detectASubscriptionItem);
-
-      const customer: CustomerType = {
-        first_name: firstName,
-        last_name: lastName,
-        email,
-      };
-
-      const shipping_address: ShippingAddress = {
-        address1: address,
-        address2: '',
-        city,
-        country: 'United States',
-        country_code: 'US',
-        country_name: 'United States',
-        company: '',
-        first_name: firstName,
-        last_name: lastName,
-        name: firstName + ' ' + lastName,
-        phone: '',
-        province: state,
-        province_code: '',
-        zip,
-      };
-
-      const orderObject: OrderObjectParams = {
-        customer,
-        shipping_address,
-        billing_address: shipping_address,
-        total_tax: 0,
-        financial_status: 'pending',
-        tax_lines: [{ price: 0, rate: 'n/a', title: 'Tax' }],
-        transactions: [
-          {
-            kind: 'sale',
-            status: 'success',
-            amount: orderTotal,
-          },
-        ],
-        line_items: lineItems,
-        note_attributes: [{ name: 'Test Order', value: firstName + lastName }],
-      };
 
       //pass to nmi payment gateway service for transaction
       const paymentRequest = await this.paymentService.authSale({
@@ -165,22 +111,14 @@ export class OrderService {
         amount: orderTotal,
         containsRecurringItem: detectASubscriptionItem,
       });
-
-      // console.log('payment request', paymentRequest);
       if (paymentRequest.statusMessage !== 'SUCCESS') {
         throw new Error(paymentRequest.responseObject);
       }
-
-      //create order in shopify if payment is successful
-      const newShopifyOrder = await this.shopify.createOrder(orderObject);
-
-      console.log('new Shopify order', newShopifyOrder);
 
       const orderStartTime = new Date().toString();
 
       const newOrder = new this.orderModel({
         ...input,
-        shopifyOrderId: newShopifyOrder.id,
         transactionId: paymentRequest.transactionId,
         orderStartTime: orderStartTime,
       });
@@ -243,18 +181,7 @@ export class OrderService {
       //save the transaction id to the db
       await foundOrder.save();
 
-      //TODO update shopiify order
-      //step 4 get order in shopify and then update
-      const orderToUpdateInShopify = await this.shopify.updatePendingOrder({
-        order_id: foundOrder.shopifyOrderId,
-        products: [...foundOrder.products],
-      });
-
-      console.log(
-        'updated transaction',
-        updateTransaction,
-        orderToUpdateInShopify,
-      );
+      console.log('updated transaction', updateTransaction);
 
       return { message: 'Hello', success: true, Order: foundOrder };
     } catch (error) {
@@ -271,6 +198,69 @@ export class OrderService {
 
       if (!foundOrder) throw new Error('Could not locate an order');
 
+      //return products selected as formatted shopify line items
+      const lineItems = await this.shopify.getProducts(foundOrder.products);
+
+      const {
+        firstName,
+        lastName,
+        city,
+        address,
+        email,
+        state,
+        zip,
+        orderTotal,
+      } = foundOrder;
+
+      //Create shopify specific order objects
+      const customer: CustomerType = {
+        first_name: firstName,
+        last_name: lastName,
+        email,
+      };
+      //Create shopify specific order objects
+      const shipping_address: ShippingAddress = {
+        address1: address,
+        address2: '',
+        city,
+        country: 'United States',
+        country_code: 'US',
+        country_name: 'United States',
+        company: '',
+        first_name: firstName,
+        last_name: lastName,
+        name: firstName + ' ' + lastName,
+        phone: '',
+        province: state,
+        province_code: '',
+        zip,
+      };
+      //Create shopify specific order objects
+      const orderObject: OrderObjectParams = {
+        customer,
+        shipping_address,
+        billing_address: shipping_address,
+        total_tax: 0,
+        financial_status: 'paid',
+        tax_lines: [{ price: 0, rate: 'n/a', title: 'Tax' }],
+        transactions: [
+          {
+            kind: 'sale',
+            status: 'success',
+            amount: orderTotal,
+          },
+        ],
+        line_items: lineItems,
+        note_attributes: [{ name: 'Test Order', value: firstName + lastName }],
+      };
+
+      const shopifyOrder = await this.shopify.createOrder(orderObject);
+
+      if (shopifyOrder) {
+        foundOrder.shopifyOrderId = shopifyOrder.id;
+        foundOrder.status = 'closed';
+      }
+
       const closePaymentRequest = await this.paymentService.captureSale(
         Number(foundOrder.transactionId),
       );
@@ -282,7 +272,6 @@ export class OrderService {
       foundOrder.status = 'closed';
 
       await foundOrder.save();
-      //TODO need to update and close out shopify order as well to proceed with fulfillment
 
       return {
         message: 'Payment captured successfully',

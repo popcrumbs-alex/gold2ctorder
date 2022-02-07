@@ -11,7 +11,7 @@ export class TaskService {
 
   @Cron('45 * * * * *')
   handleCron() {
-    console.log('Hello friends');
+    console.log('Cron status update');
     this.logger.debug('Debug log at 45 seconds');
   }
   @Cron('45 * * * * *')
