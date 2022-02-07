@@ -1,4 +1,5 @@
 import React, { FC } from "react";
+import { Helmet } from "react-helmet";
 import styled, { createGlobalStyle } from "styled-components";
 import Alert from "../../components/alert/Alert";
 import OtoScreen from "../../components/otos/oto1/OtoScreen";
@@ -20,6 +21,9 @@ const Globalstyle = createGlobalStyle`
 const Oto1: FC = () => {
   return (
     <Main>
+      <Helmet>
+        <title>1CT Gold Studs</title>
+      </Helmet>
       <Globalstyle />
       <Alert />
       <OtoScreen />

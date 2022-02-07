@@ -17,7 +17,10 @@ config();
       debug: true,
       playground: true,
       cors: {
-        origin: ['http://localhost:8000', 'https://faec-108-29-6-138.ngrok.io'],
+        origin: [
+          'http://localhost:8000',
+          'https://serene-jennings-9dcb5a.netlify.app',
+        ],
         credentials: true,
       },
       buildSchemaOptions: {

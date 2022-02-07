@@ -1,8 +1,18 @@
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
-import Timer from "../../orderpage/hero/Timer";
-import { OtoDATA } from "../../../product/ProductData";
-import { Link } from "gatsby";
+import {
+  OtoDATA,
+  OtoOptionProps,
+  OTOProps,
+} from "../../../product/ProductData";
+import { Link, navigate } from "gatsby";
+import { useAppDispatch } from "../../../hooks/reduxHooks";
+import { addOtoToOrder } from "../../../redux/reducers/order.reducer";
+import { useMutation } from "@apollo/client";
+import { UPDATE_ORDER } from "../../../graphql/mutations/order.mutation";
+import { setAlert } from "../../../redux/reducers/alert.reducer";
+import LoadingSpinner from "../../loading/LoadingSpinner";
+import { StaticImage } from "gatsby-plugin-image";
 
 const Section = styled.section`
   width: 100%;
@@ -131,8 +141,85 @@ const ToggleButton = styled.button`
   }
 `;
 
+const ImageContainer = styled.div`
+  transition: all 0.4s ease-in-out;
+  display: flex;
+  flex-direction: column;
+  margin: 2rem 0;
+`;
+
 const OtoScreen2 = () => {
   const [currentOtoIndex, setCurrentOtoIndex] = useState<number>(1);
+
+  const [ringGuideVisibility, toggleVisibility] = useState<boolean>(false);
+  //ref needed to scroll to top
+  const ref = useRef(null);
+
+  const dispatch = useAppDispatch();
+
+  const [updateOrder, { error, data, loading }] = useMutation(UPDATE_ORDER);
+
+  const scrollToSizes = () =>
+    ref?.current.scrollIntoView({ top: 0, behavior: "smooth" });
+
+  const handleAddOTOTToOrder = async (oto: OtoOptionProps) => {
+    const currentOrderId = localStorage.getItem("order_id");
+    try {
+      dispatch(
+        addOtoToOrder({
+          price: oto.numPrice,
+          title: "Eternity Band",
+          type: oto.type,
+          isRecurring: false,
+          id: oto.id,
+          displayPrice: oto.displayPrice,
+          sku: oto.sku,
+        })
+      );
+
+      const request = await updateOrder({
+        variables: {
+          updateOrderInput: {
+            product: {
+              displayPrice: oto.displayPrice,
+              price: oto.numPrice,
+              title: "Eternity Band",
+              sku: oto.sku,
+              isRecurring: false,
+              type: oto.type,
+              id: oto.id,
+            },
+            orderId: currentOrderId,
+          },
+        },
+      });
+
+      console.log("request!", request);
+      if (request.data.updateOrder.success) {
+        navigate("/Thankyou");
+      }
+    } catch (error) {
+      console.error(error);
+      return error;
+    }
+  };
+
+  useEffect(() => {
+    if (error) {
+      dispatch(setAlert({ message: error.message, type: "danger" }));
+    }
+  }, [error]);
+
+  if (loading) {
+    return (
+      <Section>
+        <Content style={{ minHeight: "100vh", justifyContent: "center" }}>
+          <Heading>Processing...</Heading>
+          <LoadingSpinner />
+        </Content>
+      </Section>
+    );
+  }
 
   return (
     <Section>
@@ -163,14 +250,17 @@ const OtoScreen2 = () => {
         <Heading>
           <span> New Reduced Price $38</span>
         </Heading>
-        <Subheading>(Originally $129.95)</Subheading>
+        <Subheading ref={ref}>(Originally $129.95)</Subheading>
         {/* this page should have ring sizes */}
         {OtoDATA[currentOtoIndex].options && (
           <Options>
             {OtoDATA[currentOtoIndex].options.map(
-              (option: { ring_size: number }, key: number) => {
+              (option: OtoOptionProps, key: number) => {
                 return (
-                  <AddSizebutton key={key}>
+                  <AddSizebutton
+                    key={key}
+                    onClick={() => handleAddOTOTToOrder(option)}
+                  >
                     Add Size {option.ring_size}
                   </AddSizebutton>
                 );
@@ -179,9 +269,29 @@ const OtoScreen2 = () => {
           </Options>
         )}
 
-        <ToggleButton>
+        <ToggleButton onClick={() => toggleVisibility(!ringGuideVisibility)}>
           Don't know your ring size? Click here to find out
         </ToggleButton>
+
+        {ringGuideVisibility ? (
+          <ImageContainer style={{ maxHeight: "160vh" }}>
+            <StaticImage
+              src="../../../images/ring-size-guide-FINAL.png"
+              alt="ring size guide"
+              placeholder="blurred"
+              objectFit="contain"
+              imgStyle={{ width: "100%", borderRadius: "5px" }}
+              width={600}
+              style={{
+                boxShadow: "0 1px 20px #222",
+                borderRadius: "5px",
+                border: "4px solid #333",
+              }}
+            />
+          </ImageContainer>
+        ) : (
+          <ImageContainer style={{ maxHeight: "0vh" }}></ImageContainer>
+        )}
 
         <Heading>
           Add Our Angel Infinity Ring For <span>Only $38</span>
@@ -196,9 +306,11 @@ const OtoScreen2 = () => {
           alt="product"
         />
 
-        <Button>I want this ring for $38</Button>
+        <Button onClick={() => scrollToSizes()}>
+          I want this ring for $38
+        </Button>
 
-        <Link to="/otos/Oto3" color="#eee">
+        <Link to="/Thankyou" color="#eee" style={{ color: "#eee" }}>
           No thanks I don't need this now
         </Link>
       </Content>

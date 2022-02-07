@@ -127,8 +127,17 @@ export type OTOProps = {
   numPrice: number;
   id: number;
   sku: string;
-  options: Array<any> | undefined;
   title: string;
+  type: string;
+  options: Array<OtoOptionProps> | undefined;
+};
+
+export type OtoOptionProps = {
+  sku: string;
+  displayPrice: string;
+  numPrice: number;
+  id: number;
+  ring_size: string;
   type: string;
 };
 
@@ -140,30 +149,100 @@ export const OtoDATA: Array<OTOProps> = [
     displayPrice: "$10.00",
     numPrice: 10.0,
     id: 5778303189149,
-    options: undefined,
     title: "1CT Gold Studs",
     type: "OTO",
+    options: undefined,
   },
   {
     imgOrVideoSrc:
       "https://images.clickfunnels.com/d4/d4ae06729b4e6091f05fcf25d88261/Gif-4.gif",
-    sku: "TNNCK",
-    displayPrice: "$10.00",
-    numPrice: 10.0,
-    id: 0,
-    title: "",
+    sku: "slvrbngr-5",
+    displayPrice: "$38.00",
+    numPrice: 38.0,
+    id: 4354929885284,
+    title: "Eternity Band",
     type: "OTO",
     options: [
-      { ring_size: 5, id: 0 },
-      { ring_size: 6, id: 0 },
-      { ring_size: 7, id: 0 },
-      { ring_size: 8, id: 0 },
-      { ring_size: 9, id: 0 },
-      { ring_size: 10, id: 0 },
-      { ring_size: 6.5, id: 0 },
-      { ring_size: 7.5, id: 0 },
-      { ring_size: 8.5, id: 0 },
-      { ring_size: 9.5, id: 0 },
+      {
+        sku: "slvrbngr-5",
+        displayPrice: "$38.00",
+        numPrice: 38.0,
+        id: 4354929885284,
+        ring_size: "5",
+        type: "OTO",
+      },
+      {
+        sku: "slvrbngr-6",
+        displayPrice: "$38.00",
+        numPrice: 38.0,
+        id: 4354929885284,
+        ring_size: "6",
+        type: "OTO",
+      },
+      {
+        sku: "slvrbngr-7",
+        displayPrice: "$38.00",
+        numPrice: 38.0,
+        id: 4354929885284,
+        ring_size: "7",
+        type: "OTO",
+      },
+      {
+        sku: "slvrbngr-8",
+        displayPrice: "$38.00",
+        numPrice: 38.0,
+        id: 4354929885284,
+        ring_size: "8",
+        type: "OTO",
+      },
+      {
+        sku: "slvrbngr-9",
+        displayPrice: "$38.00",
+        numPrice: 38.0,
+        id: 4354929885284,
+        ring_size: "9",
+        type: "OTO",
+      },
+      {
+        sku: "slvrbngr-10",
+        displayPrice: "$38.00",
+        numPrice: 38.0,
+        id: 4354929885284,
+        ring_size: "10",
+        type: "OTO",
+      },
+      {
+        sku: "slvrbngr-65",
+        displayPrice: "$38.00",
+        numPrice: 38.0,
+        id: 4354929885284,
+        ring_size: "6.5",
+        type: "OTO",
+      },
+      {
+        sku: "slvrbngr-75",
+        displayPrice: "$38.00",
+        numPrice: 38.0,
+        id: 4354929885284,
+        ring_size: "7.5",
+        type: "OTO",
+      },
+      {
+        sku: "slvrbngr-85",
+        displayPrice: "$38.00",
+        numPrice: 38.0,
+        id: 4354929885284,
+        ring_size: "8.5",
+        type: "OTO",
+      },
+      {
+        sku: "slvrbngr-95",
+        displayPrice: "$38.00",
+        numPrice: 38.0,
+        id: 4354929885284,
+        ring_size: "9.5",
+        type: "OTO",
+      },
     ],
   },
 ];

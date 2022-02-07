@@ -8,7 +8,18 @@ export const TEST_ENDPOINT = gql`
 `;
 
 export const LOAD_ORDER = gql`
-  query findOrder($id: string!) {
-    findOrder(id: $id)
+  query findOrder($findOrderInput: FindOrderInput!) {
+    findOrder(findOrderInput: $findOrderInput) {
+      Order {
+        products {
+          price
+          title
+          displayPrice
+        }
+        orderTotal
+      }
+      message
+      success
+    }
   }
 `;

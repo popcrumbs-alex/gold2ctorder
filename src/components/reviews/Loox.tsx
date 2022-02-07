@@ -1,5 +1,4 @@
 import React from "react";
-import PropTypes from "prop-types";
 import styled from "styled-components";
 
 const Container = styled.section`
@@ -17,6 +16,7 @@ const Content = styled.div`
 `;
 const Heading = styled.h1`
   font-size: 2.5rem;
+  text-align: center;
 `;
 
 const Loox = () => {

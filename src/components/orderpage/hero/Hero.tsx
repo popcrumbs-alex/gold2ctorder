@@ -30,9 +30,10 @@ const SubHeading = styled.h4`
   font-weight: 300;
   text-align: center;
   color: #666;
-  line-height: 2;
+  line-height: 1.5;
   font-size: 1.2rem;
   max-width: 700px;
+  margin: 0.2rem 0;
   & span {
     color: dodgerblue;
     font-weight: 700;
@@ -55,17 +56,12 @@ const Hero = () => {
           Warehouses.
         </SubHeading>
         <StaticImage
-          src="../../../images/gold-studs.png"
+          src="../../../images/gold-2ct-special.png"
           alt={title}
           placeholder="blurred"
           objectFit="contain"
           imgStyle={{ width: "100%", borderRadius: "5px" }}
           width={400}
-          style={{
-            boxShadow: "0 1px 20px #ddd",
-            borderRadius: "5px",
-            border: "4px solid #333",
-          }}
         />
       </Content>
     </Container>

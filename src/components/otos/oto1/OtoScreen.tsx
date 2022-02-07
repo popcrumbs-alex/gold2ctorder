@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import PropTypes from "prop-types";
 import styled from "styled-components";
 import Timer from "../../orderpage/hero/Timer";
 import { OtoDATA } from "../../../product/ProductData";
@@ -132,6 +131,23 @@ const OtoScreen = () => {
     }
   }, [error]);
 
+  if (loading) {
+    return (
+      <Section>
+        <Content
+          style={{
+            minHeight: "100vh",
+            justifyContent: "center",
+            width: "100%",
+          }}
+        >
+          <Heading>Processing...</Heading>
+          <LoadingSpinner />
+        </Content>
+      </Section>
+    );
+  }
+
   return (
     <Section>
       <Content>
@@ -148,16 +164,9 @@ const OtoScreen = () => {
         <Timer />
         <Image src={OtoDATA[currentOtoIndex].imgOrVideoSrc} alt="product" />
 
-        {!loading ? (
-          <Button onClick={() => handleAddOTOTToOrder()}>
-            YES! Add The 1CT Gold Studs For Only $10{" "}
-            <span>Click Only Once</span>
-          </Button>
-        ) : (
-          <>
-            <LoadingSpinner /> <p>Processing...</p>
-          </>
-        )}
+        <Button onClick={() => handleAddOTOTToOrder()}>
+          YES! Add The 1CT Gold Studs For Only $10 <span>Click Only Once</span>
+        </Button>
 
         <Link to="/otos/Oto2">No thanks I don't need this now</Link>
       </Content>

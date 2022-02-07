@@ -43,3 +43,12 @@ export const UPDATE_ORDER = gql`
     }
   }
 `;
+
+export const CLOSE_ORDER = gql`
+  mutation closeOrder($closeOrderInput: CloseOrderInput!) {
+    closeOrder(closeOrderInput: $closeOrderInput) {
+      message
+      success
+    }
+  }
+`;

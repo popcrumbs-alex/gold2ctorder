@@ -9,6 +9,7 @@ import Colors from "../constants/Colors";
 import { Helmet } from "react-helmet";
 import Loox from "../components/reviews/Loox";
 import Alert from "../components/alert/Alert";
+import { useEffect } from "react";
 
 const Main = styled.main``;
 
@@ -27,6 +28,11 @@ const Globalstyle = createGlobalStyle`
 }`;
 
 const IndexPage = () => {
+  useEffect(() => {
+    if (localStorage.getItem("order_id")) {
+      localStorage.removeItem("order_id");
+    }
+  }, []);
   return (
     <ThemeContext.Provider value={Colors}>
       <Globalstyle />
