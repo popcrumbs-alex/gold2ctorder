@@ -211,7 +211,7 @@ const CompleteOrder = ({ orderId }: { orderId: string }) => {
     }
   }, [orderId]);
 
-  console.log("order completion:", error, data, loading);
+  console.log("order completion:", error, data, loading, orderId);
 
   return <></>;
 };

@@ -156,7 +156,7 @@ const CreditCardForm = () => {
       const cardInfo = {
         creditCardNumber: Number(creditCardNumber.replace(/\s/g, "")),
         expiry: expiry.replace(/\//g, ""),
-        cvc: Number(cvc),
+        cvc: cvc,
       };
 
       console.log("card info", cardInfo);

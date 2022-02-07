@@ -7,7 +7,7 @@ import axios from 'axios';
 import { config } from 'dotenv';
 import { UpdateTransactionInput } from 'src/graphql/inputs/payment.input';
 
-// config();
+config();
 
 @Injectable()
 export class PaymentService {

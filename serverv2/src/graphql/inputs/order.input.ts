@@ -21,11 +21,11 @@ export class ProductInput {
 @InputType()
 export class CreateOrderInput {
   @Field()
-  creditCardNumber: number;
+  creditCardNumber: string;
   @Field()
   expiry: string;
   @Field()
-  cvc: number;
+  cvc: string;
   @Field()
   firstName: string;
   @Field()

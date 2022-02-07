@@ -1,9 +1,9 @@
 export interface PaymentSaleOptions {
   firstName: string;
   lastName: string;
-  creditCardNumber: number;
+  creditCardNumber: string;
   expiry: string;
-  cvv: number;
+  cvv: string;
   amount: number;
   containsRecurringItem: boolean;
 }

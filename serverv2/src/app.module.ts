@@ -8,7 +8,7 @@ import { config } from 'dotenv';
 import { ScheduleModule } from '@nestjs/schedule';
 import { TaskService } from './services/task.service';
 
-// config();
+config();
 @Module({
   imports: [
     ScheduleModule.forRoot(),
