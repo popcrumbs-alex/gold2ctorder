@@ -179,7 +179,8 @@ const ThankyouPage = () => {
             >
               <span></span>
               <OrderTotal color={context.danger}>
-                OrderTotal: <span>${data.findOrder.Order.orderTotal}</span>
+                OrderTotal:{" "}
+                <span>${data.findOrder.Order.orderTotal.toFixed(2)}</span>
               </OrderTotal>
             </OrderDisplayHeading>
           )}
