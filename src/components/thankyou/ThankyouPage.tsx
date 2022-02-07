@@ -110,7 +110,7 @@ const ThankyouPage = () => {
     if (typeof window !== "undefined") {
       refetch();
     }
-  }, [window]);
+  }, []);
 
   useEffect(() => {
     if (!orderId) {
