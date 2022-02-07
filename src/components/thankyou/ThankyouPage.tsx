@@ -132,7 +132,7 @@ const ThankyouPage = () => {
   return (
     <Section>
       {/* an invisible component to fire a mutation */}
-      <CompleteOrder />
+      {orderId && <CompleteOrder orderId={orderId} />}
       <Header>
         <StaticImage
           src="../../images/lululogo.png"
@@ -197,18 +197,18 @@ const ThankyouPage = () => {
   );
 };
 
-const CompleteOrder = () => {
+const CompleteOrder = ({ orderId }: { orderId: string }) => {
   const [closeOrder, { error, loading, data }] = useMutation(CLOSE_ORDER);
 
   useEffect(() => {
-    if (localStorage.getItem("order_id")) {
+    if (orderId) {
       closeOrder({
         variables: {
-          closeOrderInput: { orderId: localStorage.getItem("order_id") },
+          closeOrderInput: { orderId: orderId },
         },
       });
     }
-  }, []);
+  }, [orderId]);
 
   console.log("order completion:", error, data, loading);
 
