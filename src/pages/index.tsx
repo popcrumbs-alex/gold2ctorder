@@ -55,7 +55,7 @@ const IndexPage = () => {
         <script src="https://www.poptrkr.com/scripts/sdk/everflow.js"></script>
         <script
           dangerouslySetInnerHTML={{
-            __html: ` EF.conversion({
+            __html: `EF.conversion({
               offer_id: 75,
               event_id: 329
             })`,

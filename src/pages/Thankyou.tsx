@@ -40,6 +40,7 @@ const Thankyou = () => {
 
         <script src="https://www.poptrkr.com/scripts/sdk/everflow.js"></script>
         <script
+          type="text/javascript"
           dangerouslySetInnerHTML={{
             __html: `EF.conversion({
               offer_id: 75
