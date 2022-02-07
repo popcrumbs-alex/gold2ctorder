@@ -3,7 +3,7 @@ import { config } from 'dotenv';
 import Shopify = require('shopify-api-node');
 import { ShopifyService } from 'src/services/shopify.service';
 import { ShopifyGraphqlModule } from './shopifyGraphql.module';
-config();
+// config();
 
 const shopifyProvider = {
   provide: 'SHOPIFY',

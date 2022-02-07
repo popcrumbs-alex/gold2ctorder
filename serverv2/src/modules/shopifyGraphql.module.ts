@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { config } from 'dotenv';
 import { ApiVersion, Shopify } from '@shopify/shopify-api';
-config();
+// config();
 
 //Not sure this is needed
 const shopifyGraphqlFactory = {

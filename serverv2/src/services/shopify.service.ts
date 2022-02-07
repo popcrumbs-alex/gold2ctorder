@@ -1,8 +1,5 @@
 import { Inject, Injectable } from '@nestjs/common';
-import {
-  OrderObjectParams,
-  ShopifyUpdateOrderParams,
-} from '../interfaces/order.interface';
+import { OrderObjectParams } from '../interfaces/order.interface';
 import { Product } from 'src/mongo/schemas/order.model';
 
 @Injectable()
