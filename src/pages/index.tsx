@@ -53,12 +53,15 @@ const IndexPage = () => {
         ></script>
 
         <script src="https://www.poptrkr.com/scripts/sdk/everflow.js"></script>
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `EF.conversion({
+        <script>
+          {`EF.conversion({
               offer_id: 75,
               event_id: 329
-            })`,
+            })`}
+        </script>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `<script>console.log('boolaboolabool)</script>`,
           }}
         ></script>
         <script
