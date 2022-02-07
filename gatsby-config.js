@@ -1,7 +1,7 @@
 module.exports = {
   siteMetadata: {
     title: `gold-2ct-order-funnel`,
-    siteUrl: `https://www.yourdomain.tld`,
+    siteUrl: `https://offers.lucianarose.store/`,
   },
   plugins: [
     "gatsby-plugin-styled-components",

@@ -5,7 +5,7 @@ import { ApolloClient, createHttpLink, InMemoryCache } from "@apollo/client";
 const client = new ApolloClient({
   cache: new InMemoryCache(),
   link: createHttpLink({
-    uri: "http://localhost:3000/graphql",
+    uri: "https://funnel-server.herokuapp.com/graphql",
     fetch,
     credentials: "same-origin",
   }),
