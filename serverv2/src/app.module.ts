@@ -20,6 +20,7 @@ config();
         origin: [
           'http://localhost:8000',
           'https://serene-jennings-9dcb5a.netlify.app',
+          'offers.lucianarose.store',
         ],
         credentials: true,
       },
