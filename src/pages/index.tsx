@@ -35,19 +35,21 @@ const IndexPage = () => {
     }
   }, []);
 
-  TagManager.initialize({
-    gtmId: "GTM-N2FNX5N",
-    dataLayerName: "OrderPage",
-  });
+  useEffect(() => {
+    TagManager.initialize({
+      gtmId: "GTM-N2FNX5N",
+      dataLayerName: "OrderPage",
+    });
 
-  TagManager.dataLayer({
-    dataLayer: {
-      event: "loadOrderPage",
-      pagePath: "Order Page",
-      pageTitle: "Gold 2CT Order Page",
-    },
-    dataLayerName: "OrderPage",
-  });
+    TagManager.dataLayer({
+      dataLayer: {
+        event: "loadOrderPage",
+        pagePath: "Order Page",
+        pageTitle: "Gold 2CT Order Page",
+      },
+      dataLayerName: "OrderPage",
+    });
+  }, []);
   return (
     <ThemeContext.Provider value={Colors}>
       <Globalstyle />

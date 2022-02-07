@@ -4,6 +4,7 @@ import styled, { createGlobalStyle } from "styled-components";
 import Alert from "../../components/alert/Alert";
 import OtoScreen from "../../components/otos/oto1/OtoScreen";
 import TagManager from "react-gtm-module";
+import { useEffect } from "react";
 const Main = styled.main``;
 
 const Globalstyle = createGlobalStyle`
@@ -19,19 +20,21 @@ const Globalstyle = createGlobalStyle`
 }`;
 
 const Oto1: FC = () => {
-  TagManager.initialize({
-    gtmId: "GTM-N2FNX5N",
-    dataLayerName: "Oto1Page",
-  });
+  useEffect(() => {
+    TagManager.initialize({
+      gtmId: "GTM-N2FNX5N",
+      dataLayerName: "Oto1Page",
+    });
 
-  TagManager.dataLayer({
-    dataLayer: {
-      event: "oto1PageView",
-      pagePath: "Oto Page 1",
-      pageTitle: "Gold 2CT Order Page",
-    },
-    dataLayerName: "oto1PageView",
-  });
+    TagManager.dataLayer({
+      dataLayer: {
+        event: "oto1PageView",
+        pagePath: "Oto Page 1",
+        pageTitle: "Gold 2CT Order Page",
+      },
+      dataLayerName: "oto1PageView",
+    });
+  }, []);
   return (
     <Main>
       <Helmet>
