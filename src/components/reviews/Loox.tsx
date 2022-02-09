@@ -26,7 +26,11 @@ const Loox = () => {
         <Heading>
           See what people are saying about these straight-from-the-lab studs
         </Heading>
-        <div id="looxReviews" data-product-id="4273995350116"></div>
+        <div
+          id="looxReviews"
+          data-product-id="4273995350116"
+          style={{ width: "100%" }}
+        ></div>
       </Content>
     </Container>
   );

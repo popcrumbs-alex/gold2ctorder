@@ -1,11 +1,16 @@
 import * as React from "react";
 import styled, { createGlobalStyle } from "styled-components";
-import Colors from "../constants/Colors";
+import Footer from "../../components/footer.tsx/Footer";
+import Hero from "../../components/orderpage/hero/Hero";
+import Nav from "../../components/orderpage/nav/Nav";
+import Form from "../../components/orderpage/order-form/Form";
+import Message from "../../components/orderpage/section/Message";
+import Colors from "../../constants/Colors";
 import { Helmet } from "react-helmet";
+import Loox from "../../components/reviews/Loox";
+import Alert from "../../components/alert/Alert";
 import { useEffect } from "react";
 import TagManager from "react-gtm-module";
-import Lander from "../components/landing-one/Lander";
-import Footer from "../components/footer.tsx/Footer";
 
 const Main = styled.main``;
 
@@ -23,7 +28,7 @@ const Globalstyle = createGlobalStyle`
     box-sizing:border-box;
 }`;
 
-const IndexPage = () => {
+const OrderPage = () => {
   useEffect(() => {
     if (window.localStorage.getItem("order_id")) {
       window.localStorage.removeItem("order_id");
@@ -34,16 +39,16 @@ const IndexPage = () => {
     if (typeof window !== "undefined") {
       TagManager.initialize({
         gtmId: "GTM-N2FNX5N",
-        dataLayerName: "LandingPage1",
+        dataLayerName: "OrderPage",
       });
 
       TagManager.dataLayer({
         dataLayer: {
-          event: "landingPage",
-          pagePath: "Landing Page",
-          pageTitle: "Gold 2CT Landing Page 1",
+          event: "loadOrderPage",
+          pagePath: "Order Page",
+          pageTitle: "Gold 2CT Order Page",
         },
-        dataLayerName: "LandingPage1",
+        dataLayerName: "OrderPage",
       });
     }
   }, []);
@@ -51,18 +56,23 @@ const IndexPage = () => {
     <ThemeContext.Provider value={Colors}>
       <Globalstyle />
       <Helmet>
-        <title>Gold 2CT Studs</title>
+        <title>Gold 2CT Stud Order Page</title>
         <script
           async
           src="//loox.io/widget/loox.js?shop=luciana-rose-couture.myshopify.com"
         ></script>
       </Helmet>
+      <Nav />
       <Main>
-        <Lander />
+        <Alert />
+        <Hero />
+        <Message />
+        <Form />
+        <Loox />
+        <Footer />
       </Main>
-      <Footer />
     </ThemeContext.Provider>
   );
 };
 
-export default IndexPage;
+export default OrderPage;
