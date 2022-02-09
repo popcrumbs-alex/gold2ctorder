@@ -32,7 +32,7 @@ const Oto1: FC = () => {
         pagePath: "Oto Page 1",
         pageTitle: "Gold 2CT Order Page",
       },
-      dataLayerName: "oto1PageView",
+      dataLayerName: "Oto 1",
     });
   }, []);
   return (
