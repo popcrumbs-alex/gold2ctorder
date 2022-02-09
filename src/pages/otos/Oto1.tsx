@@ -25,14 +25,12 @@ const Oto1: FC = () => {
       gtmId: "GTM-N2FNX5N",
       dataLayerName: "Oto1Page",
     });
-
     TagManager.dataLayer({
       dataLayer: {
         event: "oto1PageView",
         pagePath: "Oto Page 1",
         pageTitle: "Gold 2CT Order Page",
       },
-      dataLayerName: "Oto 1",
     });
   }, []);
   return (
