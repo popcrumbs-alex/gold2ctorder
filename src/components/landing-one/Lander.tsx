@@ -30,7 +30,6 @@ const Nav = styled.nav`
   width: 100%;
   display: flex;
   justify-content: center;
-  flex-wrap: wrap;
   align-items: center;
   background-color: #111;
   padding: 1rem 0;
@@ -40,10 +39,9 @@ const Nav = styled.nav`
   }
 `;
 const NavContent = styled.div`
-  width: 60%;
+  width: 70%;
   display: flex;
   justify-content: space-between;
-  flex-wrap: wrap;
   @media screen and (max-width: 760px) {
     width: 80%;
     flex-direction: column;
@@ -173,7 +171,6 @@ const Lander = () => {
             alt="logo"
             placeholder="blurred"
             objectFit="contain"
-            style={{ width: "100%" }}
             imgStyle={{
               width: "100%",
             }}
