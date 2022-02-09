@@ -38,7 +38,6 @@ const IndexPage = () => {
   useEffect(() => {
     TagManager.initialize({
       gtmId: "GTM-N2FNX5N",
-      dataLayerName: "OrderPage",
     });
 
     TagManager.dataLayer({

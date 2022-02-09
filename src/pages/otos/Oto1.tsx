@@ -23,7 +23,6 @@ const Oto1: FC = () => {
   useEffect(() => {
     TagManager.initialize({
       gtmId: "GTM-N2FNX5N",
-      dataLayerName: "Oto1Page",
     });
     TagManager.dataLayer({
       dataLayer: {

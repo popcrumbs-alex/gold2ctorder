@@ -24,7 +24,6 @@ const Oto2: FC = () => {
   useEffect(() => {
     TagManager.initialize({
       gtmId: "GTM-N2FNX5N",
-      dataLayerName: "Oto2Page",
     });
 
     TagManager.dataLayer({
