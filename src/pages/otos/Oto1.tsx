@@ -21,17 +21,20 @@ const Globalstyle = createGlobalStyle`
 
 const Oto1: FC = () => {
   useEffect(() => {
-    TagManager.initialize({
-      gtmId: "GTM-N2FNX5N",
-      dataLayerName: "Oto1Page",
-    });
-    TagManager.dataLayer({
-      dataLayer: {
-        event: "oto1PageView",
-        pagePath: "Oto Page 1",
-        pageTitle: "Gold 2CT Order Page",
-      },
-    });
+    if (typeof window !== "undefined") {
+      TagManager.initialize({
+        gtmId: "GTM-N2FNX5N",
+        dataLayerName: "Oto1Page",
+      });
+      TagManager.dataLayer({
+        dataLayer: {
+          event: "oto1PageView",
+          pagePath: "Oto Page 1",
+          pageTitle: "Gold 2CT Order Page",
+        },
+        dataLayerName: "Oto1Page",
+      });
+    }
   }, []);
   return (
     <Main>
