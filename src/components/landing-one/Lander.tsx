@@ -30,14 +30,24 @@ const Nav = styled.nav`
   width: 100%;
   display: flex;
   justify-content: center;
+  flex-wrap: wrap;
   align-items: center;
   background-color: #111;
   padding: 1rem 0;
+  min-height: 4rem;
+  @media screen and (max-width: 760px) {
+    flex-direction: column;
+  }
 `;
 const NavContent = styled.div`
   width: 60%;
   display: flex;
   justify-content: space-between;
+  flex-wrap: wrap;
+  @media screen and (max-width: 760px) {
+    width: 80%;
+    flex-direction: column;
+  }
 `;
 
 const NavButton = styled.button`
@@ -57,6 +67,9 @@ const NavButton = styled.button`
   &:hover {
     cursor: pointer;
   }
+  @media screen and (max-width: 760px) {
+    margin-top: 1rem;
+  }
 `;
 
 const Section = styled.section`
@@ -69,17 +82,26 @@ const Content = styled.div`
   display: flex;
   flex-direction: column;
   padding: 2rem 0;
+  @media screen and (max-width: 760px) {
+    width: 90%;
+  }
 `;
 const Tag = styled.h1`
   text-align: center;
   font-size: 2rem;
   font-style: italic;
   line-height: 1.2;
+  @media screen and (max-width: 760px) {
+    font-size: 1.5rem;
+  }
 `;
 const Paragraph = styled.p`
   font-size: 1.2rem;
   line-height: 1.5;
   margin: 0.2rem 0;
+  @media screen and (max-width: 760px) {
+    font-size: 1rem;
+  }
 `;
 
 const Grid = styled.div`
@@ -90,11 +112,20 @@ const Grid = styled.div`
   width: 100%;
   gap: 1rem;
   margin-top: 1rem;
+  @media screen and (max-width: 760px) {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    padding: 1rem 0;
+  }
 `;
 
 const Column = styled.div`
   display: flex;
   flex-direction: column;
+  @media screen and (max-width: 760px) {
+    margin: 1rem;
+  }
 `;
 const ParagraphBox = styled.div`
   display: flex;
@@ -141,6 +172,8 @@ const Lander = () => {
             src="../../../images/lululogo.png"
             alt="logo"
             placeholder="blurred"
+            objectFit="contain"
+            style={{ width: "100%" }}
             imgStyle={{
               width: "100%",
             }}
