@@ -34,7 +34,6 @@ const Thankyou = () => {
         pagePath: "ThankYouPage",
         pageTitle: "Gold 2CT Thank You Page",
       },
-      dataLayerName: "ThankYouPage",
     });
   }, []);
 
