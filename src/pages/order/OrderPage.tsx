@@ -11,6 +11,7 @@ import Loox from "../../components/reviews/Loox";
 import Alert from "../../components/alert/Alert";
 import { useEffect } from "react";
 import TagManager from "react-gtm-module";
+import HelmetWrapper from "../layout/HelmetWrapper";
 
 const Main = styled.main``;
 
@@ -55,13 +56,7 @@ const OrderPage = () => {
   return (
     <ThemeContext.Provider value={Colors}>
       <Globalstyle />
-      <Helmet>
-        <title>Gold 2CT Stud Order Page</title>
-        <script
-          async
-          src="//loox.io/widget/loox.js?shop=luciana-rose-couture.myshopify.com"
-        ></script>
-      </Helmet>
+      <HelmetWrapper pageTitle="Gold 2CT Stud Order Page" />
       <Nav />
       <Main>
         <Alert />

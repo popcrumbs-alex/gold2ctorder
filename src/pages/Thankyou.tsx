@@ -1,5 +1,4 @@
 import React from "react";
-import { Helmet } from "react-helmet";
 import styled, { createGlobalStyle } from "styled-components";
 import { ThemeContext } from ".";
 import Alert from "../components/alert/Alert";
@@ -7,6 +6,7 @@ import ThankyouPage from "../components/thankyou/ThankyouPage";
 import Colors from "../constants/Colors";
 import TagManager from "react-gtm-module";
 import { useEffect } from "react";
+import HelmetWrapper from "./layout/HelmetWrapper";
 const Main = styled.main``;
 
 const Globalstyle = createGlobalStyle`
@@ -39,9 +39,7 @@ const Thankyou = () => {
 
   return (
     <ThemeContext.Provider value={Colors}>
-      <Helmet>
-        <title>Thank You</title>
-      </Helmet>
+      <HelmetWrapper pageTitle="Thank You" />
       <Main>
         <Globalstyle />
         <Alert />

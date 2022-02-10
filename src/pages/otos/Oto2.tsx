@@ -6,6 +6,7 @@ import OtoReviews from "../../components/otos/oto2/OtoReviews";
 import OtoScreen2 from "../../components/otos/oto2/OtoScreen2";
 import TagManager from "react-gtm-module";
 import { useEffect } from "react";
+import HelmetWrapper from "../layout/HelmetWrapper";
 const Main = styled.main``;
 
 const Globalstyle = createGlobalStyle`
@@ -37,9 +38,7 @@ const Oto2: FC = () => {
   }, []);
   return (
     <Main>
-      <Helmet>
-        <title>Eternity Band</title>
-      </Helmet>
+      <HelmetWrapper pageTitle="Eternity Band" />
       <Globalstyle />
       <Alert />
       <OtoScreen2 />

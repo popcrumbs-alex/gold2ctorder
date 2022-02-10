@@ -5,6 +5,7 @@ import Alert from "../../components/alert/Alert";
 import OtoScreen from "../../components/otos/oto1/OtoScreen";
 import TagManager from "react-gtm-module";
 import { useEffect } from "react";
+import HelmetWrapper from "../layout/HelmetWrapper";
 const Main = styled.main``;
 
 const Globalstyle = createGlobalStyle`
@@ -38,9 +39,7 @@ const Oto1: FC = () => {
   }, []);
   return (
     <Main>
-      <Helmet>
-        <title>1CT Gold Studs</title>
-      </Helmet>
+      <HelmetWrapper pageTitle="1CT Gold Studs" />
       <Globalstyle />
       <Alert />
       <OtoScreen />
