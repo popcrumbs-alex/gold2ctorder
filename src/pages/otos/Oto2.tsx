@@ -1,11 +1,8 @@
 import React, { FC } from "react";
-import { Helmet } from "react-helmet";
 import styled, { createGlobalStyle } from "styled-components";
 import Alert from "../../components/alert/Alert";
 import OtoReviews from "../../components/otos/oto2/OtoReviews";
 import OtoScreen2 from "../../components/otos/oto2/OtoScreen2";
-import TagManager from "react-gtm-module";
-import { useEffect } from "react";
 import HelmetWrapper from "../layout/HelmetWrapper";
 const Main = styled.main``;
 
@@ -22,20 +19,6 @@ const Globalstyle = createGlobalStyle`
 }`;
 
 const Oto2: FC = () => {
-  // useEffect(() => {
-  //   TagManager.initialize({
-  //     gtmId: "GTM-N2FNX5N",
-  //   });
-
-  //   TagManager.dataLayer({
-  //     dataLayer: {
-  //       event: "oto2PageView",
-  //       pagePath: "Oto Page 2",
-  //       pageTitle: "Gold 2CT Order Page",
-  //     },
-  //     dataLayerName: "oto2PageView",
-  //   });
-  // }, []);
   return (
     <Main>
       <HelmetWrapper pageTitle="Eternity Band" efScript="" />

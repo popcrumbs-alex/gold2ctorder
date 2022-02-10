@@ -1,10 +1,7 @@
 import React, { FC } from "react";
-import { Helmet } from "react-helmet";
 import styled, { createGlobalStyle } from "styled-components";
 import Alert from "../../components/alert/Alert";
 import OtoScreen from "../../components/otos/oto1/OtoScreen";
-import TagManager from "react-gtm-module";
-import { useEffect } from "react";
 import HelmetWrapper from "../layout/HelmetWrapper";
 const Main = styled.main``;
 
@@ -21,29 +18,11 @@ const Globalstyle = createGlobalStyle`
 }`;
 
 const Oto1: FC = () => {
-  // useEffect(() => {
-  //   if (typeof window !== "undefined") {
-  //     TagManager.initialize({
-  //       gtmId: "GTM-N2FNX5N",
-  //       dataLayerName: "Oto1Page",
-  //     });
-  //     TagManager.dataLayer({
-  //       dataLayer: {
-  //         event: "oto1PageView",
-  //         pagePath: "Oto Page 1",
-  //         pageTitle: "Gold 2CT Order Page",
-  //       },
-  //       dataLayerName: "Oto1Page",
-  //     });
-  //   }
-  // }, []);
   return (
     <Main>
       <HelmetWrapper
         pageTitle="1CT Gold Studs"
-        efScript="EF.conversion({
-    offer_id: 75,
-});"
+        efScript="EF.conversion({offer_id: 75});"
       />
       <Globalstyle />
       <Alert />

@@ -2,11 +2,9 @@ import * as React from "react";
 import styled, { createGlobalStyle } from "styled-components";
 import Colors from "../constants/Colors";
 import { useEffect } from "react";
-import InnerHTML from "dangerously-set-html-content";
 import Lander from "../components/landing-one/Lander";
 import Footer from "../components/footer.tsx/Footer";
 import HelmetWrapper from "./layout/HelmetWrapper";
-import { useState } from "react";
 
 const Main = styled.main``;
 
@@ -25,42 +23,16 @@ const Globalstyle = createGlobalStyle`
 }`;
 
 const IndexPage = () => {
-  const [showTracker, setTrackerVis] = useState<boolean>(false);
-
   useEffect(() => {
     if (window.localStorage.getItem("order_id")) {
       window.localStorage.removeItem("order_id");
     }
   }, []);
 
-  useEffect(() => {
-    if (typeof window !== "undefined") {
-      setTrackerVis(true);
-    }
-  }, []);
-
-  // useEffect(() => {
-  //   if (typeof window !== "undefined") {
-  //     TagManager.initialize({
-  //       gtmId: "GTM-N2FNX5N",
-  //       dataLayerName: "LandingPage1",
-  //     });
-
-  //     TagManager.dataLayer({
-  //       dataLayer: {
-  //         event: "landingPage",
-  //         pagePath: "Landing Page",
-  //         pageTitle: "Gold 2CT Landing Page 1",
-  //       },
-  //       dataLayerName: "LandingPage1",
-  //     });
-  //   }
-  // }, []);
   return (
     <ThemeContext.Provider value={Colors}>
       <Globalstyle />
       <HelmetWrapper pageTitle="Gold 2CT Studs" efScript="" />
-
       <Main>
         <Lander />
       </Main>

@@ -64,26 +64,23 @@ fbq('track', 'Purchase');`}</script>
 		source_id: EF.urlParameter('source_id'),
 		creative_id: EF.urlParameter('creative_id'),
     }).then(function(transactionId) {
-        if (document.getElementById("cf_contact_affiliate_aff_sub")) {
-            document.getElementById('cf_contact_affiliate_aff_sub').value = transactionId
-            console.log('Everflow: filled aff_sub with transaction id: ' + transactionId)
-        } else {
             console.log('Everflow: aff_sub element not found, relying on loop for transaction id: ' + transactionId)
-        }
+        
     });
 }
 var __checkExist = setInterval(function() {
   if (document.getElementById("cf_contact_affiliate_aff_sub")) {
-    var currentAffsub = document.getElementById("cf_contact_affiliate_aff_sub").value;
+    var currentAffsub;
     var storedTransactionId = EF.getAdvertiserTransactionId(5);
 console.log(storedTransactionId, currentAffsub, storedTransactionId)
     if(currentAffsub === 'undefined' || currentAffsub === '' && storedTransactionId) {
         console.log('Everflow: updating aff_sub with persisted transaction id: ' + storedTransactionId)
         clearInterval(__checkExist);
-        document.getElementById('cf_contact_affiliate_aff_sub').value = storedTransactionId
+       
     }
   }
 }, 200);`}</script>
+      {efScript && <script>{efScript}</script>}
     </Helmet>
   );
 };
