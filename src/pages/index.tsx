@@ -30,27 +30,27 @@ const IndexPage = () => {
     }
   }, []);
 
-  useEffect(() => {
-    if (typeof window !== "undefined") {
-      TagManager.initialize({
-        gtmId: "GTM-N2FNX5N",
-        dataLayerName: "LandingPage1",
-      });
+  // useEffect(() => {
+  //   if (typeof window !== "undefined") {
+  //     TagManager.initialize({
+  //       gtmId: "GTM-N2FNX5N",
+  //       dataLayerName: "LandingPage1",
+  //     });
 
-      TagManager.dataLayer({
-        dataLayer: {
-          event: "landingPage",
-          pagePath: "Landing Page",
-          pageTitle: "Gold 2CT Landing Page 1",
-        },
-        dataLayerName: "LandingPage1",
-      });
-    }
-  }, []);
+  //     TagManager.dataLayer({
+  //       dataLayer: {
+  //         event: "landingPage",
+  //         pagePath: "Landing Page",
+  //         pageTitle: "Gold 2CT Landing Page 1",
+  //       },
+  //       dataLayerName: "LandingPage1",
+  //     });
+  //   }
+  // }, []);
   return (
     <ThemeContext.Provider value={Colors}>
       <Globalstyle />
-      <HelmetWrapper pageTitle="Gold 2CT Studs" />
+      <HelmetWrapper pageTitle="Gold 2CT Studs" efScript="" />
       <Main>
         <Lander />
       </Main>

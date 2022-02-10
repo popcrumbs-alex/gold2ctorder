@@ -36,27 +36,27 @@ const OrderPage = () => {
     }
   }, []);
 
-  useEffect(() => {
-    if (typeof window !== "undefined") {
-      TagManager.initialize({
-        gtmId: "GTM-N2FNX5N",
-        dataLayerName: "OrderPage",
-      });
+  // useEffect(() => {
+  //   if (typeof window !== "undefined") {
+  //     TagManager.initialize({
+  //       gtmId: "GTM-N2FNX5N",
+  //       dataLayerName: "OrderPage",
+  //     });
 
-      TagManager.dataLayer({
-        dataLayer: {
-          event: "loadOrderPage",
-          pagePath: "Order Page",
-          pageTitle: "Gold 2CT Order Page",
-        },
-        dataLayerName: "OrderPage",
-      });
-    }
-  }, []);
+  //     TagManager.dataLayer({
+  //       dataLayer: {
+  //         event: "loadOrderPage",
+  //         pagePath: "Order Page",
+  //         pageTitle: "Gold 2CT Order Page",
+  //       },
+  //       dataLayerName: "OrderPage",
+  //     });
+  //   }
+  // }, []);
   return (
     <ThemeContext.Provider value={Colors}>
       <Globalstyle />
-      <HelmetWrapper pageTitle="Gold 2CT Stud Order Page" />
+      <HelmetWrapper pageTitle="Gold 2CT Stud Order Page" efScript="" />
       <Nav />
       <Main>
         <Alert />

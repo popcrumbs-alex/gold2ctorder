@@ -22,23 +22,23 @@ const Globalstyle = createGlobalStyle`
 }`;
 
 const Oto2: FC = () => {
-  useEffect(() => {
-    TagManager.initialize({
-      gtmId: "GTM-N2FNX5N",
-    });
+  // useEffect(() => {
+  //   TagManager.initialize({
+  //     gtmId: "GTM-N2FNX5N",
+  //   });
 
-    TagManager.dataLayer({
-      dataLayer: {
-        event: "oto2PageView",
-        pagePath: "Oto Page 2",
-        pageTitle: "Gold 2CT Order Page",
-      },
-      dataLayerName: "oto2PageView",
-    });
-  }, []);
+  //   TagManager.dataLayer({
+  //     dataLayer: {
+  //       event: "oto2PageView",
+  //       pagePath: "Oto Page 2",
+  //       pageTitle: "Gold 2CT Order Page",
+  //     },
+  //     dataLayerName: "oto2PageView",
+  //   });
+  // }, []);
   return (
     <Main>
-      <HelmetWrapper pageTitle="Eternity Band" />
+      <HelmetWrapper pageTitle="Eternity Band" efScript="" />
       <Globalstyle />
       <Alert />
       <OtoScreen2 />

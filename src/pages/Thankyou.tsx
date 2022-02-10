@@ -22,24 +22,24 @@ const Globalstyle = createGlobalStyle`
 }`;
 
 const Thankyou = () => {
-  useEffect(() => {
-    TagManager.initialize({
-      gtmId: "GTM-N2FNX5N",
-      dataLayerName: "ThankYouPage",
-    });
+  // useEffect(() => {
+  //   TagManager.initialize({
+  //     gtmId: "GTM-N2FNX5N",
+  //     dataLayerName: "ThankYouPage",
+  //   });
 
-    TagManager.dataLayer({
-      dataLayer: {
-        event: "thankYouPageView",
-        pagePath: "ThankYouPage",
-        pageTitle: "Gold 2CT Thank You Page",
-      },
-    });
-  }, []);
+  //   TagManager.dataLayer({
+  //     dataLayer: {
+  //       event: "thankYouPageView",
+  //       pagePath: "ThankYouPage",
+  //       pageTitle: "Gold 2CT Thank You Page",
+  //     },
+  //   });
+  // }, []);
 
   return (
     <ThemeContext.Provider value={Colors}>
-      <HelmetWrapper pageTitle="Thank You" />
+      <HelmetWrapper pageTitle="Thank You" efScript="" />
       <Main>
         <Globalstyle />
         <Alert />
