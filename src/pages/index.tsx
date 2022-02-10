@@ -2,10 +2,11 @@ import * as React from "react";
 import styled, { createGlobalStyle } from "styled-components";
 import Colors from "../constants/Colors";
 import { useEffect } from "react";
-import TagManager from "react-gtm-module";
+import InnerHTML from "dangerously-set-html-content";
 import Lander from "../components/landing-one/Lander";
 import Footer from "../components/footer.tsx/Footer";
 import HelmetWrapper from "./layout/HelmetWrapper";
+import { useState } from "react";
 
 const Main = styled.main``;
 
@@ -24,9 +25,17 @@ const Globalstyle = createGlobalStyle`
 }`;
 
 const IndexPage = () => {
+  const [showTracker, setTrackerVis] = useState<boolean>(false);
+
   useEffect(() => {
     if (window.localStorage.getItem("order_id")) {
       window.localStorage.removeItem("order_id");
+    }
+  }, []);
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      setTrackerVis(true);
     }
   }, []);
 
@@ -51,6 +60,7 @@ const IndexPage = () => {
     <ThemeContext.Provider value={Colors}>
       <Globalstyle />
       <HelmetWrapper pageTitle="Gold 2CT Studs" efScript="" />
+
       <Main>
         <Lander />
       </Main>
