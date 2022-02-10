@@ -82,6 +82,16 @@ const OtoScreen = () => {
 
   const [updateOrder, { error, data, loading }] = useMutation(UPDATE_ORDER);
 
+  const triggerEFEvent = (productPrice: number) => {
+    return (
+      <script type="text/javascript">{`EF.conversion({
+        offer_id: 75,
+        adv_event_id: 9,
+        amount: ${productPrice}
+    });`}</script>
+    );
+  };
+
   //TODO Pass order into storage to continue order processing
   const handleAddOTOTToOrder = async () => {
     const currentOrderId = localStorage.getItem("order_id");
@@ -114,6 +124,9 @@ const OtoScreen = () => {
           },
         },
       });
+
+      //pass revenue to oto
+      triggerEFEvent(OtoDATA[currentOtoIndex].numPrice);
 
       console.log("request!", request);
       if (request.data.updateOrder.success) {

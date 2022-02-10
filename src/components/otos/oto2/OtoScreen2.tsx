@@ -162,6 +162,16 @@ const OtoScreen2 = () => {
   const scrollToSizes = () =>
     ref?.current.scrollIntoView({ top: 0, behavior: "smooth" });
 
+  const triggerEFEvent = (productPrice: number) => {
+    return (
+      <script type="text/javascript">{`EF.conversion({
+        offer_id: 75,
+        adv_event_id: 9,
+        amount: ${productPrice}
+    });`}</script>
+    );
+  };
+
   const handleAddOTOTToOrder = async (oto: OtoOptionProps) => {
     const currentOrderId = localStorage.getItem("order_id");
     try {
@@ -193,6 +203,8 @@ const OtoScreen2 = () => {
           },
         },
       });
+
+      triggerEFEvent(oto.numPrice);
 
       console.log("request!", request);
       if (request.data.updateOrder.success) {

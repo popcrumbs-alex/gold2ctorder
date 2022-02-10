@@ -25,7 +25,11 @@ const OtoReviews = (props) => {
     <Section>
       <Content>
         <Heading>Thousands of reviews ⭐⭐⭐⭐⭐</Heading>
-        <div id="looxReviews" data-loox-aggregate></div>
+        <div
+          id="looxReviews"
+          data-loox-aggregate
+          style={{ width: "100%" }}
+        ></div>
       </Content>
     </Section>
   );
