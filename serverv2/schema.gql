@@ -39,6 +39,11 @@ type TestProduct {
   descriptionHtml: String!
 }
 
+type EverflowOrderTrackResponse {
+  message: String!
+  success: Boolean!
+}
+
 type Query {
   findOrder(findOrderInput: FindOrderInput!): OrderResponse!
 }
@@ -51,12 +56,13 @@ type Mutation {
   createOrder(createOrderInput: CreateOrderInput!): OrderResponse!
   updateOrder(updateOrderInput: UpdateOrderInput!): OrderResponse!
   closeOrder(closeOrderInput: CloseOrderInput!): OrderResponse!
+  trackOrder(everflowOrderInput: EverflowOrderTrackInput!): EverflowOrderTrackResponse!
 }
 
 input CreateOrderInput {
-  creditCardNumber: Float!
+  creditCardNumber: String!
   expiry: String!
-  cvc: Float!
+  cvc: String!
   firstName: String!
   lastName: String!
   email: String!
@@ -85,4 +91,9 @@ input UpdateOrderInput {
 
 input CloseOrderInput {
   orderId: String!
+}
+
+input EverflowOrderTrackInput {
+  aff_id: String!
+  amount: Float!
 }

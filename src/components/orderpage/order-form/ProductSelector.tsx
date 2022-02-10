@@ -75,7 +75,7 @@ const ProductSelector = () => {
   //get order state
   const orderState = useAppSelector(selectOrderState);
   //select products withint the product data array by utilitizing the index values
-  const [productSelected, selectProduct] = useState<number>(1);
+  const [productSelected, selectProduct] = useState<number>(0);
 
   const handleChange = (e: React.FormEvent<HTMLInputElement>) =>
     selectProduct(parseFloat(e.currentTarget.value));

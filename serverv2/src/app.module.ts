@@ -7,6 +7,7 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { config } from 'dotenv';
 import { ScheduleModule } from '@nestjs/schedule';
 import { TaskService } from './services/task.service';
+import { EverflowAPIModule } from './modules/everflowAPI.module';
 
 config();
 @Module({
@@ -33,6 +34,7 @@ config();
       },
     }),
     OrderModule,
+    EverflowAPIModule,
     MongooseModule.forRoot(process.env.MONGO_URI, {
       useNewUrlParser: true,
       useUnifiedTopology: true,
