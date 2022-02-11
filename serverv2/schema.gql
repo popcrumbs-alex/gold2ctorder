@@ -73,6 +73,7 @@ input CreateOrderInput {
   zip: String!
   orderTotal: Float!
   products: [ProductInput!]!
+  ef_aff_id: String
 }
 
 input ProductInput {

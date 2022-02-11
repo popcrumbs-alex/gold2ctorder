@@ -76,6 +76,7 @@ export class OrderService {
         creditCardNumber,
         expiry,
         cvc,
+        ef_aff_id,
       } = input;
 
       if (products.length === 0) {
@@ -122,6 +123,7 @@ export class OrderService {
         ...input,
         transactionId: paymentRequest.transactionId,
         orderStartTime: orderStartTime,
+        ef_aff_id: ef_aff_id ? ef_aff_id : 'non-ef-order',
       });
 
       await newOrder.save();

@@ -44,6 +44,8 @@ export class CreateOrderInput {
   orderTotal: number;
   @Field(() => [ProductInput])
   products: ProductInput[];
+  @Field({ nullable: true })
+  ef_aff_id: string;
 }
 
 @InputType()

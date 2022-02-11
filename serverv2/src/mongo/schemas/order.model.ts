@@ -39,6 +39,8 @@ export class Order {
   orderStartTime: mongoose.Schema.Types.Date;
   @Prop()
   products: Product[];
+  @Prop()
+  ef_aff_id: string;
 }
 
 export type OrderDocument = Order & Document;
