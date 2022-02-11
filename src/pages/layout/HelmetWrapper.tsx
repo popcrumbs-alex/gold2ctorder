@@ -50,22 +50,20 @@ fbq('track', 'Purchase');`}</script>
 		creative_id: EF.urlParameter('creative_id'),
     }).then(function(transactionId) {
             console.log('Everflow: aff_sub element not found, relying on loop for transaction id: ' + transactionId)
-        
+        window.localStorage.setItem('ef_aff_id', transactionId)
     });
 }
-var __checkExist = setInterval(function() {
-  if (document.getElementById("cf_contact_affiliate_aff_sub")) {
-    var currentAffsub;
-    var storedTransactionId = EF.getAdvertiserTransactionId(5);
-console.log(storedTransactionId, currentAffsub, storedTransactionId)
-    if(currentAffsub === 'undefined' || currentAffsub === '' && storedTransactionId) {
-        console.log('Everflow: updating aff_sub with persisted transaction id: ' + storedTransactionId)
-        clearInterval(__checkExist);
-       
-    }
-  }
-}, 200);`}</script>
-      {efScript && <script>{efScript}</script>}
+`}</script>
+      <script type="text/javascript">
+        {` (function(h,o,t,j,a,r){
+        h.hj=h.hj||function(){(h.hj.q=h.hj.q||[]).push(arguments)};
+        h._hjSettings={hjid:2788906,hjsv:6};
+        a=o.getElementsByTagName('head')[0];
+        r=o.createElement('script');r.async=1;
+        r.src=t+h._hjSettings.hjid+j+h._hjSettings.hjsv;
+        a.appendChild(r);
+    })(window,document,'https://static.hotjar.com/c/hotjar-','.js?sv=');`}
+      </script>
     </Helmet>
   );
 };

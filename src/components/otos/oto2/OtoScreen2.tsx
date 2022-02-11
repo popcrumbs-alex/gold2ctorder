@@ -13,6 +13,7 @@ import { UPDATE_ORDER } from "../../../graphql/mutations/order.mutation";
 import { setAlert } from "../../../redux/reducers/alert.reducer";
 import LoadingSpinner from "../../loading/LoadingSpinner";
 import { StaticImage } from "gatsby-plugin-image";
+import { EF_TRACK_UPSELL } from "../../../graphql/mutations/everflow.mutations";
 
 const Section = styled.section`
   width: 100%;
@@ -155,22 +156,18 @@ const OtoScreen2 = () => {
   //ref needed to scroll to top
   const ref = useRef(null);
 
+  //this will exist within poptracker links only
+  const aff_id =
+    typeof window !== "undefined" && window.localStorage.getItem("ef_aff_id");
+
   const dispatch = useAppDispatch();
 
   const [updateOrder, { error, data, loading }] = useMutation(UPDATE_ORDER);
 
+  const [trackUpsell] = useMutation(EF_TRACK_UPSELL);
+
   const scrollToSizes = () =>
     ref?.current.scrollIntoView({ top: 0, behavior: "smooth" });
-
-  const triggerEFEvent = (productPrice: number) => {
-    return (
-      <script type="text/javascript">{`EF.conversion({
-        offer_id: 75,
-        adv_event_id: 9,
-        amount: ${productPrice}
-    });`}</script>
-    );
-  };
 
   const handleAddOTOTToOrder = async (oto: OtoOptionProps) => {
     const currentOrderId = localStorage.getItem("order_id");
@@ -203,8 +200,18 @@ const OtoScreen2 = () => {
           },
         },
       });
-
-      triggerEFEvent(oto.numPrice);
+      //submit ef tracking endpoint
+      if (aff_id !== "") {
+        trackUpsell({
+          variables: {
+            everflowOrderInput: {
+              aff_id: aff_id,
+              amount: OtoDATA[currentOtoIndex].numPrice,
+            },
+          },
+        });
+        console.log("everflow_tracking_:", aff_id);
+      }
 
       console.log("request!", request);
       if (request.data.updateOrder.success) {
