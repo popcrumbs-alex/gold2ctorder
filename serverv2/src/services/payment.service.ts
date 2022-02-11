@@ -129,8 +129,12 @@ export class PaymentService {
         responseObject,
       };
     } catch (error) {
-      console.error(error);
-      return error;
+      console.error('payment request error:', error);
+      return {
+        statusMessage: error,
+        transactionId: '',
+        responseObject: error,
+      };
     }
   }
   async updateTransaction(

@@ -57,6 +57,7 @@ type Mutation {
   updateOrder(updateOrderInput: UpdateOrderInput!): OrderResponse!
   closeOrder(closeOrderInput: CloseOrderInput!): OrderResponse!
   trackOrder(everflowOrderInput: EverflowOrderTrackInput!): EverflowOrderTrackResponse!
+  trackUpsell(everflowOrderInput: EverflowOrderTrackInput!): EverflowOrderTrackResponse!
 }
 
 input CreateOrderInput {

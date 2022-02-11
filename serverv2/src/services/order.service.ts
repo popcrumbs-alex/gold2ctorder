@@ -111,6 +111,7 @@ export class OrderService {
         amount: orderTotal,
         containsRecurringItem: detectASubscriptionItem,
       });
+      console.log('payment request', paymentRequest);
       if (paymentRequest.statusMessage !== 'SUCCESS') {
         throw new Error(paymentRequest.responseObject);
       }
@@ -152,6 +153,11 @@ export class OrderService {
       const foundOrder = await this.orderModel.findById(orderId);
 
       if (!foundOrder) throw new Error('Could not locate a current order');
+
+      //if order exceeds time limit, prevent updating a closed order.
+      //This is a temporary fix, possibly create new order instead?
+      if (foundOrder.status === 'closed')
+        throw new Error('Can not update a closed order');
 
       //add new product to current product array
       const currentProductPrices = [...foundOrder.products, product].map(
@@ -197,6 +203,9 @@ export class OrderService {
       const foundOrder = await this.orderModel.findById(orderId);
 
       if (!foundOrder) throw new Error('Could not locate an order');
+
+      if (foundOrder.status === 'closed')
+        throw new Error('Order has already been closed');
 
       //return products selected as formatted shopify line items
       const lineItems = await this.shopify.getProducts(foundOrder.products);

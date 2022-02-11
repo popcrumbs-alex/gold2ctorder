@@ -14,6 +14,7 @@ export class EverflowResolver {
   ) {
     return this.everflowService.orderConfirmTrack(everflowOrderTrackInput);
   }
+
   @Mutation(() => EverflowOrderTrackResponse)
   async trackUpsell(
     @Args('everflowOrderInput')
