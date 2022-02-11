@@ -5,6 +5,7 @@ import { useEffect } from "react";
 import Lander from "../components/landing-one/Lander";
 import Footer from "../components/footer.tsx/Footer";
 import HelmetWrapper from "./layout/HelmetWrapper";
+import BodyTags from "./layout/BodyTags";
 
 const Main = styled.main``;
 
@@ -37,6 +38,7 @@ const IndexPage = () => {
         <Lander />
       </Main>
       <Footer />
+      <BodyTags />
     </ThemeContext.Provider>
   );
 };

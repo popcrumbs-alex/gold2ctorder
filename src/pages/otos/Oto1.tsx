@@ -4,6 +4,7 @@ import Alert from "../../components/alert/Alert";
 import OtoScreen from "../../components/otos/oto1/OtoScreen";
 import { useAppSelector } from "../../hooks/reduxHooks";
 import { selectOrderState } from "../../redux/reducers/order.reducer";
+import BodyTags from "../layout/BodyTags";
 import HelmetWrapper from "../layout/HelmetWrapper";
 const Main = styled.main``;
 
@@ -34,6 +35,7 @@ const Oto1: FC = () => {
       <Globalstyle />
       <Alert />
       <OtoScreen />
+      <BodyTags />
     </Main>
   );
 };

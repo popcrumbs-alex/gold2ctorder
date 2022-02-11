@@ -4,6 +4,7 @@ import { ThemeContext } from ".";
 import Alert from "../components/alert/Alert";
 import ThankyouPage from "../components/thankyou/ThankyouPage";
 import Colors from "../constants/Colors";
+import BodyTags from "./layout/BodyTags";
 import HelmetWrapper from "./layout/HelmetWrapper";
 const Main = styled.main``;
 
@@ -28,6 +29,7 @@ const Thankyou = () => {
         <Alert />
         <ThankyouPage />
       </Main>
+      <BodyTags />
     </ThemeContext.Provider>
   );
 };

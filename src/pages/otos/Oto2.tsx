@@ -3,6 +3,7 @@ import styled, { createGlobalStyle } from "styled-components";
 import Alert from "../../components/alert/Alert";
 import OtoReviews from "../../components/otos/oto2/OtoReviews";
 import OtoScreen2 from "../../components/otos/oto2/OtoScreen2";
+import BodyTags from "../layout/BodyTags";
 import HelmetWrapper from "../layout/HelmetWrapper";
 const Main = styled.main``;
 
@@ -26,6 +27,7 @@ const Oto2: FC = () => {
       <Alert />
       <OtoScreen2 />
       <OtoReviews />
+      <BodyTags />
     </Main>
   );
 };
