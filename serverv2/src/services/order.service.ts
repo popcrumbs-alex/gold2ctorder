@@ -260,7 +260,9 @@ export class OrderService {
           },
         ],
         line_items: lineItems,
-        note_attributes: [{ name: 'Test Order', value: firstName + lastName }],
+        note_attributes: [
+          { name: 'GOLD 2CT ORDER FLOW', value: firstName + lastName },
+        ],
       };
 
       const shopifyOrder = await this.shopify.createOrder(orderObject);
