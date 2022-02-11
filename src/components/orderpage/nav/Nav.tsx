@@ -67,7 +67,7 @@ const Nav: FC = () => {
           alt="logo"
           placeholder="blurred"
           objectFit="contain"
-          imgStyle={{ width: "100%" }}
+          imgStyle={{ width: "100%", maxWidth: "150px" }}
         />
         <Column>
           <Heading color={context.text}>Need Support?</Heading>

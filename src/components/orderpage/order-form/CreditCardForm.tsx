@@ -83,6 +83,11 @@ const CreditCardForm = () => {
 
   const orderState = useAppSelector(selectOrderState);
 
+  const ef_aff_id =
+    typeof window !== "undefined"
+      ? window.localStorage.getItem("ef_aff_id")
+      : null;
+
   const [cardForm, setCardFormState] = useState<CardStateProps>({
     creditCardNumber: "",
     expiry: "",
@@ -158,7 +163,7 @@ const CreditCardForm = () => {
         expiry: expiry.replace(/\//g, ""),
         cvc: cvc,
       };
-
+      console.log("ef aff?", ef_aff_id);
       const response = await createOrder({
         variables: {
           createOrderInput: {
@@ -167,6 +172,7 @@ const CreditCardForm = () => {
             products: [...orderState.myOrder.products],
             orderTotal: orderState.myOrder.orderTotal,
             ...cardInfo,
+            ef_aff_id: ef_aff_id ? ef_aff_id : "non-ef-order",
           },
         },
       });
