@@ -52,6 +52,7 @@ const Hero = () => {
           Simply tell us where to send your order for guaranteed delivery in 5
           days (via USPS): 📦 Items are <span>IN STOCK</span> and{" "}
           <span>READY TO SHIP</span>
+          {` `}
           <span>WITHIN 24 HOURS</span> from our <span>US BASED</span>{" "}
           Warehouses.
         </SubHeading>

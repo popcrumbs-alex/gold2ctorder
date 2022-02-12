@@ -6,11 +6,10 @@ import Nav from "../../components/orderpage/nav/Nav";
 import Form from "../../components/orderpage/order-form/Form";
 import Message from "../../components/orderpage/section/Message";
 import Colors from "../../constants/Colors";
-import { Helmet } from "react-helmet";
 import Loox from "../../components/reviews/Loox";
 import Alert from "../../components/alert/Alert";
 import { useEffect } from "react";
-import TagManager from "react-gtm-module";
+import HelmetWrapper from "../layout/HelmetWrapper";
 
 const Main = styled.main``;
 
@@ -35,33 +34,10 @@ const OrderPage = () => {
     }
   }, []);
 
-  useEffect(() => {
-    if (typeof window !== "undefined") {
-      TagManager.initialize({
-        gtmId: "GTM-N2FNX5N",
-        dataLayerName: "OrderPage",
-      });
-
-      TagManager.dataLayer({
-        dataLayer: {
-          event: "loadOrderPage",
-          pagePath: "Order Page",
-          pageTitle: "Gold 2CT Order Page",
-        },
-        dataLayerName: "OrderPage",
-      });
-    }
-  }, []);
   return (
     <ThemeContext.Provider value={Colors}>
       <Globalstyle />
-      <Helmet>
-        <title>Gold 2CT Stud Order Page</title>
-        <script
-          async
-          src="//loox.io/widget/loox.js?shop=luciana-rose-couture.myshopify.com"
-        ></script>
-      </Helmet>
+      <HelmetWrapper pageTitle="Gold 2CT Stud Order Page" efScript="" />
       <Nav />
       <Main>
         <Alert />

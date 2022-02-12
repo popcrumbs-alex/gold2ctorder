@@ -23,6 +23,17 @@ export class CustomerService {
 
       const { firstName, lastName, email, order } = customerInput;
 
+      const existingCustomer = await this.customerModel.findOne({ email });
+      console.log('does customer exist?', existingCustomer);
+      //check for customers before creating a new one for each order
+      if (existingCustomer) {
+        existingCustomer.orders.push(order);
+
+        await existingCustomer.save();
+
+        return existingCustomer;
+      }
+
       const customerFields: Customer = {
         firstName,
         lastName,

@@ -1,10 +1,11 @@
 import React, { FC } from "react";
-import { Helmet } from "react-helmet";
 import styled, { createGlobalStyle } from "styled-components";
 import Alert from "../../components/alert/Alert";
 import OtoScreen from "../../components/otos/oto1/OtoScreen";
-import TagManager from "react-gtm-module";
-import { useEffect } from "react";
+import { useAppSelector } from "../../hooks/reduxHooks";
+import { selectOrderState } from "../../redux/reducers/order.reducer";
+import BodyTags from "../layout/BodyTags";
+import HelmetWrapper from "../layout/HelmetWrapper";
 const Main = styled.main``;
 
 const Globalstyle = createGlobalStyle`
@@ -20,30 +21,21 @@ const Globalstyle = createGlobalStyle`
 }`;
 
 const Oto1: FC = () => {
-  useEffect(() => {
-    if (typeof window !== "undefined") {
-      TagManager.initialize({
-        gtmId: "GTM-N2FNX5N",
-        dataLayerName: "Oto1Page",
-      });
-      TagManager.dataLayer({
-        dataLayer: {
-          event: "oto1PageView",
-          pagePath: "Oto Page 1",
-          pageTitle: "Gold 2CT Order Page",
-        },
-        dataLayerName: "Oto1Page",
-      });
-    }
-  }, []);
+  const orderState = useAppSelector(selectOrderState);
+
+  const {
+    myOrder: { orderTotal },
+  } = orderState;
   return (
     <Main>
-      <Helmet>
-        <title>1CT Gold Studs</title>
-      </Helmet>
+      <HelmetWrapper
+        pageTitle="1CT Gold Studs"
+        efScript={`EF.conversion({offer_id: 75, amount: ${orderTotal}});`}
+      />
       <Globalstyle />
       <Alert />
       <OtoScreen />
+      <BodyTags />
     </Main>
   );
 };

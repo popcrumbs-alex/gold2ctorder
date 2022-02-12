@@ -1,11 +1,11 @@
 import * as React from "react";
 import styled, { createGlobalStyle } from "styled-components";
 import Colors from "../constants/Colors";
-import { Helmet } from "react-helmet";
 import { useEffect } from "react";
-import TagManager from "react-gtm-module";
 import Lander from "../components/landing-one/Lander";
 import Footer from "../components/footer.tsx/Footer";
+import HelmetWrapper from "./layout/HelmetWrapper";
+import BodyTags from "./layout/BodyTags";
 
 const Main = styled.main``;
 
@@ -30,38 +30,15 @@ const IndexPage = () => {
     }
   }, []);
 
-  useEffect(() => {
-    if (typeof window !== "undefined") {
-      TagManager.initialize({
-        gtmId: "GTM-N2FNX5N",
-        dataLayerName: "LandingPage1",
-      });
-
-      TagManager.dataLayer({
-        dataLayer: {
-          event: "landingPage",
-          pagePath: "Landing Page",
-          pageTitle: "Gold 2CT Landing Page 1",
-        },
-        dataLayerName: "LandingPage1",
-      });
-    }
-  }, []);
-
   return (
     <ThemeContext.Provider value={Colors}>
       <Globalstyle />
-      <Helmet>
-        <title>Gold 2CT Studs</title>
-        <script
-          async
-          src="//loox.io/widget/loox.js?shop=luciana-rose-couture.myshopify.com"
-        ></script>
-      </Helmet>
+      <HelmetWrapper pageTitle="Gold 2CT Studs" efScript="" />
       <Main>
         <Lander />
       </Main>
       <Footer />
+      <BodyTags />
     </ThemeContext.Provider>
   );
 };

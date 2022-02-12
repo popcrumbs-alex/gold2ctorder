@@ -143,10 +143,13 @@ const Text = styled.p`
   }
 `;
 
-const SmallHeading = styled.h3`
-  font-weight: 300;
-  text-align: center;
-  margin: 0.4rem 0;
+const ShippingContainer = styled.div`
+  padding: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  border: 2px solid #1f4ba2;
+  border-radius: 15px;
 `;
 
 type ContactState = {
@@ -283,21 +286,21 @@ const Form: FC = () => {
               <FormContainer>
                 {/* Component of order bumps, dynamically rendered */}
                 <OrderBumpComponent />
-                {/* Small shipping text section */}
-                <SmallHeading>Why Do We Ask For Shipping?</SmallHeading>
-                <Text style={{ textAlign: "center" }}>
-                  We offer <span>one pair for free</span> but do require you to
-                  <span>cover the cost to pick, pack & ship</span> your item.{" "}
-                  <span>
-                    We are a US based company that takes care of its employees
-                  </span>
-                  , the small S/H fee allows us to cover their costs while
-                  sharing our best pieces at a below market cost to you. Rest
-                  assured your purchase today is safe.{" "}
-                  <span style={{ textDecoration: "underline" }}>
-                    We know we must do right here to earn your future business.
-                  </span>
-                </Text>
+                <ShippingContainer>
+                  <StaticImage
+                    src="../../../images/usps.png"
+                    alt="guarantee"
+                    placeholder="blurred"
+                    objectFit="contain"
+                    width={100}
+                  />
+                  <Text style={{ lineHeight: "1.5" }}>
+                    All orders ship from the USA via <strong>USPS</strong>{" "}
+                    within
+                    <strong>1 business day</strong>. A tracking number will be
+                    issued to your email.
+                  </Text>
+                </ShippingContainer>
                 <Divider />
                 {/* Main product only one per order select */}
                 <ProductSelector />

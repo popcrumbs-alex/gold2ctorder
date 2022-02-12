@@ -76,6 +76,7 @@ export class OrderService {
         creditCardNumber,
         expiry,
         cvc,
+        ef_aff_id,
       } = input;
 
       if (products.length === 0) {
@@ -111,6 +112,7 @@ export class OrderService {
         amount: orderTotal,
         containsRecurringItem: detectASubscriptionItem,
       });
+      console.log('payment request', paymentRequest);
       if (paymentRequest.statusMessage !== 'SUCCESS') {
         throw new Error(paymentRequest.responseObject);
       }
@@ -121,6 +123,7 @@ export class OrderService {
         ...input,
         transactionId: paymentRequest.transactionId,
         orderStartTime: orderStartTime,
+        ef_aff_id: ef_aff_id ? ef_aff_id : 'non-ef-order',
       });
 
       await newOrder.save();
@@ -152,6 +155,11 @@ export class OrderService {
       const foundOrder = await this.orderModel.findById(orderId);
 
       if (!foundOrder) throw new Error('Could not locate a current order');
+
+      //if order exceeds time limit, prevent updating a closed order.
+      //This is a temporary fix, possibly create new order instead?
+      if (foundOrder.status === 'closed')
+        throw new Error('Can not update a closed order');
 
       //add new product to current product array
       const currentProductPrices = [...foundOrder.products, product].map(
@@ -197,6 +205,9 @@ export class OrderService {
       const foundOrder = await this.orderModel.findById(orderId);
 
       if (!foundOrder) throw new Error('Could not locate an order');
+
+      if (foundOrder.status === 'closed')
+        throw new Error('Order has already been closed');
 
       //return products selected as formatted shopify line items
       const lineItems = await this.shopify.getProducts(foundOrder.products);
@@ -251,7 +262,9 @@ export class OrderService {
           },
         ],
         line_items: lineItems,
-        note_attributes: [{ name: 'Test Order', value: firstName + lastName }],
+        note_attributes: [
+          { name: 'GOLD 2CT ORDER FLOW', value: firstName + lastName },
+        ],
       };
 
       const shopifyOrder = await this.shopify.createOrder(orderObject);

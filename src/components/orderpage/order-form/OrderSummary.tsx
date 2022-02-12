@@ -75,8 +75,6 @@ const OrderSummary = () => {
 
   const orderTotal = useOrderTotal();
 
-  console.log("my order sum", myOrder);
-
   return (
     <Container>
       <Heading>Today's Order Summary</Heading>

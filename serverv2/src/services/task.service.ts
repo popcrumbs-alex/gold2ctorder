@@ -3,6 +3,9 @@ import { Cron } from '@nestjs/schedule';
 import { Order } from 'src/mongo/schemas/order.model';
 import { OrderService } from './order.service';
 import * as mongoose from 'mongoose';
+import { config } from 'dotenv';
+
+config();
 
 @Injectable()
 export class TaskService {
@@ -17,6 +20,10 @@ export class TaskService {
   @Cron('45 * * * * *')
   async locatePendingOrders() {
     try {
+      console.log('node_env:', process.env.NODE_ENV);
+
+      if (process.env.NODE_ENV !== 'production') return;
+
       const pendingOrders = await this.orderService.loadPendingOrders();
 
       if (pendingOrders.Orders.length === 0) {

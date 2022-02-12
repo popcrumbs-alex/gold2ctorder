@@ -1,14 +1,21 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import styled from "styled-components";
 import Timer from "../../orderpage/hero/Timer";
 import { OtoDATA } from "../../../product/ProductData";
 import { Link, navigate } from "gatsby";
-import { useAppDispatch } from "../../../hooks/reduxHooks";
-import { addOtoToOrder } from "../../../redux/reducers/order.reducer";
+import { useAppDispatch, useAppSelector } from "../../../hooks/reduxHooks";
+import {
+  addOtoToOrder,
+  selectOrderState,
+} from "../../../redux/reducers/order.reducer";
 import { useMutation } from "@apollo/client";
 import { UPDATE_ORDER } from "../../../graphql/mutations/order.mutation";
 import { setAlert } from "../../../redux/reducers/alert.reducer";
 import LoadingSpinner from "../../loading/LoadingSpinner";
+import {
+  EF_TRACK_ORDER,
+  EF_TRACK_UPSELL,
+} from "../../../graphql/mutations/everflow.mutations";
 const Section = styled.section`
   width: 100%;
   display: flex;
@@ -78,9 +85,15 @@ const Divider = styled.div`
 const OtoScreen = () => {
   const [currentOtoIndex, setCurrentOtoIndex] = useState<number>(0);
 
+  const aff_id =
+    typeof window !== "undefined" && window.localStorage.getItem("ef_aff_id");
+
   const dispatch = useAppDispatch();
 
   const [updateOrder, { error, data, loading }] = useMutation(UPDATE_ORDER);
+
+  //Everflow tracking api endpoint
+  const [trackUpsell] = useMutation(EF_TRACK_UPSELL);
 
   //TODO Pass order into storage to continue order processing
   const handleAddOTOTToOrder = async () => {
@@ -115,6 +128,18 @@ const OtoScreen = () => {
         },
       });
 
+      //pass revenue to oto
+      if (aff_id !== "") {
+        trackUpsell({
+          variables: {
+            everflowOrderInput: {
+              aff_id: aff_id,
+              amount: OtoDATA[currentOtoIndex].numPrice,
+            },
+          },
+        });
+        console.log("everflow_tracking_:", aff_id);
+      }
       console.log("request!", request);
       if (request.data.updateOrder.success) {
         navigate("/otos/Oto2");
@@ -150,6 +175,7 @@ const OtoScreen = () => {
 
   return (
     <Section>
+      {aff_id && <EverflowMutationWrapper aff_id={aff_id} />}
       <Content>
         <Heading>
           BONUS DEAL: <span>Add The 1CT Gold Studs</span>
@@ -172,6 +198,30 @@ const OtoScreen = () => {
       </Content>
     </Section>
   );
+};
+
+const EverflowMutationWrapper = ({ aff_id }: { aff_id: string }) => {
+  const orderState = useAppSelector(selectOrderState);
+
+  const [
+    trackOrder,
+    { error: trackError, data: trackData, loading: trackLoading },
+  ] = useMutation(EF_TRACK_ORDER);
+
+  console.log("order track?", trackError, trackData, trackLoading);
+
+  useMemo(() => {
+    trackOrder({
+      variables: {
+        everflowOrderInput: {
+          aff_id,
+          amount: orderState.myOrder.orderTotal,
+        },
+      },
+    });
+  }, []);
+
+  return <></>;
 };
 
 export default OtoScreen;

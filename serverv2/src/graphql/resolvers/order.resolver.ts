@@ -1,5 +1,4 @@
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
-import { GraphqlContext } from 'src/guards/graphql.guard';
 import { OrderService } from 'src/services/order.service';
 import {
   CloseOrderInput,
@@ -7,7 +6,7 @@ import {
   FindOrderInput,
   UpdateOrderInput,
 } from '../inputs/order.input';
-import { OrderResponse, TestResponse } from '../responses/order.response';
+import { OrderResponse } from '../responses/order.response';
 
 @Resolver()
 export class OrderResolver {

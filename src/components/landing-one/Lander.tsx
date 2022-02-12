@@ -167,7 +167,7 @@ const Lander = () => {
       <Nav>
         <NavContent>
           <StaticImage
-            src="../../../images/lululogo.png"
+            src="../../images/lululogo.png"
             alt="logo"
             placeholder="blurred"
             objectFit="contain"
@@ -204,7 +204,7 @@ const BodySection = () => {
   return (
     <>
       <Tag>
-        Jewelers Are Shocked!... A Look Alike
+        Jewelers Are Shocked!... A Look-Alike
         <br />
         "Diamond" That Fools Even Them
       </Tag>

@@ -93,7 +93,6 @@ const CreditCardForm = () => {
   const [createOrder, { error, data, loading }] = useMutation(CREATE_ORDER);
 
   const { creditCardNumber, expiry, cvc } = cardForm;
-  console.log("card info", cardForm);
 
   const handleCardNumber = (e: React.FormEvent<HTMLInputElement>) =>
     setCardFormState({ ...cardForm, creditCardNumber: e.currentTarget.value });
@@ -159,8 +158,6 @@ const CreditCardForm = () => {
         expiry: expiry.replace(/\//g, ""),
         cvc: cvc,
       };
-
-      console.log("card info", cardInfo);
 
       const response = await createOrder({
         variables: {
