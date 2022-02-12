@@ -16,7 +16,8 @@ import {
   EF_TRACK_ORDER,
   EF_TRACK_UPSELL,
 } from "../../../graphql/mutations/everflow.mutations";
-import TagManager from "react-gtm-module";
+
+declare const window: any;
 
 const Section = styled.section`
   width: 100%;
@@ -221,18 +222,12 @@ const EverflowMutationWrapper = ({ aff_id }: { aff_id: string }) => {
         },
       },
     });
-    //set order total in storage
-    window.localStorage.setItem(
-      "orderTotal",
-      orderState.myOrder.orderTotal.toString()
-    );
-
-    TagManager.dataLayer({
-      dataLayerName: "Purchase",
-      dataLayer: {
-        event: "purchase",
-      },
-    });
+    if (window.fbq) {
+      window.fbq("track", "Purchase", {
+        currency: "USD",
+        value: orderState.myOrder.orderTotal,
+      });
+    }
   }, []);
 
   return <></>;

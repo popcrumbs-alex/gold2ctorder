@@ -5,8 +5,9 @@ import OtoReviews from "../../components/otos/oto2/OtoReviews";
 import OtoScreen2 from "../../components/otos/oto2/OtoScreen2";
 import BodyTags from "../layout/BodyTags";
 import HelmetWrapper from "../layout/HelmetWrapper";
-import TagManager from "react-gtm-module";
 const Main = styled.main``;
+
+declare const window: any;
 
 const Globalstyle = createGlobalStyle`
     @import url("https://use.typekit.net/wzi3sml.css");
@@ -23,17 +24,10 @@ const Globalstyle = createGlobalStyle`
 const Oto2: FC = () => {
   useEffect(() => {
     if (typeof window !== "undefined") {
-      TagManager.initialize({
-        gtmId: "GTM-N2FNX5N",
-        dataLayerName: "Oto2Page",
-      });
-
-      TagManager.dataLayer({
-        dataLayerName: "Oto2Page",
-        dataLayer: {
-          event: "oto2PageView",
-        },
-      });
+      if (window.fbq) {
+        console.log(window.fbq);
+        window.fbq("track", "PageView");
+      }
     }
   }, []);
   return (

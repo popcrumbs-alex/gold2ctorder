@@ -9,7 +9,8 @@ import {
   addProductToOrder,
   selectOrderState,
 } from "../../../redux/reducers/order.reducer";
-import TagManager from "react-gtm-module";
+
+declare const window: any;
 
 const Container = styled.div`
   display: flex;
@@ -94,17 +95,13 @@ const ProductSelector = () => {
       })
     );
 
-    TagManager.dataLayer({
-      dataLayerName: "addToCart",
-      dataLayer: {
-        event: "addProduct",
-      },
-    });
-    //set item in storage
-    window.localStorage.setItem(
-      "product",
-      ProductSelectorItems[productSelected].numPrice.toString()
-    );
+    if (window.fbq) {
+      console.log(window.fbq);
+      window.fbq("track", "AddToCart", {
+        currency: "USD",
+        value: ProductSelectorItems[productSelected].numPrice,
+      });
+    }
   }, [productSelected]);
 
   return (

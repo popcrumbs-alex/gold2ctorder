@@ -6,8 +6,9 @@ import { useAppSelector } from "../../hooks/reduxHooks";
 import { selectOrderState } from "../../redux/reducers/order.reducer";
 import BodyTags from "../layout/BodyTags";
 import HelmetWrapper from "../layout/HelmetWrapper";
-import TagManager from "react-gtm-module";
 const Main = styled.main``;
+
+declare const window: any;
 
 const Globalstyle = createGlobalStyle`
     @import url("https://use.typekit.net/wzi3sml.css");
@@ -30,17 +31,10 @@ const Oto1: FC = () => {
 
   useEffect(() => {
     if (typeof window !== "undefined") {
-      TagManager.initialize({
-        gtmId: "GTM-N2FNX5N",
-        dataLayerName: "purchase",
-      });
-
-      TagManager.dataLayer({
-        dataLayerName: "purchase",
-        dataLayer: {
-          event: "purchase",
-        },
-      });
+      if (window.fbq) {
+        console.log(window.fbq);
+        window.fbq("track", "PageView");
+      }
     }
   }, []);
   return (

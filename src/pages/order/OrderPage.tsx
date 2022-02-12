@@ -10,7 +10,8 @@ import Loox from "../../components/reviews/Loox";
 import Alert from "../../components/alert/Alert";
 import { useEffect } from "react";
 import HelmetWrapper from "../layout/HelmetWrapper";
-import TagManager from "react-gtm-module";
+
+declare const window: any;
 
 const Main = styled.main``;
 
@@ -41,17 +42,10 @@ const OrderPage = () => {
 
   useEffect(() => {
     if (typeof window !== "undefined") {
-      TagManager.initialize({
-        gtmId: "GTM-N2FNX5N",
-        dataLayerName: "OrderPage",
-      });
-
-      TagManager.dataLayer({
-        dataLayerName: "OrderPage",
-        dataLayer: {
-          event: "loadOrderPage",
-        },
-      });
+      if (window.fbq) {
+        console.log(window.fbq);
+        window.fbq("track", "PageView");
+      }
     }
   }, []);
 

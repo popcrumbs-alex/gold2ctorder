@@ -15,6 +15,8 @@ import LoadingSpinner from "../../loading/LoadingSpinner";
 import { StaticImage } from "gatsby-plugin-image";
 import { EF_TRACK_UPSELL } from "../../../graphql/mutations/everflow.mutations";
 
+declare const window: any;
+
 const Section = styled.section`
   width: 100%;
   display: flex;
@@ -211,6 +213,14 @@ const OtoScreen2 = () => {
           },
         });
         console.log("everflow_tracking_:", aff_id);
+      }
+
+      if (window.fbq) {
+        console.log("Add To Cart", window.fbq);
+        window.fbq("track", "AddToCart", {
+          currency: "USD",
+          value: oto.numPrice,
+        });
       }
 
       console.log("request!", request);

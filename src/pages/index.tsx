@@ -24,6 +24,8 @@ const Globalstyle = createGlobalStyle`
     box-sizing:border-box;
 }`;
 
+declare const window: any;
+
 const IndexPage = () => {
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -35,17 +37,11 @@ const IndexPage = () => {
 
   useEffect(() => {
     if (typeof window !== "undefined") {
-      TagManager.initialize({
-        gtmId: "GTM-N2FNX5N",
-        dataLayerName: "LandingPage",
-      });
-
-      TagManager.dataLayer({
-        dataLayerName: "LandingPage",
-        dataLayer: {
-          event: "landingPage",
-        },
-      });
+      //integrate this everwhere instead
+      if (window.fbq) {
+        console.log(window.fbq);
+        window.fbq("track", "PageView");
+      }
     }
   }, []);
 
