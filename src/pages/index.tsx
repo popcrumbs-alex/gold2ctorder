@@ -6,6 +6,7 @@ import Lander from "../components/landing-one/Lander";
 import Footer from "../components/footer.tsx/Footer";
 import HelmetWrapper from "./layout/HelmetWrapper";
 import BodyTags from "./layout/BodyTags";
+import TagManager from "react-gtm-module";
 
 const Main = styled.main``;
 
@@ -25,8 +26,26 @@ const Globalstyle = createGlobalStyle`
 
 const IndexPage = () => {
   useEffect(() => {
-    if (window.localStorage.getItem("order_id")) {
-      window.localStorage.removeItem("order_id");
+    if (typeof window !== "undefined") {
+      if (window.localStorage.getItem("order_id")) {
+        window.localStorage.removeItem("order_id");
+      }
+    }
+  }, []);
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      TagManager.initialize({
+        gtmId: "GTM-N2FNX5N",
+        dataLayerName: "LandingPage",
+      });
+
+      TagManager.dataLayer({
+        dataLayerName: "LandingPage",
+        dataLayer: {
+          event: "landingPage",
+        },
+      });
     }
   }, []);
 

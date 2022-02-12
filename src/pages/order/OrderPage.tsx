@@ -10,6 +10,7 @@ import Loox from "../../components/reviews/Loox";
 import Alert from "../../components/alert/Alert";
 import { useEffect } from "react";
 import HelmetWrapper from "../layout/HelmetWrapper";
+import TagManager from "react-gtm-module";
 
 const Main = styled.main``;
 
@@ -28,9 +29,29 @@ const Globalstyle = createGlobalStyle`
 }`;
 
 const OrderPage = () => {
+  const isBrowser = typeof window !== "undefined";
+
   useEffect(() => {
-    if (window.localStorage.getItem("order_id")) {
-      window.localStorage.removeItem("order_id");
+    if (isBrowser) {
+      if (window?.localStorage.getItem("order_id")) {
+        window?.localStorage.removeItem("order_id");
+      }
+    }
+  }, []);
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      TagManager.initialize({
+        gtmId: "GTM-N2FNX5N",
+        dataLayerName: "OrderPage",
+      });
+
+      TagManager.dataLayer({
+        dataLayerName: "OrderPage",
+        dataLayer: {
+          event: "loadOrderPage",
+        },
+      });
     }
   }, []);
 

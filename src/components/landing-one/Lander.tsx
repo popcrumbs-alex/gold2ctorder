@@ -1,13 +1,10 @@
 import React from "react";
 import styled, { keyframes } from "styled-components";
 import { StaticImage } from "gatsby-plugin-image";
-import {
-  HiEmojiSad,
-  FaSadTear,
-  IoIosSad,
-  FaShieldAlt,
-  BiHappyHeartEyes,
-} from "react-icons/all";
+import { IoIosSad } from "react-icons/io";
+import { HiEmojiSad } from "react-icons/hi";
+import { FaSadTear, FaShieldAlt } from "react-icons/fa";
+import { BiHappyHeartEyes } from "react-icons/bi";
 import { useContext } from "react";
 import { ThemeContext } from "../../pages";
 import { Theme } from "../../constants/Colors";

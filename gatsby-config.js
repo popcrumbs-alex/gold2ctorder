@@ -42,5 +42,12 @@ module.exports = {
         url: "http://localhost:3000/graphql",
       },
     },
+    {
+      resolve: `gatsby-plugin-facebook-pixel`,
+      options: {
+        pixelId: "355361339685041",
+        debug: true
+      },
+    },
   ],
 };

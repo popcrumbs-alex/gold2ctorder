@@ -11,6 +11,7 @@ import {
   removeBumpFromOrder,
 } from "../../../redux/reducers/order.reducer";
 import { AnyAction } from "redux";
+import TagManager from "react-gtm-module";
 
 const Bumps = styled.div`
   display: flex;
@@ -107,6 +108,18 @@ const BumpComponent = ({
     };
     if (selected) {
       dispatch(addBumpInOrder(selectedBump));
+      //trigger gtm tracking
+      TagManager.dataLayer({
+        dataLayerName: "AddToCart",
+        dataLayer: {
+          event: "addToCart",
+        },
+      });
+      //set item in storage
+      window.localStorage.setItem(
+        "item",
+        orderBumps[index].numPrice.toString()
+      );
     } else {
       dispatch(removeBumpFromOrder(selectedBump));
     }
