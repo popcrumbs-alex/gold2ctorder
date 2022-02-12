@@ -47,6 +47,7 @@ const IndexPage = () => {
       });
     }
   }, []);
+
   return (
     <ThemeContext.Provider value={Colors}>
       <Globalstyle />
