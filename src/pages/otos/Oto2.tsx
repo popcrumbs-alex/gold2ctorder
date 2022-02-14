@@ -37,7 +37,6 @@ const Oto2: FC = () => {
       <Alert />
       <OtoScreen2 />
       <OtoReviews />
-      <BodyTags />
     </Main>
   );
 };
