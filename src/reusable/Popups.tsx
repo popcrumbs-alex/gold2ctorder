@@ -30,6 +30,7 @@ const Popup = styled.div`
   background-color: #fff;
   box-shadow: 0 1px 20px #33333322;
   min-width: 150px;
+  max-width: 300px;
   border-radius: 100px;
   padding: 1rem;
   overflow: hidden;
