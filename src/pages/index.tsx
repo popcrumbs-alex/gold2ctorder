@@ -53,7 +53,6 @@ const IndexPage = () => {
         <Lander />
       </Main>
       <Footer />
-      <BodyTags />
     </ThemeContext.Provider>
   );
 };

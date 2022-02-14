@@ -10,6 +10,7 @@ import Loox from "../../components/reviews/Loox";
 import Alert from "../../components/alert/Alert";
 import { useEffect } from "react";
 import HelmetWrapper from "../layout/HelmetWrapper";
+import BodyTags from "../layout/BodyTags";
 
 declare const window: any;
 

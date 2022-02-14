@@ -47,7 +47,9 @@ const Hero = () => {
     <Container color="#efefef">
       <Content>
         <Heading>We are holding your FREE {title} for</Heading>
-        <Timer />
+        <Timer
+          timeProps={{ hoursProp: "00", minutesProp: "11", secondsProp: "59" }}
+        />
         <SubHeading>
           Simply tell us where to send your order for guaranteed delivery in 5
           days (via USPS): 📦 Items are <span>IN STOCK</span> and{" "}

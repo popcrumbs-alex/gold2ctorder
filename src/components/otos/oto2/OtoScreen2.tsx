@@ -1,10 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
-import {
-  OtoDATA,
-  OtoOptionProps,
-  OTOProps,
-} from "../../../product/ProductData";
+import { OtoDATA, OtoOptionProps } from "../../../product/ProductData";
 import { Link, navigate } from "gatsby";
 import { useAppDispatch } from "../../../hooks/reduxHooks";
 import { addOtoToOrder } from "../../../redux/reducers/order.reducer";

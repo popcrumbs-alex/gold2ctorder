@@ -190,7 +190,9 @@ const OtoScreen = () => {
         <HeadingTwo>
           Click The Button Below To Add To Your Order While Time Remains
         </HeadingTwo>
-        <Timer />
+        <Timer
+          timeProps={{ hoursProp: "00", minutesProp: "09", secondsProp: "59" }}
+        />
         <Image src={OtoDATA[currentOtoIndex].imgOrVideoSrc} alt="product" />
 
         <Button onClick={() => handleAddOTOTToOrder()}>

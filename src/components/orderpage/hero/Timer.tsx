@@ -1,7 +1,5 @@
 import React, { useMemo, useState } from "react";
-import PropTypes from "prop-types";
 import styled from "styled-components";
-import { FC } from "react";
 import { useEffect } from "react";
 
 const Container = styled.div`
@@ -32,12 +30,23 @@ interface Time {
   seconds: string;
 }
 
-const Timer: FC = () => {
+type Props = {
+  timeProps: {
+    hoursProp: string;
+    minutesProp: string;
+    secondsProp: string;
+  };
+};
+
+const Timer = ({ timeProps }: Props) => {
+  const { hoursProp, minutesProp, secondsProp } = timeProps;
+
   const [time, setTimes] = useState<Time>({
-    hours: "00",
-    minutes: "12",
-    seconds: "59",
+    hours: hoursProp || "00",
+    minutes: minutesProp || "12",
+    seconds: secondsProp || "59",
   });
+
   const { hours, minutes, seconds } = time;
 
   useEffect(() => {
@@ -79,7 +88,5 @@ const Timer: FC = () => {
     </Container>
   );
 };
-
-Timer.propTypes = {};
 
 export default Timer;
