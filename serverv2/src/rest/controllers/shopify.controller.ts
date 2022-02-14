@@ -1,7 +1,6 @@
-import { Controller, Get, Inject, Post, Req, Res } from '@nestjs/common';
+import { Controller, Post, Req, Res } from '@nestjs/common';
 import { Request, Response } from 'express';
 import { WebsocketGateway } from 'src/gateways/websockets.gateway';
-import * as ws from 'websocket';
 
 @Controller('Shopify')
 export class ShopifyController {
