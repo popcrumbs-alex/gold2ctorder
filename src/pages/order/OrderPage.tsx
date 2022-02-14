@@ -10,7 +10,7 @@ import Loox from "../../components/reviews/Loox";
 import Alert from "../../components/alert/Alert";
 import { useEffect } from "react";
 import HelmetWrapper from "../layout/HelmetWrapper";
-import BodyTags from "../layout/BodyTags";
+import Popups from "../../reusable/Popups";
 
 declare const window: any;
 
@@ -62,6 +62,7 @@ const OrderPage = () => {
         <Form />
         <Loox />
         <Footer />
+        <Popups />
       </Main>
     </ThemeContext.Provider>
   );
