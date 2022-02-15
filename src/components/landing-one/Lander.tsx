@@ -208,7 +208,7 @@ const BodySection = () => {
   return (
     <>
       <Tag>
-        Jewelers Are Shocked!... A Look-Alike
+        Jewelers Are Shocked!... A Look A-Like
         <br />
         "Diamond" That Fools Even Them
       </Tag>

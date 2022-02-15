@@ -29,8 +29,7 @@ const Popup = styled.div`
   justify-content: center;
   background-color: #fff;
   box-shadow: 0 1px 20px #33333322;
-  min-width: 150px;
-  max-width: 300px;
+  width: 225px;
   border-radius: 100px;
   padding: 1rem;
   overflow: hidden;
@@ -73,14 +72,14 @@ const Name = styled.h4`
 
 const Location = styled.p`
   margin: 0.2rem;
-  font-weight: 100;
+  font-weight: 400;
   color: #666;
   font-size: 0.7rem;
 `;
 
 const Product = styled.p`
-  margin: 0 0.2rem;
-  font-weight: 100;
+  margin: 0.2rem;
+  font-weight: 400;
   color: #666;
   line-height: 1.2;
   font-size: 0.7rem;
@@ -100,7 +99,7 @@ type PopupProps = {
 };
 
 const uri =
-  process.env.NODE_ENV === "production"
+  process.env.NODE_ENV !== "production"
     ? "https://funnel-server.herokuapp.com/"
     : "http://localhost:3000";
 
@@ -143,7 +142,6 @@ const Popups = () => {
     return () => clearTimeout();
   }, [queued]);
 
-  console.log("queued", queued);
   return queued ? (
     <Popup>
       <Content>
@@ -152,7 +150,10 @@ const Popups = () => {
           <Location>from {location}</Location>
         </Row>
         <Row>
-          <Product>Just bought: {product}</Product>
+          <Product>
+            Just bought: {product.substring(0, 60)}
+            {product.length > 60 && "..."}
+          </Product>
         </Row>
         <Row>
           <Time>A few seconds ago.</Time>
