@@ -42,6 +42,7 @@ const NavContent = styled.div`
   @media screen and (max-width: 760px) {
     width: 80%;
     flex-direction: column;
+    align-items: center;
   }
 `;
 
@@ -156,6 +157,10 @@ const Details = styled.div`
   display: flex;
   align-items: center;
 `;
+
+const NavImage = styled.div`
+  max-width: 150px;
+`;
 const Lander = () => {
   const handleNavToNextPage = () => navigate("/order/OrderPage");
 
@@ -163,16 +168,17 @@ const Lander = () => {
     <Section>
       <Nav>
         <NavContent>
-          <StaticImage
-            src="../../images/lululogo.png"
-            alt="logo"
-            placeholder="blurred"
-            objectFit="contain"
-            imgStyle={{
-              width: "100%",
-              maxWidth: "150px",
-            }}
-          />
+          <NavImage>
+            <StaticImage
+              src="../../images/lululogo.png"
+              alt="logo"
+              placeholder="blurred"
+              objectFit="contain"
+              imgStyle={{
+                width: "100%",
+              }}
+            />
+          </NavImage>
           <NavButton onClick={handleNavToNextPage}>
             Congratulations
             <br />
