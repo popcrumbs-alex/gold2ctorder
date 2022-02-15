@@ -48,6 +48,9 @@ const BestDealHeadline = styled.h4`
   width: 100%;
   margin: 0.2rem 0.5rem;
   font-weight: 100;
+  @media screen and (max-width: 760px) {
+    font-weight: 600;
+  }
 `;
 
 const Description = styled.p`
@@ -56,6 +59,11 @@ const Description = styled.p`
   font-size: 0.9rem;
   text-align: start;
   margin: 0 0.5rem;
+  @media screen and (max-width: 760px) {
+    font-weight: 600;
+    line-height: 1.5;
+    font-size: 0.8rem;
+  }
 `;
 const Price = styled.p`
   color: red;
@@ -63,12 +71,22 @@ const Price = styled.p`
   margin: 0;
   font-weight: 100;
   font-size: 0.9rem;
+  @media screen and (max-width: 760px) {
+    font-weight: 600;
+    line-height: 1.5;
+    font-size: 0.8rem;
+  }
 `;
 
 const Text = styled.p`
   font-weight: 700;
   margin: 0.2rem 0;
   color: #999;
+  @media screen and (max-width: 760px) {
+    font-weight: 600;
+    line-height: 1.5;
+    font-size: 0.8rem;
+  }
 `;
 
 const ProductSelector = () => {

@@ -63,6 +63,9 @@ const Button = styled.button`
     color: #666;
     margin-top: 10px;
   }
+  @media screen and (max-width: 760px) {
+    font-size: 1rem;
+  }
 `;
 
 const LoadingContainer = styled.div`

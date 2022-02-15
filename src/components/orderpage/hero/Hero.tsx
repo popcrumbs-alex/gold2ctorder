@@ -25,6 +25,10 @@ const Heading = styled.h1`
   text-align: center;
   margin: 0 0 1rem 0;
   font-size: 2rem;
+  @media screen and (max-width: 760px) {
+    font-size: 1.5rem;
+    line-height: 1.5;
+  }
 `;
 const SubHeading = styled.h4`
   font-weight: 300;
@@ -38,6 +42,11 @@ const SubHeading = styled.h4`
     color: dodgerblue;
     font-weight: 700;
     text-transform: uppercase;
+  }
+  @media screen and (max-width: 760px) {
+    font-size: 1rem;
+    font-weight: 600;
+    margin-top: 1rem;
   }
 `;
 const Hero = () => {

@@ -33,6 +33,7 @@ const Input = styled.input`
   /* Firefox */
 
   -moz-appearance: textfield;
+  font-size: 16px;
 `;
 
 const SelectInput = styled.select`
@@ -41,6 +42,7 @@ const SelectInput = styled.select`
   background: #eee;
   border: 1px solid #ddd;
   margin-top: 5px;
+  font-size: 16px;
 `;
 
 export interface TextInputProps {

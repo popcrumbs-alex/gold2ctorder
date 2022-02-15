@@ -36,6 +36,7 @@ const Popup = styled.div`
   overflow: hidden;
   animation: ${popin} 2s linear forwards;
   transform: translateY(50vh);
+  border: 1px solid #222;
 `;
 
 const PopupHide = styled.div`
@@ -67,29 +68,29 @@ const Name = styled.h4`
   margin: 0.2rem;
   font-weight: 700;
   color: #111;
-  font-size: 0.8rem;
+  font-size: 0.7rem;
 `;
 
 const Location = styled.p`
   margin: 0.2rem;
   font-weight: 100;
   color: #666;
-  font-size: 0.8rem;
+  font-size: 0.7rem;
 `;
 
 const Product = styled.p`
   margin: 0 0.2rem;
   font-weight: 100;
   color: #666;
-  line-height: 1.5;
-  font-size: 0.9rem;
+  line-height: 1.2;
+  font-size: 0.7rem;
 `;
 const Time = styled.p`
   font-weight: 700;
   font-style: italic;
   margin: 0.2rem;
   color: #666;
-  font-size: 0.8rem;
+  font-size: 0.7rem;
 `;
 type PopupProps = {
   name: string;

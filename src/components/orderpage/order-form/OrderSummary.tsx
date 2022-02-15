@@ -51,6 +51,10 @@ const Text = styled.p`
   font-size: 0.9rem;
   text-align: start;
   line-height: 1.5;
+  @media screen and (max-width: 760px) {
+    font-weight: 600;
+    font-size: 0.76rem;
+  }
 `;
 
 const Price = styled.p`
@@ -58,6 +62,10 @@ const Price = styled.p`
   font-size: 0.8rem;
   text-align: end;
   line-height: 1.5;
+  @media screen and (max-width: 760px) {
+    font-weight: 600;
+    font-size: 0.76rem;
+  }
 `;
 
 const Divider = styled.div`

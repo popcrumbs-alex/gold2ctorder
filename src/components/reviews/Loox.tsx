@@ -17,6 +17,9 @@ const Content = styled.div`
 const Heading = styled.h1`
   font-size: 2.5rem;
   text-align: center;
+  @media screen and (max-width: 760px) {
+    font-size: 1.5rem;
+  }
 `;
 
 const Loox = () => {

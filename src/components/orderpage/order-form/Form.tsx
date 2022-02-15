@@ -295,8 +295,9 @@ const Form: FC = () => {
                     width={100}
                   />
                   <Text style={{ lineHeight: "1.5" }}>
-                    All orders ship from the USA via <strong>USPS</strong>{" "}
-                    within
+                    All orders ship from the USA via <strong>USPS</strong>
+                    {` `}
+                    within {` `}
                     <strong>1 business day</strong>. A tracking number will be
                     issued to your email.
                   </Text>

@@ -24,6 +24,7 @@ const Content = styled.div`
   @media screen and (max-width: 760px) {
     width: 90%;
     flex-direction: column;
+    align-items: center;
   }
 `;
 
@@ -56,19 +57,27 @@ const Text = styled.p`
   }
 `;
 
+const ImageContainer = styled.div`
+  max-width: 150px;
+  display: flex;
+  justify-content: center;
+`;
+
 const Nav: FC = () => {
   const context = useContext<Theme>(ThemeContext);
 
   return (
     <NavContainer color={context.main}>
       <Content>
-        <StaticImage
-          src="../../../images/lululogo.png"
-          alt="logo"
-          placeholder="blurred"
-          objectFit="contain"
-          imgStyle={{ width: "100%", maxWidth: "150px" }}
-        />
+        <ImageContainer>
+          <StaticImage
+            src="../../../images/lululogo.png"
+            alt="logo"
+            placeholder="blurred"
+            objectFit="contain"
+            imgStyle={{ width: "100%" }}
+          />
+        </ImageContainer>
         <Column>
           <Heading color={context.text}>Need Support?</Heading>
           <Text color={context.text}>support@lulurosecouture.com</Text>
