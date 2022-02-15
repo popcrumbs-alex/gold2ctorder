@@ -1,10 +1,4 @@
-import React, {
-  Fragment,
-  MutableRefObject,
-  useEffect,
-  useRef,
-  useState,
-} from "react";
+import React, { Fragment, useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import { FC } from "react";
 import { StaticImage } from "gatsby-plugin-image";
@@ -24,6 +18,7 @@ import OrderSummary from "./OrderSummary";
 import SecureOrder from "./SecureOrder";
 import CreditCardForm from "./CreditCardForm";
 import { selectAlert } from "../../../redux/reducers/alert.reducer";
+import AutoComplete from "react-google-autocomplete";
 
 const Container = styled.section`
   display: flex;
@@ -173,6 +168,9 @@ type ShippingState = {
   state: string;
   zip: string;
 };
+
+//key is restricted, SO DONT TRY ANYTHING AYE?
+const mapsApiKey = "AIzaSyD2NMpaoN7Rd2tLFbSPRVVRxeY5C3xcJc8";
 
 const Form: FC = () => {
   const context = useContext<Theme>(ThemeContext);
@@ -445,6 +443,15 @@ const ShippingAddress = ({
       <FormSubHeading>Step #2: Shipping Address</FormSubHeading>
       <Divider />
       <InputSection>
+        {/* <AutoComplete
+          apiKey={mapsApiKey}
+          onPlaceSelected={(place) => {
+            console.log("Place!", place);
+          }}
+          options={{
+            compo
+          }}
+        /> */}
         {DATA.map((input: ContactProp, key: number) => {
           return (
             <Fragment key={key}>
