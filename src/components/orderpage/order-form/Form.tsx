@@ -1,11 +1,18 @@
-import React, { Fragment, useEffect, useRef, useState } from "react";
+import React, {
+  Dispatch,
+  Fragment,
+  SetStateAction,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import styled from "styled-components";
 import { FC } from "react";
 import { StaticImage } from "gatsby-plugin-image";
 import { useContext } from "react";
 import { ThemeContext } from "../../../pages";
 import { Theme } from "../../../constants/Colors";
-import { Select, TextInput } from "../../../reusable/Inputs";
+import { InputSelector } from "../../../reusable/Inputs";
 import states from "../../../reusable/states";
 import OrderBumps from "./OrderBumps";
 import ProductSelector from "./ProductSelector";
@@ -18,7 +25,6 @@ import OrderSummary from "./OrderSummary";
 import SecureOrder from "./SecureOrder";
 import CreditCardForm from "./CreditCardForm";
 import { selectAlert } from "../../../redux/reducers/alert.reducer";
-import AutoComplete from "react-google-autocomplete";
 
 const Container = styled.section`
   display: flex;
@@ -169,9 +175,6 @@ type ShippingState = {
   zip: string;
 };
 
-//key is restricted, SO DONT TRY ANYTHING AYE?
-const mapsApiKey = "AIzaSyD2NMpaoN7Rd2tLFbSPRVVRxeY5C3xcJc8";
-
 const Form: FC = () => {
   const context = useContext<Theme>(ThemeContext);
   //actions
@@ -221,6 +224,8 @@ const Form: FC = () => {
       sectionRef.current.scrollIntoView({ top: 0, behavior: "smooth" });
     }
   }, [alertState.localAlertNames, sectionRef]);
+
+  console.log("customerdata", customerData);
   return (
     <Container ref={sectionRef}>
       <Content>
@@ -255,6 +260,7 @@ const Form: FC = () => {
                 <ShippingAddress
                   customerData={customerData}
                   handleInputChange={handleInputChange}
+                  combineData={combineData}
                 />
                 <Security>
                   <Heading style={{ fontSize: "1.2rem" }}>
@@ -374,7 +380,7 @@ const ContactInfo = ({
       <InputSection>
         {DATA.map((input: ContactProp, key: number) => {
           return (
-            <TextInput
+            <InputSelector
               name={input.name}
               key={key}
               value={input.value}
@@ -383,6 +389,7 @@ const ContactInfo = ({
               type={input.type}
               isRequired={input.isRequired}
               placeholder={input.placeholder}
+              options={null}
             />
           );
         })}
@@ -394,84 +401,117 @@ const ContactInfo = ({
 const ShippingAddress = ({
   customerData,
   handleInputChange,
+  combineData,
 }: {
   handleInputChange: (
     val: React.FormEvent<HTMLInputElement | HTMLSelectElement>
   ) => any;
-} & {
   customerData: ContactState & ShippingState;
+  combineData: Dispatch<SetStateAction<ContactState & ShippingState>>;
 }) => {
   const { address, city, state, zip } = customerData;
 
-  const DATA: Array<ContactProp> = [
-    {
-      name: "address",
-      label: "Full Address",
-      placeholder: "Full Address...",
-      isRequired: true,
-      type: "text",
-      value: address,
-    },
-    {
-      name: "city",
-      label: "City name",
-      placeholder: "City Name...",
-      isRequired: true,
-      type: "text",
-      value: city,
-    },
-    {
-      name: "state",
-      label: "Select State",
-      placeholder: "Select State",
-      isRequired: true,
-      type: "select",
-      value: state,
-    },
-    {
-      name: "zip",
-      label: "Zip Code",
-      placeholder: "Zip Code...",
-      isRequired: true,
-      type: "text",
-      value: zip,
-    },
-  ];
+  const handleReceiveAutoCompleteData = (data) => {
+    if (data?.address_components.length > 0) {
+      const AddressData: { state: string; city: string; zip: string } = {
+        state: "",
+        city: "",
+        zip: "",
+      };
+
+      const formatAddress = (address_piece) => {
+        switch (true) {
+          case address_piece.types.includes("administrative_area_level_1"):
+            return (AddressData.state = address_piece.long_name);
+          case address_piece.types.includes("locality"):
+            return (AddressData.city = address_piece.long_name);
+          case address_piece.types.includes("postal_code"):
+            return (AddressData.zip = address_piece.long_name);
+          case address_piece.types.includes("postal_code_suffix"):
+            return (AddressData.zip =
+              AddressData.zip + "-" + address_piece.long_name);
+          default:
+            return null;
+        }
+      };
+
+      //loop thru provided data from autocomplete in order to format it for  component state data
+      for (let addressPiece of data.address_components) {
+        formatAddress(addressPiece);
+      }
+
+      combineData({
+        ...customerData,
+        address: data.formatted_address,
+        ...AddressData,
+      });
+    }
+  };
+
+  const DATA: Array<ContactProp & { callback: Dispatch<SetStateAction<any>> }> =
+    [
+      {
+        name: "address",
+        label: "Full Address",
+        placeholder: "Full Address...",
+        isRequired: true,
+        type: "autocomplete",
+        value: address,
+        callback: handleReceiveAutoCompleteData,
+      },
+      {
+        name: "city",
+        label: "City name",
+        placeholder: "City Name...",
+        isRequired: true,
+        type: "text",
+        value: city,
+        callback: handleInputChange,
+      },
+      {
+        name: "state",
+        label: "Select State",
+        placeholder: "Select State",
+        isRequired: true,
+        type: "select",
+        value: state,
+        callback: handleInputChange,
+      },
+      {
+        name: "zip",
+        label: "Zip Code",
+        placeholder: "Zip Code...",
+        isRequired: true,
+        type: "text",
+        value: zip,
+        callback: handleInputChange,
+      },
+    ];
 
   return (
     <FormColumn>
       <FormSubHeading>Step #2: Shipping Address</FormSubHeading>
       <Divider />
       <InputSection>
-        {/* <AutoComplete
-          apiKey={mapsApiKey}
-          onPlaceSelected={(place) => {
-            console.log("Place!", place);
-          }}
-          options={{
-            compo
-          }}
-        /> */}
         {DATA.map((input: ContactProp, key: number) => {
           return (
             <Fragment key={key}>
-              {input.type === "text" && input.name !== "zip" && (
-                <TextInput
-                  name={input.name}
-                  value={input.value}
-                  callback={handleInputChange}
-                  label={input.label}
-                  type={input.type}
-                  isRequired={input.isRequired}
-                  placeholder={input.placeholder}
-                />
-              )}
+              <InputSelector
+                name={input.name}
+                value={input.value}
+                callback={handleInputChange}
+                label={input.label}
+                type={input.type}
+                isRequired={input.isRequired}
+                placeholder={input.placeholder}
+                options={null}
+              />
             </Fragment>
           );
         })}
         <InputRow>
           <div style={{ marginRight: "20px", flex: 1 }}>
-            <Select
+            <InputSelector
               name={DATA[2].name}
               value={DATA[2].value}
               callback={handleInputChange}
@@ -483,7 +523,7 @@ const ShippingAddress = ({
             />
           </div>
 
-          <TextInput
+          <InputSelector
             name={DATA[3].name}
             value={DATA[3].value}
             callback={handleInputChange}
@@ -491,6 +531,7 @@ const ShippingAddress = ({
             type={DATA[3].type}
             isRequired={DATA[3].isRequired}
             placeholder={DATA[3].placeholder}
+            options={null}
           />
         </InputRow>
       </InputSection>

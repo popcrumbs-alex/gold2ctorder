@@ -9,6 +9,8 @@ import {
   selectAlert,
 } from "../redux/reducers/alert.reducer";
 
+import AutoComplete from "react-google-autocomplete";
+
 const InputColumn = styled.div`
   display: flex;
   flex-direction: column;
@@ -112,7 +114,6 @@ export const Select = ({
   callback,
   placeholder,
   isRequired,
-  type,
   options,
 }) => {
   const context = useContext<Theme>(ThemeContext);
@@ -154,14 +155,7 @@ export const Select = ({
   );
 };
 
-export const CleaveInput = ({
-  label,
-  name,
-  value,
-  callback,
-  placeholder,
-  isRequired,
-}) => (
+export const CleaveInput = ({ label, value, callback, type, isRequired }) => (
   <InputColumn>
     {label && <Label>{label}</Label>}
     <Cleave
@@ -180,3 +174,84 @@ export const CleaveInput = ({
     />
   </InputColumn>
 );
+
+//key is restricted, SO DONT TRY ANYTHING AYE?
+const mapsApiKey = "AIzaSyD2NMpaoN7Rd2tLFbSPRVVRxeY5C3xcJc8";
+export const AutoCompleteInput = ({ label, callback }) => {
+  return (
+    <InputColumn>
+      {label && <Label>{label}</Label>}
+      <AutoComplete
+        apiKey={mapsApiKey}
+        onPlaceSelected={(place) => callback(place)}
+        options={{
+          types: ["address"],
+          componentRestrictions: { country: "us" },
+        }}
+        style={{
+          padding: "15px",
+          borderRadius: "5px",
+          background: "#eee",
+          border: "1px solid #ddd",
+          marginTop: "5px",
+
+          fontSize: "16px",
+        }}
+      />
+    </InputColumn>
+  );
+};
+
+export const InputSelector = ({
+  label,
+  name,
+  value,
+  callback,
+  placeholder,
+  isRequired,
+  type,
+  options,
+}: TextInputProps & { options: Array<any> }) => {
+  if (type === "text" || "email") {
+    return (
+      <TextInput
+        name={name}
+        value={value}
+        callback={callback}
+        label={label}
+        type={type}
+        isRequired={isRequired}
+        placeholder={placeholder}
+      />
+    );
+  }
+  if (type === "select") {
+    return (
+      <Select
+        name={name}
+        value={value}
+        callback={callback}
+        label={label}
+        isRequired={isRequired}
+        placeholder={placeholder}
+        options={options}
+      />
+    );
+  }
+  if (type === "autocomplete") {
+    return <AutoCompleteInput label={label} callback={callback} />;
+  }
+  if (type === "cleaveinput") {
+    return (
+      <CleaveInput
+        value={value}
+        callback={callback}
+        label={label}
+        type={type}
+        isRequired={isRequired}
+      />
+    );
+  }
+
+  return <p>No input type match</p>;
+};

@@ -12,7 +12,12 @@ const HelmetWrapper = ({
 
   const pathname = location.pathname;
 
-  console.log("current location", pathname === "/otos/Oto1/", pathname);
+  console.log(
+    "current location",
+    pathname === "/otos/Oto1/",
+    pathname,
+    location
+  );
   return (
     <Helmet>
       <title>{pageTitle}</title>

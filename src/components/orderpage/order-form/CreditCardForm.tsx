@@ -9,7 +9,7 @@ import {
   OrderStateProps,
   selectOrderState,
 } from "../../../redux/reducers/order.reducer";
-import { CleaveInput, TextInput } from "../../../reusable/Inputs";
+import { InputSelector } from "../../../reusable/Inputs";
 import { navigate } from "gatsby";
 import LoadingSpinner from "../../loading/LoadingSpinner";
 
@@ -204,18 +204,20 @@ const CreditCardForm = () => {
   return (
     <Container onSubmit={(e) => submitOrder(e)}>
       <Row>
-        <CleaveInput
+        <InputSelector
           label="Credit Card Number*"
           placeholder="Card Number"
           isRequired={true}
           value={creditCardNumber}
           callback={handleCardNumber}
           name="creditCardNumber"
+          type="cleaveinput"
+          options={null}
         />
       </Row>
       <Grid>
         <Column>
-          <TextInput
+          <InputSelector
             label="Expiry*"
             placeholder="MM/YY"
             type="text"
@@ -223,10 +225,11 @@ const CreditCardForm = () => {
             value={expiry}
             callback={handleExpiry}
             name="expiry"
+            options={null}
           />
         </Column>
         <Column>
-          <TextInput
+          <InputSelector
             label="CVC Code*"
             placeholder="123"
             type="text"
@@ -234,6 +237,7 @@ const CreditCardForm = () => {
             value={cvc}
             callback={handleCVC}
             name="cvc"
+            options={null}
           />
         </Column>
       </Grid>
