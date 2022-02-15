@@ -1,14 +1,23 @@
 import * as React from "react";
-import styled, { createGlobalStyle } from "styled-components";
+import styled, { createGlobalStyle, keyframes } from "styled-components";
 import Colors from "../constants/Colors";
 import { useEffect } from "react";
 import Lander from "../components/landing-one/Lander";
 import Footer from "../components/footer.tsx/Footer";
 import HelmetWrapper from "./layout/HelmetWrapper";
-import BodyTags from "./layout/BodyTags";
-import TagManager from "react-gtm-module";
 
-const Main = styled.main``;
+const fadein = keyframes`
+0%{
+  opacity:0;
+}
+100% {
+  opacity:1;
+}`;
+
+const Main = styled.main`
+  opacity: 0;
+  animation: ${fadein} 1s linear forwards;
+`;
 
 export const ThemeContext = React.createContext(Colors);
 

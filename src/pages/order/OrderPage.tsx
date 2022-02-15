@@ -1,5 +1,5 @@
 import * as React from "react";
-import styled, { createGlobalStyle } from "styled-components";
+import styled, { createGlobalStyle, keyframes } from "styled-components";
 import Footer from "../../components/footer.tsx/Footer";
 import Hero from "../../components/orderpage/hero/Hero";
 import Nav from "../../components/orderpage/nav/Nav";
@@ -14,7 +14,18 @@ import Popups from "../../reusable/Popups";
 
 declare const window: any;
 
-const Main = styled.main``;
+const fadein = keyframes`
+0%{
+  opacity:0;
+}
+100% {
+  opacity:1;
+}`;
+
+const Main = styled.main`
+  opacity: 0;
+  animation: ${fadein} 1s linear forwards;
+`;
 
 export const ThemeContext = React.createContext(Colors);
 
