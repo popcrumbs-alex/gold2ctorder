@@ -493,22 +493,27 @@ const ShippingAddress = ({
       <FormSubHeading>Step #2: Shipping Address</FormSubHeading>
       <Divider />
       <InputSection>
-        {DATA.map((input: ContactProp, key: number) => {
-          return (
-            <Fragment key={key}>
-              <InputSelector
-                name={input.name}
-                value={input.value}
-                callback={handleInputChange}
-                label={input.label}
-                type={input.type}
-                isRequired={input.isRequired}
-                placeholder={input.placeholder}
-                options={null}
-              />
-            </Fragment>
-          );
-        })}
+        {DATA.map(
+          (
+            input: ContactProp & { callback: Dispatch<SetStateAction<any>> },
+            key: number
+          ) => {
+            return (
+              <Fragment key={key}>
+                <InputSelector
+                  name={input.name}
+                  value={input.value}
+                  callback={input.callback}
+                  label={input.label}
+                  type={input.type}
+                  isRequired={input.isRequired}
+                  placeholder={input.placeholder}
+                  options={null}
+                />
+              </Fragment>
+            );
+          }
+        ).slice(0, 2)}
         <InputRow>
           <div style={{ marginRight: "20px", flex: 1 }}>
             <InputSelector

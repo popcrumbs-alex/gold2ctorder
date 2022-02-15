@@ -41,7 +41,6 @@ const alertSlice = createSlice({
     },
     removeFormFieldFromErrors: (state, action: PayloadAction<string>) => {
       //remove field error by index
-      console.log("remove me!", action.payload);
       state.localAlertNames = state.localAlertNames.filter(
         (name: string) => name !== action.payload
       );

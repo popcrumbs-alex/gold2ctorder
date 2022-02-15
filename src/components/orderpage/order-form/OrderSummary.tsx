@@ -25,7 +25,7 @@ const ItemAndAmount = styled.p`
 `;
 const Heading = styled.h2`
   text-align: center;
-  font-weight: 300;
+  font-weight: 700;
 `;
 
 const Items = styled.div`
@@ -46,13 +46,12 @@ const Column = styled.div`
 `;
 
 const Text = styled.p`
-  font-weight: 100;
+  font-weight: 600;
   color: #666;
   font-size: 0.9rem;
   text-align: start;
   line-height: 1.5;
   @media screen and (max-width: 760px) {
-    font-weight: 600;
     font-size: 0.76rem;
   }
 `;
@@ -62,8 +61,8 @@ const Price = styled.p`
   font-size: 0.8rem;
   text-align: end;
   line-height: 1.5;
+  font-weight: 600;
   @media screen and (max-width: 760px) {
-    font-weight: 600;
     font-size: 0.76rem;
   }
 `;

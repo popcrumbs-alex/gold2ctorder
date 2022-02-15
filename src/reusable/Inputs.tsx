@@ -1,14 +1,13 @@
 import Cleave from "cleave.js/react";
 import React, { useContext, useEffect, useMemo } from "react";
 import styled from "styled-components";
-import Colors, { Theme } from "../constants/Colors";
+import { Theme } from "../constants/Colors";
 import { useAppDispatch, useAppSelector } from "../hooks/reduxHooks";
 import { ThemeContext } from "../pages";
 import {
   removeFormFieldFromErrors,
   selectAlert,
 } from "../redux/reducers/alert.reducer";
-
 import AutoComplete from "react-google-autocomplete";
 
 const InputColumn = styled.div`
@@ -31,9 +30,6 @@ const Input = styled.input`
     -webkit-appearance: none;
     margin: 0;
   }
-
-  /* Firefox */
-
   -moz-appearance: textfield;
   font-size: 16px;
 `;
@@ -77,13 +73,11 @@ export const TextInput = ({
   const dispatch = useAppDispatch();
 
   //once input value is added, remove errors until next check
-  useMemo(() => {
+  useEffect(() => {
     if (value) {
       dispatch(removeFormFieldFromErrors(name));
     }
   }, [value]);
-
-  // console.log("alert state", alertState, value);
 
   return (
     <InputColumn>
@@ -123,7 +117,7 @@ export const Select = ({
   const dispatch = useAppDispatch();
 
   //once input value is added, remove errors until next check
-  useMemo(() => {
+  useEffect(() => {
     if (value) {
       dispatch(removeFormFieldFromErrors(name));
     }
@@ -212,7 +206,7 @@ export const InputSelector = ({
   type,
   options,
 }: TextInputProps & { options: Array<any> }) => {
-  if (type === "text" || "email") {
+  if (type === "text" || type === "email") {
     return (
       <TextInput
         name={name}
@@ -241,6 +235,7 @@ export const InputSelector = ({
   if (type === "autocomplete") {
     return <AutoCompleteInput label={label} callback={callback} />;
   }
+
   if (type === "cleaveinput") {
     return (
       <CleaveInput
