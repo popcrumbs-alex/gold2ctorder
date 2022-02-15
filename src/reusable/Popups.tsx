@@ -99,7 +99,7 @@ type PopupProps = {
 };
 
 const uri =
-  process.env.NODE_ENV !== "production"
+  process.env.NODE_ENV === "production"
     ? "https://funnel-server.herokuapp.com/"
     : "http://localhost:3000";
 
