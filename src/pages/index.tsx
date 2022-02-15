@@ -6,6 +6,7 @@ import Lander from "../components/landing-one/Lander";
 import Footer from "../components/footer.tsx/Footer";
 import HelmetWrapper from "./layout/HelmetWrapper";
 import BodyTags from "./layout/BodyTags";
+import TagManager from "react-gtm-module";
 
 const Main = styled.main``;
 
@@ -23,10 +24,24 @@ const Globalstyle = createGlobalStyle`
     box-sizing:border-box;
 }`;
 
+declare const window: any;
+
 const IndexPage = () => {
   useEffect(() => {
-    if (window.localStorage.getItem("order_id")) {
-      window.localStorage.removeItem("order_id");
+    if (typeof window !== "undefined") {
+      if (window.localStorage.getItem("order_id")) {
+        window.localStorage.removeItem("order_id");
+      }
+    }
+  }, []);
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      //integrate this everwhere instead
+      if (window.fbq) {
+        console.log(window.fbq);
+        window.fbq("track", "PageView");
+      }
     }
   }, []);
 
@@ -38,7 +53,6 @@ const IndexPage = () => {
         <Lander />
       </Main>
       <Footer />
-      <BodyTags />
     </ThemeContext.Provider>
   );
 };

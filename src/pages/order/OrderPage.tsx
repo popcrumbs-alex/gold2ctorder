@@ -10,6 +10,9 @@ import Loox from "../../components/reviews/Loox";
 import Alert from "../../components/alert/Alert";
 import { useEffect } from "react";
 import HelmetWrapper from "../layout/HelmetWrapper";
+import Popups from "../../reusable/Popups";
+
+declare const window: any;
 
 const Main = styled.main``;
 
@@ -28,9 +31,22 @@ const Globalstyle = createGlobalStyle`
 }`;
 
 const OrderPage = () => {
+  const isBrowser = typeof window !== "undefined";
+
   useEffect(() => {
-    if (window.localStorage.getItem("order_id")) {
-      window.localStorage.removeItem("order_id");
+    if (isBrowser) {
+      if (window?.localStorage.getItem("order_id")) {
+        window?.localStorage.removeItem("order_id");
+      }
+    }
+  }, []);
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      if (window.fbq) {
+        console.log(window.fbq);
+        window.fbq("track", "PageView");
+      }
     }
   }, []);
 
@@ -46,6 +62,7 @@ const OrderPage = () => {
         <Form />
         <Loox />
         <Footer />
+        <Popups />
       </Main>
     </ThemeContext.Provider>
   );

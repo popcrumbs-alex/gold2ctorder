@@ -10,6 +10,8 @@ import {
   selectOrderState,
 } from "../../../redux/reducers/order.reducer";
 
+declare const window: any;
+
 const Container = styled.div`
   display: flex;
   flex-direction: column;
@@ -92,6 +94,14 @@ const ProductSelector = () => {
         isRecurring: ProductSelectorItems[productSelected].isRecurring,
       })
     );
+
+    if (window.fbq) {
+      console.log(window.fbq);
+      window.fbq("track", "AddToCart", {
+        currency: "USD",
+        value: ProductSelectorItems[productSelected].numPrice,
+      });
+    }
   }, [productSelected]);
 
   return (

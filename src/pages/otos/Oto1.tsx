@@ -1,4 +1,4 @@
-import React, { FC } from "react";
+import React, { FC, useEffect } from "react";
 import styled, { createGlobalStyle } from "styled-components";
 import Alert from "../../components/alert/Alert";
 import OtoScreen from "../../components/otos/oto1/OtoScreen";
@@ -7,6 +7,8 @@ import { selectOrderState } from "../../redux/reducers/order.reducer";
 import BodyTags from "../layout/BodyTags";
 import HelmetWrapper from "../layout/HelmetWrapper";
 const Main = styled.main``;
+
+declare const window: any;
 
 const Globalstyle = createGlobalStyle`
     @import url("https://use.typekit.net/wzi3sml.css");
@@ -26,6 +28,15 @@ const Oto1: FC = () => {
   const {
     myOrder: { orderTotal },
   } = orderState;
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      if (window.fbq) {
+        console.log(window.fbq);
+        window.fbq("track", "PageView");
+      }
+    }
+  }, []);
   return (
     <Main>
       <HelmetWrapper

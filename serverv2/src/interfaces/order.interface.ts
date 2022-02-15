@@ -12,6 +12,7 @@ export interface OrderObjectParams {
   }>;
   line_items: Array<{ variant_id: number; quantity: number }>;
   note_attributes: Array<{ name: string; value: string }>;
+  tags: Array<string>;
 }
 
 export interface CustomerType {

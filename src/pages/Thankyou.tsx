@@ -29,7 +29,6 @@ const Thankyou = () => {
         <Alert />
         <ThankyouPage />
       </Main>
-      <BodyTags />
     </ThemeContext.Provider>
   );
 };

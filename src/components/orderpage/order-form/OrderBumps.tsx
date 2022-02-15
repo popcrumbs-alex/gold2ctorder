@@ -12,6 +12,8 @@ import {
 } from "../../../redux/reducers/order.reducer";
 import { AnyAction } from "redux";
 
+declare const window: any;
+
 const Bumps = styled.div`
   display: flex;
   flex-direction: column;
@@ -107,6 +109,15 @@ const BumpComponent = ({
     };
     if (selected) {
       dispatch(addBumpInOrder(selectedBump));
+      //trigger gtm tracking
+
+      if (window.fbq) {
+        console.log(window.fbq);
+        window.fbq("track", "AddToCart", {
+          currency: "USD",
+          value: orderBumps[index].numPrice,
+        });
+      }
     } else {
       dispatch(removeBumpFromOrder(selectedBump));
     }

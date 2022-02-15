@@ -8,6 +8,8 @@ import { config } from 'dotenv';
 import { ScheduleModule } from '@nestjs/schedule';
 import { TaskService } from './services/task.service';
 import { EverflowAPIModule } from './modules/everflowAPI.module';
+import { ShopifyController } from './rest/controllers/shopify.controller';
+import { WebsocketGateway } from './gateways/websockets.gateway';
 
 config();
 @Module({
@@ -40,7 +42,7 @@ config();
       useUnifiedTopology: true,
     }),
   ],
-  controllers: [AppController],
-  providers: [AppService, TaskService],
+  controllers: [AppController, ShopifyController],
+  providers: [AppService, TaskService, WebsocketGateway],
 })
 export class AppModule {}

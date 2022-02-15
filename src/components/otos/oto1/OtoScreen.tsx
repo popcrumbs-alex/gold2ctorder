@@ -16,6 +16,9 @@ import {
   EF_TRACK_ORDER,
   EF_TRACK_UPSELL,
 } from "../../../graphql/mutations/everflow.mutations";
+
+declare const window: any;
+
 const Section = styled.section`
   width: 100%;
   display: flex;
@@ -187,7 +190,9 @@ const OtoScreen = () => {
         <HeadingTwo>
           Click The Button Below To Add To Your Order While Time Remains
         </HeadingTwo>
-        <Timer />
+        <Timer
+          timeProps={{ hoursProp: "00", minutesProp: "09", secondsProp: "59" }}
+        />
         <Image src={OtoDATA[currentOtoIndex].imgOrVideoSrc} alt="product" />
 
         <Button onClick={() => handleAddOTOTToOrder()}>
@@ -219,6 +224,12 @@ const EverflowMutationWrapper = ({ aff_id }: { aff_id: string }) => {
         },
       },
     });
+    if (window.fbq) {
+      window.fbq("track", "Purchase", {
+        currency: "USD",
+        value: orderState.myOrder.orderTotal,
+      });
+    }
   }, []);
 
   return <></>;

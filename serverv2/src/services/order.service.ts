@@ -265,6 +265,7 @@ export class OrderService {
         note_attributes: [
           { name: 'GOLD 2CT ORDER FLOW', value: firstName + lastName },
         ],
+        tags: ['Gold 2ct order flow'],
       };
 
       const shopifyOrder = await this.shopify.createOrder(orderObject);

@@ -28,6 +28,7 @@
     "dangerously-set-html-content": "^1.0.9",
     "gatsby": "^4.5.4",
     "gatsby-plugin-apollo": "^4.0.2",
+    "gatsby-plugin-facebook-pixel": "^1.0.8",
     "gatsby-plugin-google-analytics": "^4.5.0",
     "gatsby-plugin-image": "^2.5.2",
     "gatsby-plugin-manifest": "^4.5.2",
@@ -41,12 +42,14 @@
     "graphql": "^15.8.0",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
+    "react-facebook-pixel": "^1.0.4",
     "react-gtm-module": "^2.0.11",
     "react-helmet": "^6.1.0",
     "react-icons": "^4.3.1",
     "react-redux": "^7.2.6",
     "redux": "^4.1.2",
     "redux-thunk": "^2.4.1",
+    "socket.io-client": "^4.4.1",
     "styled-components": "^5.3.3"
   }
 }

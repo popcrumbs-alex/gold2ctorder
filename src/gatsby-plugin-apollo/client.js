@@ -2,8 +2,7 @@
 import fetch from "isomorphic-fetch";
 import { ApolloClient, createHttpLink, InMemoryCache } from "@apollo/client";
 
-//ssr area
-const uri =
+export const uri =
   process.env.NODE_ENV === "development"
     ? "http://localhost:3000/graphql"
     : "https://funnel-server.herokuapp.com/graphql";
