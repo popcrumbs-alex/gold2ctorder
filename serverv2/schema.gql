@@ -25,6 +25,7 @@ type OrderTypeDef {
   state: String!
   zip: String!
   orderTotal: Float!
+  paypal_transaction_id: String
 }
 
 type OrderResponse {
@@ -61,9 +62,9 @@ type Mutation {
 }
 
 input CreateOrderInput {
-  creditCardNumber: String!
-  expiry: String!
-  cvc: String!
+  creditCardNumber: String
+  expiry: String
+  cvc: String
   firstName: String!
   lastName: String!
   email: String!
@@ -74,6 +75,7 @@ input CreateOrderInput {
   orderTotal: Float!
   products: [ProductInput!]!
   ef_aff_id: String
+  paypal_transaction_id: String
 }
 
 input ProductInput {

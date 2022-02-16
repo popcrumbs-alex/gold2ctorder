@@ -166,7 +166,7 @@ const CreditCardForm = () => {
         expiry: expiry.replace(/\//g, ""),
         cvc: cvc,
       };
-      console.log("ef aff?", ef_aff_id);
+
       const response = await createOrder({
         variables: {
           createOrderInput: {

@@ -77,6 +77,7 @@ export class OrderService {
         expiry,
         cvc,
         ef_aff_id,
+        paypal_transaction_id,
       } = input;
 
       if (products.length === 0) {
@@ -100,46 +101,56 @@ export class OrderService {
         [...products].filter((product: Product) => product.isRecurring).length >
         0;
 
-      console.log('is there a subscription item?', detectASubscriptionItem);
+      console.log('paypal transaction id', paypal_transaction_id);
 
-      //pass to nmi payment gateway service for transaction
-      const paymentRequest = await this.paymentService.authSale({
-        creditCardNumber,
-        cvv: cvc,
-        expiry,
-        firstName,
-        lastName,
-        amount: orderTotal,
-        containsRecurringItem: detectASubscriptionItem,
-      });
-      console.log('payment request', paymentRequest);
-      if (paymentRequest.statusMessage !== 'SUCCESS') {
-        throw new Error(paymentRequest.responseObject);
+      switch (true) {
+        case paypal_transaction_id !== 'undefined':
+          console.log('paypal order');
+          //TODO build out paypal
+          break;
+        default:
+          //pass to nmi payment gateway service for transaction
+          const paymentRequest = await this.paymentService.authSale({
+            creditCardNumber,
+            cvv: cvc,
+            expiry,
+            firstName,
+            lastName,
+            amount: orderTotal,
+            containsRecurringItem: detectASubscriptionItem,
+          });
+          console.log('payment request', paymentRequest);
+          if (paymentRequest.statusMessage !== 'SUCCESS') {
+            throw new Error(paymentRequest.responseObject);
+          }
+
+          const orderStartTime = new Date().toString();
+
+          const newOrder = new this.orderModel({
+            ...input,
+            transactionId: paymentRequest.transactionId,
+            orderStartTime: orderStartTime,
+            ef_aff_id: ef_aff_id ? ef_aff_id : 'non-ef-order',
+            paypal_transaction_id: paypal_transaction_id
+              ? paypal_transaction_id
+              : 'non-paypal-transaction',
+          });
+
+          await newOrder.save();
+
+          await this.customerService.createCustomer({
+            firstName,
+            lastName,
+            email,
+            order: newOrder,
+          });
+
+          return {
+            message: 'Credit card transaction processed',
+            success: true,
+            Order: newOrder,
+          };
       }
-
-      const orderStartTime = new Date().toString();
-
-      const newOrder = new this.orderModel({
-        ...input,
-        transactionId: paymentRequest.transactionId,
-        orderStartTime: orderStartTime,
-        ef_aff_id: ef_aff_id ? ef_aff_id : 'non-ef-order',
-      });
-
-      await newOrder.save();
-
-      await this.customerService.createCustomer({
-        firstName,
-        lastName,
-        email,
-        order: newOrder,
-      });
-
-      return {
-        message: 'Transaction processed',
-        success: true,
-        Order: newOrder,
-      };
     } catch (error) {
       console.log(error);
       return error;

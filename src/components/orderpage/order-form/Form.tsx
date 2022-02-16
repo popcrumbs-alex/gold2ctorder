@@ -25,6 +25,9 @@ import OrderSummary from "./OrderSummary";
 import SecureOrder from "./SecureOrder";
 import CreditCardForm from "./CreditCardForm";
 import { selectAlert } from "../../../redux/reducers/alert.reducer";
+import Paypal from "./Paypal";
+import PaypalLogo from "./PaypalLogo";
+import SelectCreditCard from "./SelectCreditCard";
 
 const Container = styled.section`
   display: flex;
@@ -153,6 +156,14 @@ const ShippingContainer = styled.div`
   border-radius: 15px;
 `;
 
+const PaymentToggler = styled.div`
+  display: flex;
+  flex-direction: column;
+  border: 1px solid #eee;
+  border-radius: 10px;
+  margin: 1rem 0;
+`;
+
 type ContactState = {
   firstName: string;
   lastName: string;
@@ -184,6 +195,11 @@ const Form: FC = () => {
 
   //ref needed to scroll to when an error occurs in the form fields
   const sectionRef = useRef(null);
+
+  //let user choose between paying with credit card or paypal
+  const [paypalOrCreditCard, toggleBetweenCreditCardAndPaypal] = useState<
+    "paypal" | "credit"
+  >("credit");
 
   //combine data across components
   const [customerData, combineData] = useState<ContactState & ShippingState>({
@@ -315,8 +331,34 @@ const Form: FC = () => {
                 {/* small text section */}
                 <Divider />
                 <SecureOrder />
-                {/* credit card form */}
-                <CreditCardForm />
+                <PaymentToggler>
+                  <Text
+                    style={{
+                      marginTop: "-.5rem",
+                      marginLeft: "1.5rem",
+                      fontWeight: "600",
+                      fontSize: "1.1rem",
+                      backgroundColor: "#fff",
+                      alignSelf: "flex-start",
+                      padding: "0 .5rem",
+                    }}
+                  >
+                    Select preferred payment
+                  </Text>
+                  <PaypalLogo
+                    toggle={toggleBetweenCreditCardAndPaypal}
+                    isSelected={paypalOrCreditCard}
+                  />
+                  <SelectCreditCard
+                    toggle={toggleBetweenCreditCardAndPaypal}
+                    isSelected={paypalOrCreditCard}
+                  />
+                </PaymentToggler>
+                {paypalOrCreditCard === "paypal" ? (
+                  <Paypal />
+                ) : (
+                  <CreditCardForm />
+                )}
               </FormContainer>
             </ColumnContent>
           </Column>
@@ -440,11 +482,11 @@ const ShippingAddress = ({
         formatAddress(addressPiece);
       }
 
-      combineData({
-        ...customerData,
-        address: data.formatted_address,
+      combineData((prevState) => ({
+        ...prevState,
         ...AddressData,
-      });
+        address: data.formatted_address,
+      }));
     }
   };
 

@@ -20,11 +20,11 @@ export class ProductInput {
 
 @InputType()
 export class CreateOrderInput {
-  @Field()
+  @Field({ nullable: true })
   creditCardNumber: string;
-  @Field()
+  @Field({ nullable: true })
   expiry: string;
-  @Field()
+  @Field({ nullable: true })
   cvc: string;
   @Field()
   firstName: string;
@@ -46,6 +46,8 @@ export class CreateOrderInput {
   products: ProductInput[];
   @Field({ nullable: true })
   ef_aff_id: string;
+  @Field({ nullable: true })
+  paypal_transaction_id: string | undefined;
 }
 
 @InputType()

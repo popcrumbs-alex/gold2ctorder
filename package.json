@@ -16,6 +16,7 @@
   },
   "dependencies": {
     "@apollo/client": "^3.3.21",
+    "@paypal/react-paypal-js": "^7.6.0",
     "@reduxjs/toolkit": "^1.7.1",
     "@types/cleave.js": "^1.4.6",
     "@types/isomorphic-fetch": "^0.0.35",

@@ -44,4 +44,6 @@ export class OrderTypeDef {
   zip: string;
   @Field()
   orderTotal: number;
+  @Field({ nullable: true })
+  paypal_transaction_id: string | undefined;
 }
