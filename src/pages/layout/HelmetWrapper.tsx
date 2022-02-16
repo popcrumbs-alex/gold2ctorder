@@ -43,10 +43,7 @@ fbq('init', '355361339685041');
         async={true}
         src={`//loox.io/widget/loox.js?shop=luciana-rose-couture.myshopify.com`}
       ></script>
-      <script
-        async={true}
-        src="https://www.poptrkr.com/scripts/sdk/everflow.js"
-      />
+      <script src="https://www.poptrkr.com/scripts/sdk/everflow.js" />
       <script>{`
       if(EF !== 'undefined') if (!EF.getTransactionId(EF.urlParameter('oid')) || EF.urlParameter('_ef_transaction_id')) {
     EF.click({
