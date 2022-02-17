@@ -15,7 +15,7 @@ type ProductType {
 type OrderTypeDef {
   _id: String!
   shopifyOrderId: String!
-  transactionId: String!
+  transactionId: String
   firstName: String!
   lastName: String!
   email: String!

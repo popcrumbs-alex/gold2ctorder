@@ -1,21 +1,23 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
 import { useAppDispatch, useAppSelector } from "../../../hooks/reduxHooks";
 import {
+  addOrderToStorage,
   ProductProp,
   selectOrderState,
 } from "../../../redux/reducers/order.reducer";
 import { setAlert } from "../../../redux/reducers/alert.reducer";
 import { useMutation } from "@apollo/client";
 import { CREATE_ORDER } from "../../../graphql/mutations/order.mutation";
+import { navigate } from "gatsby";
+import LoadingSpinner from "../../loading/LoadingSpinner";
 
 const Paypal = () => {
   const orderState = useAppSelector(selectOrderState);
 
   const dispatch = useAppDispatch();
 
-  const [createPaypalOrder, { error, loading, data }] =
-    useMutation(CREATE_ORDER);
+  const [createPaypalOrder, { error, loading }] = useMutation(CREATE_ORDER);
 
   const handlePaypalOrder = async (data_from_paypal: any) => {
     const formattedAddress: any = {
@@ -40,12 +42,31 @@ const Paypal = () => {
           },
         },
       });
-      console.log("response from api?", request);
+      if (request.data.createOrder.success) {
+        dispatch(addOrderToStorage({ id: request.data.createOrder.Order._id }));
+        //on successful order go to next page
+        navigate("/otos/Oto1");
+      }
     } catch (error) {
       console.error(error);
       return error;
     }
   };
+
+  //if theres an error porcessing order, send alert to redux store
+  useEffect(() => {
+    if (error) {
+      dispatch(setAlert({ message: error.message, type: "danger" }));
+    }
+  }, [error]);
+
+  if (loading) {
+    return (
+      <div style={{ display: "flex", alignItems: "center" }}>
+        <LoadingSpinner /> <p>Processing paypal order...</p>
+      </div>
+    );
+  }
 
   return (
     <PayPalScriptProvider

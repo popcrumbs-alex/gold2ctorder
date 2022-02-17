@@ -331,7 +331,7 @@ const Form: FC = () => {
                 {/* small text section */}
                 <Divider />
                 <SecureOrder />
-                <PaymentToggler>
+                {/* <PaymentToggler>
                   <Text
                     style={{
                       marginTop: "-.5rem",
@@ -353,12 +353,13 @@ const Form: FC = () => {
                     toggle={toggleBetweenCreditCardAndPaypal}
                     isSelected={paypalOrCreditCard}
                   />
-                </PaymentToggler>
-                {paypalOrCreditCard === "paypal" ? (
+                </PaymentToggler> */}
+                {/* {paypalOrCreditCard === "paypal" ? (
                   <Paypal />
                 ) : (
                   <CreditCardForm />
-                )}
+                )} */}
+                <CreditCardForm />
               </FormContainer>
             </ColumnContent>
           </Column>
@@ -455,14 +456,26 @@ const ShippingAddress = ({
 
   const handleReceiveAutoCompleteData = (data) => {
     if (data?.address_components.length > 0) {
-      const AddressData: { state: string; city: string; zip: string } = {
+      const AddressData: {
+        state: string;
+        city: string;
+        zip: string;
+        address: string;
+      } = {
+        address: "",
         state: "",
         city: "",
         zip: "",
       };
+      console.log("data", data);
 
       const formatAddress = (address_piece) => {
         switch (true) {
+          case address_piece.types.includes("street_number"):
+            return (AddressData.address = address_piece.long_name);
+          case address_piece.types.includes("route"):
+            return (AddressData.address =
+              AddressData.address + " " + address_piece.long_name);
           case address_piece.types.includes("administrative_area_level_1"):
             return (AddressData.state = address_piece.long_name);
           case address_piece.types.includes("locality"):
@@ -485,7 +498,6 @@ const ShippingAddress = ({
       combineData((prevState) => ({
         ...prevState,
         ...AddressData,
-        address: data.formatted_address,
       }));
     }
   };

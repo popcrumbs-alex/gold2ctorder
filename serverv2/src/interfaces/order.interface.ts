@@ -29,7 +29,6 @@ export interface ShippingAddress {
   country_code: string;
   country_name: string;
   company: string;
-
   first_name: string;
   last_name: string;
   name: string;

@@ -19,6 +19,7 @@ import { Order, OrderDocument, Product } from 'src/mongo/schemas/order.model';
 import { PaymentService } from './payment.service';
 import { ShopifyService } from './shopify.service';
 import { CustomerService } from './customer.service';
+import states from 'src/reusable/states';
 
 @Injectable()
 export class OrderService {
@@ -90,7 +91,7 @@ export class OrderService {
           throw new Error(`A ${inputElement} is required`);
         }
       }
-
+      console.log('paypal transataction dsifsf', paypal_transaction_id);
       ///////////////////////////////////////////////////////////////////////
       const productPrices = products.map((product: Product) => product.price);
 
@@ -101,14 +102,36 @@ export class OrderService {
         [...products].filter((product: Product) => product.isRecurring).length >
         0;
 
-      console.log('paypal transaction id', paypal_transaction_id);
+      const orderStartTime = new Date().toString();
 
       switch (true) {
-        case paypal_transaction_id !== 'undefined':
-          console.log('paypal order');
-          //TODO build out paypal
-          break;
+        case paypal_transaction_id !== undefined:
+          const newPaypalOrder = new this.orderModel({
+            ...input,
+            transactionId: 'paypal-order',
+            orderStartTime: orderStartTime,
+            ef_aff_id: ef_aff_id ? ef_aff_id : 'non-ef-order',
+            paypal_transaction_id: paypal_transaction_id
+              ? paypal_transaction_id
+              : 'non-paypal-transaction',
+          });
+
+          await newPaypalOrder.save();
+
+          await this.customerService.createCustomer({
+            firstName,
+            lastName,
+            email,
+            order: newPaypalOrder,
+          });
+
+          return {
+            message: 'Paypal Order Created',
+            success: true,
+            Order: newPaypalOrder,
+          };
         default:
+          console.log('nmi payment');
           //pass to nmi payment gateway service for transaction
           const paymentRequest = await this.paymentService.authSale({
             creditCardNumber,
@@ -123,8 +146,6 @@ export class OrderService {
           if (paymentRequest.statusMessage !== 'SUCCESS') {
             throw new Error(paymentRequest.responseObject);
           }
-
-          const orderStartTime = new Date().toString();
 
           const newOrder = new this.orderModel({
             ...input,
@@ -187,6 +208,16 @@ export class OrderService {
       await foundOrder.save();
 
       console.log('updated order', foundOrder.products);
+
+      //
+      // switch (true) {
+      //   case foundOrder.transactionId === 'paypal-order':
+      //     return {
+      //       message: 'Updated paypal order',
+      //       success: true,
+      //       Order: foundOrder,
+      //     };
+      // }
       //step 3 update transaction auth amount in payment gatewat
       const updateTransaction = await this.paymentService.updateTransaction({
         updatedOrderTotal: newOrderTotal,
@@ -234,6 +265,12 @@ export class OrderService {
         orderTotal,
       } = foundOrder;
 
+      console.log('found order', foundOrder);
+
+      const provinceCode = await this.matchAddressStateWithCode(state);
+
+      console.log('province cocde', provinceCode);
+
       //Create shopify specific order objects
       const customer: CustomerType = {
         first_name: firstName,
@@ -254,7 +291,7 @@ export class OrderService {
         name: firstName + ' ' + lastName,
         phone: '',
         province: state,
-        province_code: '',
+        province_code: provinceCode || '',
         zip,
       };
       //Create shopify specific order objects
@@ -307,5 +344,15 @@ export class OrderService {
       console.error(error);
       return error;
     }
+  }
+
+  async matchAddressStateWithCode(stateAddress: string) {
+    return states
+      .map((stateObj: { name: string; abbreviation: string }) =>
+        stateObj.name.toLowerCase() === stateAddress.toLowerCase()
+          ? stateObj.abbreviation
+          : false,
+      )
+      .filter(Boolean)[0];
   }
 }

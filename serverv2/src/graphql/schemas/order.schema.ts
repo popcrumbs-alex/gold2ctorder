@@ -24,7 +24,7 @@ export class OrderTypeDef {
   _id: string;
   @Field()
   shopifyOrderId: string;
-  @Field()
+  @Field({ nullable: true })
   transactionId: string;
   @Field()
   firstName: string;
@@ -45,5 +45,5 @@ export class OrderTypeDef {
   @Field()
   orderTotal: number;
   @Field({ nullable: true })
-  paypal_transaction_id: string | undefined;
+  paypal_transaction_id: string;
 }

@@ -179,7 +179,7 @@ export const AutoCompleteInput = ({ label, callback }) => {
         apiKey={mapsApiKey}
         onPlaceSelected={(place) => callback(place)}
         options={{
-          types: ["address"],
+          types: ["geocode"],
           componentRestrictions: { country: "us" },
         }}
         style={{
@@ -188,7 +188,6 @@ export const AutoCompleteInput = ({ label, callback }) => {
           background: "#eee",
           border: "1px solid #ddd",
           marginTop: "5px",
-
           fontSize: "16px",
         }}
       />
