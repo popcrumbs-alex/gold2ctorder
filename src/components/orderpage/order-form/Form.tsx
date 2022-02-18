@@ -18,6 +18,7 @@ import OrderBumps from "./OrderBumps";
 import ProductSelector from "./ProductSelector";
 import { useAppDispatch, useAppSelector } from "../../../hooks/reduxHooks";
 import {
+  selectOrderState,
   updateContactInfo,
   updateShippingInfo,
 } from "../../../redux/reducers/order.reducer";
@@ -193,6 +194,8 @@ const Form: FC = () => {
 
   const alertState = useAppSelector(selectAlert);
 
+  const orderState = useAppSelector(selectOrderState);
+
   //ref needed to scroll to when an error occurs in the form fields
   const sectionRef = useRef(null);
 
@@ -331,7 +334,7 @@ const Form: FC = () => {
                 {/* small text section */}
                 <Divider />
                 <SecureOrder />
-                {/* <PaymentToggler>
+                <PaymentToggler>
                   <Text
                     style={{
                       marginTop: "-.5rem",
@@ -353,13 +356,16 @@ const Form: FC = () => {
                     toggle={toggleBetweenCreditCardAndPaypal}
                     isSelected={paypalOrCreditCard}
                   />
-                </PaymentToggler> */}
-                {/* {paypalOrCreditCard === "paypal" ? (
-                  <Paypal />
+                </PaymentToggler>
+                {paypalOrCreditCard === "paypal" ? (
+                  <Paypal
+                    orderTotal={orderState.myOrder.orderTotal}
+                    nextPage={"/otos/Oto1"}
+                    items={orderState.myOrder.products}
+                  />
                 ) : (
                   <CreditCardForm />
-                )} */}
-                <CreditCardForm />
+                )}
               </FormContainer>
             </ColumnContent>
           </Column>

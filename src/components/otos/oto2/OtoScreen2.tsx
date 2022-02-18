@@ -151,6 +151,8 @@ const OtoScreen2 = () => {
   const [currentOtoIndex, setCurrentOtoIndex] = useState<number>(1);
 
   const [ringGuideVisibility, toggleVisibility] = useState<boolean>(false);
+
+  const [orderType, setOrderType] = useState<"paypal" | "credit" | "">("");
   //ref needed to scroll to top
   const ref = useRef(null);
 
@@ -235,6 +237,13 @@ const OtoScreen2 = () => {
     }
   }, [error]);
 
+  //order type is imperrative for determining checkout process button
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      setOrderType(window.localStorage.getItem("orderType"));
+    }
+  }, []);
+
   if (loading) {
     return (
       <Section>
@@ -245,7 +254,7 @@ const OtoScreen2 = () => {
       </Section>
     );
   }
-
+  //TODO figure this out for paypal
   return (
     <Section>
       <Header>

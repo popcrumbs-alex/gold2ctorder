@@ -11,10 +11,19 @@ import { useMutation } from "@apollo/client";
 import { CREATE_ORDER } from "../../../graphql/mutations/order.mutation";
 import { navigate } from "gatsby";
 import LoadingSpinner from "../../loading/LoadingSpinner";
+import { PayPalButton } from "react-paypal-button-v2";
 
-const Paypal = () => {
+const Paypal = ({
+  orderTotal,
+  nextPage,
+  items,
+}: {
+  orderTotal: number;
+  nextPage: string;
+  items: ProductProp[];
+}) => {
   const orderState = useAppSelector(selectOrderState);
-
+  console.log("order total", orderTotal);
   const dispatch = useAppDispatch();
 
   const [createPaypalOrder, { error, loading }] = useMutation(CREATE_ORDER);
@@ -32,20 +41,25 @@ const Paypal = () => {
     };
     // console.log("formatted addy", data_from_paypal);
     try {
+      //dynamically add order total for component reuse
       const request = await createPaypalOrder({
         variables: {
           createOrderInput: {
             ...formattedAddress,
             products: [...orderState.myOrder.products],
-            orderTotal: orderState.myOrder.orderTotal,
+            orderTotal,
             paypal_transaction_id: data_from_paypal.id,
+            orderType: "paypal",
           },
         },
       });
+      //set type in storage for otos
+      window.localStorage.setItem("orderType", "paypal");
+
       if (request.data.createOrder.success) {
         dispatch(addOrderToStorage({ id: request.data.createOrder.Order._id }));
         //on successful order go to next page
-        navigate("/otos/Oto1");
+        navigate(nextPage);
       }
     } catch (error) {
       console.error(error);
@@ -67,89 +81,82 @@ const Paypal = () => {
       </div>
     );
   }
-
+  //TODO add paypal button for each oto????
   return (
-    <PayPalScriptProvider
+    <PayPalButton
+      style={{ layout: "horizontal" }}
       options={{
-        "client-id":
+        clientId:
           "ASyQ9pmZvoxvuzRZxVYCh44dHTljctKvuh_DqYwOkM0iM_2WcQv3s8HA1Ebu15hPINO7JIgfsYBar2Bt",
-        intent: "authorize",
+        disableFunding: "card",
+        intent: "capture",
       }}
-    >
-      <PayPalButtons
-        style={{ layout: "horizontal" }}
-        forceReRender={[
-          orderState.myOrder.products,
-          orderState.myOrder.orderTotal,
-        ]}
-        fundingSource={"paypal"}
-        createOrder={(data, actions) => {
-          return actions.order.create({
-            purchase_units: [
-              {
-                amount: {
-                  currency_code: "USD",
-                  value: orderState.myOrder.orderTotal.toFixed(2).toString(),
-                  breakdown: {
-                    item_total: {
-                      /* Required when including the `items` array */
-                      currency_code: "USD",
-                      value: orderState.myOrder.orderTotal
-                        .toFixed(2)
-                        .toString(),
-                    },
+      amount={orderState.myOrder.orderTotal.toFixed(2).toString()}
+      createOrder={(data, actions) => {
+        return actions.order.create({
+          purchase_units: [
+            {
+              amount: {
+                currency_code: "USD",
+                value: orderTotal.toFixed(2).toString(),
+                breakdown: {
+                  item_total: {
+                    /* Required when including the `items` array */
+                    currency_code: "USD",
+                    value: orderTotal.toFixed(2).toString(),
                   },
                 },
-                shipping: {
-                  name: {
-                    full_name: `${orderState.myOrder.contactInfo.firstName} ${orderState.myOrder.contactInfo.lastName}`,
-                  },
-                  address: {
-                    address_line_1: orderState.myOrder.shippingInfo.address,
-                    country_code: "US",
-                    admin_area_2: orderState.myOrder.shippingInfo.city,
-                    postal_code: orderState.myOrder.shippingInfo.zip,
-                  },
+              },
+              shipping: {
+                name: {
+                  full_name: `${orderState.myOrder.contactInfo.firstName} ${orderState.myOrder.contactInfo.lastName}`,
                 },
-                items: orderState.myOrder.products
-                  .map((product: ProductProp) => {
-                    return {
-                      name: product.title,
-                      unit_amount: {
-                        currency_code: "USD",
-                        value: product.price.toFixed(2).toString(),
-                      },
-                      quantity: "1",
-                    };
-                  })
-                  .concat({
-                    name: "Shipping",
+                address: {
+                  address_line_1: orderState.myOrder.shippingInfo.address,
+                  country_code: "US",
+                  admin_area_2: orderState.myOrder.shippingInfo.city,
+                  postal_code: orderState.myOrder.shippingInfo.zip,
+                },
+              },
+              items: items
+                .map((product: ProductProp) => {
+                  return {
+                    name: product.title,
                     unit_amount: {
-                      value: "0.00",
                       currency_code: "USD",
+                      value: product.price.toFixed(2).toString(),
                     },
                     quantity: "1",
-                  }),
-              },
-            ],
-          });
-        }}
-        onError={(error) => {
-          console.log("paypal error", error);
-          return dispatch(
-            setAlert({
-              type: "danger",
-              message: typeof error === "string" ? error : "",
-            })
-          );
-        }}
-        onApprove={(data, actions) => {
-          return actions.order.authorize().then((response) => {
-            handlePaypalOrder(response);
-          });
-        }}
-      />
-    </PayPalScriptProvider>
+                  };
+                })
+                .concat({
+                  name: "Shipping",
+                  unit_amount: {
+                    value: "0.00",
+                    currency_code: "USD",
+                  },
+                  quantity: "1",
+                }),
+            },
+          ],
+        });
+      }}
+      onError={(error) => {
+        console.log("paypal error", error);
+        return dispatch(
+          setAlert({
+            type: "danger",
+            message: typeof error === "string" ? error : "Paypal error",
+          })
+        );
+      }}
+      onApprove={(data, actions) => {
+        return actions.order.capture().then((response) => {
+          console.log("appreove response", response);
+          handlePaypalOrder(response);
+        });
+      }}
+    />
   );
 };
 

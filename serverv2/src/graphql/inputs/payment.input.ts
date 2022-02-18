@@ -7,3 +7,11 @@ export class UpdateTransactionInput {
   @Field()
   updatedOrderTotal: number;
 }
+
+@InputType()
+export class UpdatePaypalOrderInput {
+  @Field()
+  paypal_order_id: string;
+  @Field()
+  itemAmount: number;
+}

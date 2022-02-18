@@ -46,4 +46,6 @@ export class OrderTypeDef {
   orderTotal: number;
   @Field({ nullable: true })
   paypal_transaction_id: string;
+  @Field(() => String, { nullable: true })
+  orderType: 'paypal' | 'credit';
 }

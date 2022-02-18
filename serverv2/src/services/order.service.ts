@@ -20,6 +20,7 @@ import { PaymentService } from './payment.service';
 import { ShopifyService } from './shopify.service';
 import { CustomerService } from './customer.service';
 import states from 'src/reusable/states';
+import axios from 'axios';
 
 @Injectable()
 export class OrderService {
@@ -79,6 +80,7 @@ export class OrderService {
         cvc,
         ef_aff_id,
         paypal_transaction_id,
+        orderType,
       } = input;
 
       if (products.length === 0) {
@@ -104,8 +106,19 @@ export class OrderService {
 
       const orderStartTime = new Date().toString();
 
-      switch (true) {
-        case paypal_transaction_id !== undefined:
+      //TODO create orders in shopify automatically for paypal
+      switch (orderType) {
+        case 'paypal':
+          //capture payment with paypal
+          // const paypalCaptureRequest =
+          //   await this.paymentService.capturePaypalOrder({
+          //     orderID: paypal_transaction_id,
+          //     amount: orderTotal,
+          //   });
+
+          // if (!paypalCaptureRequest.success)
+          //   throw new Error(paypalCaptureRequest.message);
+
           const newPaypalOrder = new this.orderModel({
             ...input,
             transactionId: 'paypal-order',
@@ -114,6 +127,8 @@ export class OrderService {
             paypal_transaction_id: paypal_transaction_id
               ? paypal_transaction_id
               : 'non-paypal-transaction',
+            orderType: 'paypal',
+            status: 'closed',
           });
 
           await newPaypalOrder.save();
@@ -130,7 +145,7 @@ export class OrderService {
             success: true,
             Order: newPaypalOrder,
           };
-        default:
+        case 'credit':
           console.log('nmi payment');
           //pass to nmi payment gateway service for transaction
           const paymentRequest = await this.paymentService.authSale({
@@ -149,6 +164,7 @@ export class OrderService {
 
           const newOrder = new this.orderModel({
             ...input,
+            orderType: 'credit',
             transactionId: paymentRequest.transactionId,
             orderStartTime: orderStartTime,
             ef_aff_id: ef_aff_id ? ef_aff_id : 'non-ef-order',
@@ -171,6 +187,12 @@ export class OrderService {
             success: true,
             Order: newOrder,
           };
+        default:
+          return {
+            message: 'Could not create an order',
+            success: false,
+            Order: null,
+          };
       }
     } catch (error) {
       console.log(error);
@@ -183,57 +205,80 @@ export class OrderService {
     try {
       const { product, orderId } = updateOrderInput;
 
+      //for paypal, look for previous order to indicate next order will also be a paypal order
       //Step 1 find order in db
       const foundOrder = await this.orderModel.findById(orderId);
 
       if (!foundOrder) throw new Error('Could not locate a current order');
 
-      //if order exceeds time limit, prevent updating a closed order.
-      //This is a temporary fix, possibly create new order instead?
-      if (foundOrder.status === 'closed')
-        throw new Error('Can not update a closed order');
+      //multiple payment gateway options
+      switch (foundOrder.orderType) {
+        case 'paypal':
+          //Need to create a whole new order object for dumb paypal
+          console.log('creating a new paypal order');
 
-      //add new product to current product array
-      const currentProductPrices = [...foundOrder.products, product].map(
-        (product: Product) => product.price,
-      );
+          //need to authorize new order for paypal
+          const paypalPaymentRequest =
+            await this.paymentService.createNewPaypalOrder({
+              paypal_order_id: foundOrder.paypal_transaction_id,
+              itemAmount: product.price,
+            });
+          //create new order in db
 
-      //Step 2 update transaction amount
-      const newOrderTotal = this.calculateOrderTotal(currentProductPrices);
-      //now add product to db
-      foundOrder.products = [...foundOrder.products, product];
+          if (!paypalPaymentRequest.success) {
+            throw new Error('Paypal order creation unsuccessful');
+          }
 
-      foundOrder.orderTotal = newOrderTotal;
-      //save in order to get current product total
-      await foundOrder.save();
+          //then save the updated order in db
+          return {
+            message: 'Updated paypal order',
+            success: true,
+            Order: foundOrder,
+          };
+        case 'credit':
+          //if order exceeds time limit, prevent updating a closed order.
+          //This is a temporary fix, possibly create new order instead?
+          if (foundOrder.status === 'closed')
+            throw new Error('Can not update a closed order');
 
-      console.log('updated order', foundOrder.products);
+          //add new product to current product array
+          const currentProductPrices = [...foundOrder.products, product].map(
+            (product: Product) => product.price,
+          );
 
-      //
-      // switch (true) {
-      //   case foundOrder.transactionId === 'paypal-order':
-      //     return {
-      //       message: 'Updated paypal order',
-      //       success: true,
-      //       Order: foundOrder,
-      //     };
-      // }
-      //step 3 update transaction auth amount in payment gatewat
-      const updateTransaction = await this.paymentService.updateTransaction({
-        updatedOrderTotal: newOrderTotal,
-        transactionId: Number(foundOrder.transactionId),
-      });
+          //Step 2 update transaction amount
+          const newOrderTotal = this.calculateOrderTotal(currentProductPrices);
+          //now add product to db
+          foundOrder.products = [...foundOrder.products, product];
 
-      if (!updateTransaction.newTransactionId)
-        throw new Error('Transaction id does not exist');
-      //the new transaction auth returns a new transactionid
-      foundOrder.transactionId = updateTransaction.newTransactionId;
-      //save the transaction id to the db
-      await foundOrder.save();
+          foundOrder.orderTotal = newOrderTotal;
+          //save in order to get current product total
+          await foundOrder.save();
 
-      console.log('updated transaction', updateTransaction);
+          console.log('updated order', foundOrder.products);
+          //step 3 update transaction auth amount in payment gatewat
+          const updateTransaction = await this.paymentService.updateTransaction(
+            {
+              updatedOrderTotal: newOrderTotal,
+              transactionId: Number(foundOrder.transactionId),
+            },
+          );
 
-      return { message: 'Hello', success: true, Order: foundOrder };
+          if (!updateTransaction.newTransactionId)
+            throw new Error('Transaction id does not exist');
+          //the new transaction auth returns a new transactionid
+          foundOrder.transactionId = updateTransaction.newTransactionId;
+          //save the transaction id to the db
+          await foundOrder.save();
+
+          console.log('updated transaction', updateTransaction);
+
+          return {
+            message: 'Updated a credit transaction',
+            success: true,
+            Order: foundOrder,
+          };
+      }
     } catch (error) {
       console.error(error);
       return error;
@@ -316,30 +361,37 @@ export class OrderService {
         tags: ['Gold 2ct order flow'],
       };
 
-      const shopifyOrder = await this.shopify.createOrder(orderObject);
+      switch (foundOrder.orderType) {
+        case 'paypal':
+          return {
+            message: 'Payment captured successfully',
+            success: true,
+            Order: foundOrder,
+          };
+        case 'credit':
+          const closePaymentRequest = await this.paymentService.captureSale(
+            Number(foundOrder.transactionId),
+          );
+          console.log('payment capture response', closePaymentRequest);
+          if (closePaymentRequest.statusMessage !== 'SUCCESS')
+            throw new Error('Error capturing transaction');
 
-      if (shopifyOrder) {
-        foundOrder.shopifyOrderId = shopifyOrder.id;
-        foundOrder.status = 'closed';
+          const shopifyOrder = await this.shopify.createOrder(orderObject);
+
+          if (shopifyOrder) {
+            foundOrder.shopifyOrderId = shopifyOrder.id;
+            foundOrder.status = 'closed';
+          }
+
+          foundOrder.status = 'closed';
+
+          await foundOrder.save();
+          return {
+            message: 'Payment captured successfully',
+            success: true,
+            Order: foundOrder,
+          };
       }
-
-      const closePaymentRequest = await this.paymentService.captureSale(
-        Number(foundOrder.transactionId),
-      );
-
-      console.log('payment capture response', closePaymentRequest);
-      if (closePaymentRequest.statusMessage !== 'SUCCESS')
-        throw new Error('Error capturing transaction');
-
-      foundOrder.status = 'closed';
-
-      await foundOrder.save();
-
-      return {
-        message: 'Payment captured successfully',
-        success: true,
-        Order: foundOrder,
-      };
     } catch (error) {
       console.error(error);
       return error;
@@ -349,7 +401,8 @@ export class OrderService {
   async matchAddressStateWithCode(stateAddress: string) {
     return states
       .map((stateObj: { name: string; abbreviation: string }) =>
-        stateObj.name.toLowerCase() === stateAddress.toLowerCase()
+        stateObj.name.toLowerCase() === stateAddress.toLowerCase() ||
+        stateObj.abbreviation.toLowerCase() === stateAddress.toLowerCase()
           ? stateObj.abbreviation
           : false,
       )

@@ -40,6 +40,7 @@ export type OrderStateProps = {
     shippingInfo: ShippingProps;
     cardInfo: CardProps;
     otos: Array<ProductProp>;
+    orderType: "paypal" | "credit" | "";
   };
 };
 
@@ -69,6 +70,7 @@ const initialState: OrderStateProps = {
       expiry: null,
       cvc: null,
     },
+    orderType: "",
   },
 };
 

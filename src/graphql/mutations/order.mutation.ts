@@ -13,6 +13,7 @@ export const CREATE_ORDER = gql`
         orderTotal
         _id
         transactionId
+        orderType
         products {
           displayPrice
           price

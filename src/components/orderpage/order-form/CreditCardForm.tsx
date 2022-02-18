@@ -176,6 +176,7 @@ const CreditCardForm = () => {
             orderTotal: orderState.myOrder.orderTotal,
             ...cardInfo,
             ef_aff_id: ef_aff_id ? ef_aff_id : "non-ef-order",
+            orderType: "credit",
           },
         },
       });

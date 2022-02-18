@@ -16,6 +16,7 @@ import {
   EF_TRACK_ORDER,
   EF_TRACK_UPSELL,
 } from "../../../graphql/mutations/everflow.mutations";
+import Paypal from "../../orderpage/order-form/Paypal";
 
 declare const window: any;
 
@@ -93,13 +94,17 @@ const OtoScreen = () => {
 
   const dispatch = useAppDispatch();
 
+  const orderState = useAppSelector(selectOrderState);
+
+  const [orderType, setOrderType] = useState<"paypal" | "credit" | "">("");
+
   const [updateOrder, { error, data, loading }] = useMutation(UPDATE_ORDER);
 
   //Everflow tracking api endpoint
   const [trackUpsell] = useMutation(EF_TRACK_UPSELL);
 
   //TODO Pass order into storage to continue order processing
-  const handleAddOTOTToOrder = async () => {
+  const handleAddOTOToOrder = async () => {
     const currentOrderId = localStorage.getItem("order_id");
     try {
       dispatch(
@@ -159,6 +164,13 @@ const OtoScreen = () => {
     }
   }, [error]);
 
+  //getting an order type is required for loading specific checkout buttons
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      setOrderType(window.localStorage.getItem("orderType"));
+    }
+  }, []);
+
   if (loading) {
     return (
       <Section>
@@ -194,10 +206,36 @@ const OtoScreen = () => {
           timeProps={{ hoursProp: "00", minutesProp: "09", secondsProp: "59" }}
         />
         <Image src={OtoDATA[currentOtoIndex].imgOrVideoSrc} alt="product" />
-
-        <Button onClick={() => handleAddOTOTToOrder()}>
-          YES! Add The 1CT Gold Studs For Only $10 <span>Click Only Once</span>
-        </Button>
+        {/* set conditional for paypal button & other payments */}
+        {
+          {
+            paypal: (
+              <Paypal
+                orderTotal={OtoDATA[currentOtoIndex].numPrice}
+                nextPage={"/otos/Oto2"}
+                items={[
+                  {
+                    ...OtoDATA[currentOtoIndex],
+                    price: OtoDATA[currentOtoIndex].numPrice,
+                    isRecurring: false,
+                  },
+                ]}
+              />
+            ),
+            credit: (
+              <Button onClick={() => handleAddOTOToOrder()}>
+                YES! Add The 1CT Gold Studs For Only $10{" "}
+                <span>Click Only Once</span>
+              </Button>
+            ),
+            "": (
+              <Button onClick={() => handleAddOTOToOrder()}>
+                YES! Add The 1CT Gold Studs For Only $10{" "}
+                <span>Click Only Once</span>
+              </Button>
+            ),
+          }[orderType]
+        }
 
         <Link to="/otos/Oto2">No thanks I don't need this now</Link>
       </Content>

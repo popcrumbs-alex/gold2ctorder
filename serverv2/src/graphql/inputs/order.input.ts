@@ -26,6 +26,8 @@ export class CreateOrderInput {
   expiry: string;
   @Field({ nullable: true })
   cvc: string;
+  @Field(() => String)
+  orderType: 'paypal' | 'credit';
   @Field()
   firstName: string;
   @Field()

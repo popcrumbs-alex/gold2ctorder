@@ -43,6 +43,8 @@ export class Order {
   ef_aff_id: string;
   @Prop({ default: 'not-a-paypal-order' })
   paypal_transaction_id: string;
+  @Prop()
+  orderType: string;
 }
 
 export type OrderDocument = Order & Document;

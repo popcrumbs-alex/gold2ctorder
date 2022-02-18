@@ -5,7 +5,11 @@ import {
 } from 'src/interfaces/payment.interface';
 import axios from 'axios';
 import { config } from 'dotenv';
-import { UpdateTransactionInput } from 'src/graphql/inputs/payment.input';
+import {
+  UpdatePaypalOrderInput,
+  UpdateTransactionInput,
+} from 'src/graphql/inputs/payment.input';
+import { PaypalOrderUpdateResponse } from 'src/graphql/responses/payment.response';
 
 config();
 
@@ -215,6 +219,139 @@ export class PaymentService {
     } catch (error) {
       console.error(error);
       return error;
+    }
+  }
+
+  async capturePaypalOrder({
+    orderID,
+    amount,
+  }: {
+    orderID: string;
+    amount: number;
+  }): Promise<PaypalOrderUpdateResponse> {
+    try {
+      const authorization = await this.paypalAuthRequest();
+
+      const paypalRequest = await axios({
+        url: `${process.env.PAYPAL_URL}/v2/checkout/orders/${orderID}/authorize`,
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${authorization.response}`,
+        },
+        data: {
+          intent: 'CAPTURE',
+          purchase_units: [
+            {
+              amount: {
+                currency_code: 'USD',
+                value: amount.toFixed(2).toString(),
+              },
+            },
+          ],
+        },
+      });
+      console.log('paypal order capture', paypalRequest);
+      return {
+        message: 'Captured paypal order',
+        success: true,
+        paypal_transaction_id: '',
+      };
+    } catch (error) {
+      console.error('error', error);
+      return {
+        message: error,
+        success: false,
+        paypal_transaction_id: '',
+      };
+    }
+  }
+  //TODO pretty sure paypal will not allow for an order update, will most likely have to create a new order every purchase
+  async createNewPaypalOrder(
+    input: UpdatePaypalOrderInput,
+  ): Promise<PaypalOrderUpdateResponse> {
+    try {
+      const { itemAmount, paypal_order_id } = input;
+
+      console.log('auth thsikdd', process.env.PAYPAL_SECRET);
+
+      const authorization = await this.paypalAuthRequest();
+
+      if (!authorization.success) throw new Error(authorization.message);
+
+      console.log('auth!', authorization);
+      const paypalRequest = await axios({
+        url: `${process.env.PAYPAL_URL}/v2/checkout/orders`,
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${authorization.response}`,
+        },
+        data: {
+          intent: 'CAPTURE',
+          purchase_units: [
+            {
+              amount: {
+                currency_code: 'USD',
+                value: itemAmount.toFixed(2).toString(),
+              },
+            },
+          ],
+        },
+      });
+      console.log('paypal update successfull', paypalRequest.data);
+
+      return {
+        message: 'Paypal Order Update Successful',
+        success: true,
+        paypal_transaction_id: paypalRequest.data.id,
+      };
+    } catch (error) {
+      console.error(error);
+      return {
+        message: 'Error updating paypal order',
+        success: false,
+        paypal_transaction_id: '',
+      };
+    }
+  }
+
+  async paypalAuthRequest(): Promise<{
+    message: string;
+    success: boolean;
+    response: any;
+  }> {
+    try {
+      const authRequest = await axios({
+        url: `${process.env.PAYPAL_URL}/v1/oauth2/token`,
+        method: 'POST',
+        headers: {
+          Accept: 'application/json',
+          'Accept-Language': 'en_US',
+          'content-type': 'application/x-www-form-urlencoded',
+        },
+        auth: {
+          username:
+            'ASyQ9pmZvoxvuzRZxVYCh44dHTljctKvuh_DqYwOkM0iM_2WcQv3s8HA1Ebu15hPINO7JIgfsYBar2Bt',
+          password: process.env.PAYPAL_SECRET,
+        },
+        params: {
+          grant_type: 'client_credentials',
+        },
+      });
+
+      return {
+        message: 'Successful paypal auth',
+        success: true,
+        response: authRequest.data.access_token,
+      };
+    } catch (error) {
+      console.error(error);
+      return {
+        message: 'Could not get authorization',
+        success: false,
+        response: error,
+      };
     }
   }
 }
