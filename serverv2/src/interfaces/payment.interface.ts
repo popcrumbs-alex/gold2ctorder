@@ -6,6 +6,7 @@ export interface PaymentSaleOptions {
   cvv: string;
   amount: number;
   containsRecurringItem: boolean;
+  email: string;
 }
 
 export interface RecurringPaymentOptions extends PaymentSaleOptions {

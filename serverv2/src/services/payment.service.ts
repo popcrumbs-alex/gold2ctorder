@@ -6,10 +6,17 @@ import {
 import axios from 'axios';
 import { config } from 'dotenv';
 import {
+  CreatePaypalProductInput,
+  GetPaypalProductInput,
   UpdatePaypalOrderInput,
   UpdateTransactionInput,
 } from 'src/graphql/inputs/payment.input';
-import { PaypalOrderUpdateResponse } from 'src/graphql/responses/payment.response';
+import {
+  CreatePaypalProductResponse,
+  CreatePaypalSubscriptionPlanResponse,
+  GetPaypalProductResponse,
+  PaypalOrderUpdateResponse,
+} from 'src/graphql/responses/payment.response';
 
 config();
 
@@ -96,11 +103,12 @@ export class PaymentService {
       expiry,
       amount,
       containsRecurringItem,
+      email,
     } = saleInput;
 
     try {
       const saleResponse = await axios({
-        url: `${this.nmiAPIString}security_key=${process.env.NMI_KEY}&type=auth&ccnumber=${creditCardNumber}&ccexp=${expiry}&first_name=${firstName}&last_name=${lastName}&amount=${amount}&cvv=${cvv}`,
+        url: `${this.nmiAPIString}security_key=${process.env.NMI_KEY}&type=auth&ccnumber=${creditCardNumber}&ccexp=${expiry}&first_name=${firstName}&last_name=${lastName}&amount=${amount}&cvv=${cvv}&email=${email}`,
         method: 'POST',
         headers: {
           'Content-Type': 'application/x-www-form-urlencoded',
@@ -321,6 +329,83 @@ export class PaymentService {
       };
     }
   }
+
+  async createPaypalProduct(
+    input: CreatePaypalProductInput,
+  ): Promise<CreatePaypalProductResponse> {
+    try {
+      const authorization = await this.paypalAuthRequest();
+
+      const createProductRequest = await axios({
+        method: 'POST',
+        url: `${
+          process.env.NODE_ENV === 'production'
+            ? process.env.PAYPAL_LIVE_URL
+            : process.env.PAYPAL_URL
+        }
+/v1/catalogs/products`,
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${authorization.response}`,
+        },
+        data: {
+          ...input,
+        },
+      });
+
+      return {
+        message: 'Successfully created product in paypal',
+        success: true,
+        product: createProductRequest.data,
+      };
+    } catch (error) {
+      console.error(error);
+      return error;
+    }
+  }
+
+  async getPaypalProduct(
+    input: GetPaypalProductInput,
+  ): Promise<GetPaypalProductResponse> {
+    try {
+      const { productId } = input;
+      const authorization = await this.paypalAuthRequest();
+
+      const productRequest = await axios({
+        method: 'GET',
+        url: `${
+          process.env.NODE_ENV === 'production'
+            ? process.env.PAYPAL_LIVE_URL
+            : process.env.PAYPAL_URL
+        }/v1/catalogs/products/${productId}`,
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${authorization.response}`,
+        },
+      });
+
+      return {
+        message: 'Found a paypal product',
+        success: true,
+        product: productRequest.data,
+      };
+    } catch (error) {
+      console.error(error);
+      return error;
+    }
+  }
+
+  // async createPaypalSubscriptionPlan(): Promise<CreatePaypalSubscriptionPlanResponse> {
+  //   try {
+  //     const authReguest = await this.paypalAuthRequest();
+
+  //     // const createPlanRequest = await axios({
+  //     //   headers: {
+  //     //     "Free 2CT Gold Pendant With Insiders Club"
+  //     //   }
+  //     // })
+  //   } catch (error) {}
+  // }
 
   async paypalAuthRequest(): Promise<{
     message: string;

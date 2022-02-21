@@ -1,4 +1,5 @@
 import { Module } from '@nestjs/common';
+import { PaymentResolver } from 'src/graphql/resolvers/payment.resolver';
 import { PaymentService } from 'src/services/payment.service';
 
 const paymentFactory = {
@@ -9,7 +10,7 @@ const paymentFactory = {
 };
 
 @Module({
-  providers: [paymentFactory, PaymentService],
+  providers: [paymentFactory, PaymentService, PaymentResolver],
   exports: ['PAYMENT', PaymentService],
 })
 export class PaymentModule {}

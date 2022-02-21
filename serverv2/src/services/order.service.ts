@@ -149,6 +149,7 @@ export class OrderService {
             firstName,
             lastName,
             amount: orderTotal,
+            email,
             containsRecurringItem: detectASubscriptionItem,
           });
           console.log('payment request', paymentRequest);

@@ -107,6 +107,15 @@ const Paypal = ({
         intent: "capture",
       }}
       amount={orderState.myOrder.orderTotal.toFixed(2).toString()}
+      createSubscription={(data, actions) => {
+        if (
+          orderState.myOrder.products.filter(
+            (product: ProductProp) => product.isRecurring
+          )[0]
+        ) {
+          console.log("there is a subscription item");
+        }
+      }}
       createOrder={(data, actions) => {
         return actions.order.create({
           purchase_units: [

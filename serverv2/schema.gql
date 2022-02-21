@@ -2,6 +2,31 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
+type PaypalProduct {
+  id: String
+  name: String!
+  description: String
+  type: String
+  category: String
+  image_url: String
+  home_url: String
+  create_time: String
+  update_time: String
+  links: [String!]
+}
+
+type CreatePaypalProductResponse {
+  message: String!
+  success: Boolean!
+  product: PaypalProduct!
+}
+
+type GetPaypalProductResponse {
+  message: String!
+  success: Boolean!
+  product: PaypalProduct!
+}
+
 type ProductType {
   sku: String!
   price: Float!
@@ -48,16 +73,22 @@ type EverflowOrderTrackResponse {
 
 type Query {
   findOrder(findOrderInput: FindOrderInput!): OrderResponse!
+  getPaypalProduct(input: GetPaypalProductInput!): GetPaypalProductResponse!
 }
 
 input FindOrderInput {
   id: String!
 }
 
+input GetPaypalProductInput {
+  productId: String!
+}
+
 type Mutation {
   createOrder(createOrderInput: CreateOrderInput!): OrderResponse!
   updateOrder(updateOrderInput: UpdateOrderInput!): OrderResponse!
   closeOrder(closeOrderInput: CloseOrderInput!): OrderResponse!
+  createPaypalProduct(input: CreatePaypalProductInput!): CreatePaypalProductResponse!
   trackOrder(everflowOrderInput: EverflowOrderTrackInput!): EverflowOrderTrackResponse!
   trackUpsell(everflowOrderInput: EverflowOrderTrackInput!): EverflowOrderTrackResponse!
 }
@@ -97,6 +128,15 @@ input UpdateOrderInput {
 
 input CloseOrderInput {
   orderId: String!
+}
+
+input CreatePaypalProductInput {
+  name: String!
+  description: String
+  type: String!
+  category: String
+  image_url: String
+  home_url: String
 }
 
 input EverflowOrderTrackInput {
