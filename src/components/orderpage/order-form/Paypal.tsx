@@ -29,20 +29,34 @@ const Paypal = ({
   const [createPaypalOrder, { error, loading }] = useMutation(CREATE_ORDER);
 
   const handlePaypalOrder = async (data_from_paypal: any) => {
+    //populate address with state incase paypal doesnt provide necessary data
     const formattedAddress: any = {
-      email: data_from_paypal.payer.email_address,
-      firstName: data_from_paypal.payer.name.given_name,
-      lastName: data_from_paypal.payer.name.surname,
+      email:
+        data_from_paypal.payer.email_address ||
+        orderState.myOrder.contactInfo.email,
+      firstName:
+        data_from_paypal.payer.name.given_name ||
+        orderState.myOrder.contactInfo.firstName,
+      lastName:
+        data_from_paypal.payer.name.surname ||
+        orderState.myOrder.contactInfo.lastName,
       address:
-        data_from_paypal.purchase_units[0].shipping.address.address_line_1,
-      city: data_from_paypal.purchase_units[0].shipping.address.admin_area_2,
-      state: data_from_paypal.purchase_units[0].shipping.address.admin_area_1,
-      zip: data_from_paypal.purchase_units[0].shipping.address.postal_code,
+        data_from_paypal.purchase_units[0].shipping.address.address_line_1 ||
+        orderState.myOrder.shippingInfo.address,
+      city:
+        data_from_paypal.purchase_units[0].shipping.address.admin_area_2 ||
+        orderState.myOrder.shippingInfo.city,
+      state:
+        data_from_paypal.purchase_units[0].shipping.address.admin_area_1 ||
+        orderState.myOrder.shippingInfo.state,
+      zip:
+        data_from_paypal.purchase_units[0].shipping.address.postal_code ||
+        orderState.myOrder.shippingInfo.zip,
     };
     // console.log("formatted addy", data_from_paypal);
     try {
       //dynamically add order total for component reuse
-      console.log("items", items);
+      console.log("other data", formattedAddress);
       const request = await createPaypalOrder({
         variables: {
           createOrderInput: {
@@ -63,7 +77,7 @@ const Paypal = ({
         navigate(nextPage);
       }
     } catch (error) {
-      console.error(error);
+      console.error("error", error, error.message);
       return error;
     }
   };
