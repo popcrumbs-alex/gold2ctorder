@@ -106,19 +106,11 @@ export class OrderService {
 
       const orderStartTime = new Date().toString();
 
-      //TODO create orders in shopify automatically for paypal
+      //NOTE: must create new orders in shopify for each paypal payment
       switch (orderType) {
         case 'paypal':
-          //capture payment with paypal
-          // const paypalCaptureRequest =
-          //   await this.paymentService.capturePaypalOrder({
-          //     orderID: paypal_transaction_id,
-          //     amount: orderTotal,
-          //   });
-
-          // if (!paypalCaptureRequest.success)
-          //   throw new Error(paypalCaptureRequest.message);
-
+          console.log('paypal order');
+          //create a new order for every paypal order, each oto is a new order
           const newPaypalOrder = new this.orderModel({
             ...input,
             transactionId: 'paypal-order',
@@ -128,17 +120,19 @@ export class OrderService {
               ? paypal_transaction_id
               : 'non-paypal-transaction',
             orderType: 'paypal',
-            status: 'closed',
           });
 
           await newPaypalOrder.save();
-
+          //add the order to customer if it exists
           await this.customerService.createCustomer({
             firstName,
             lastName,
             email,
             order: newPaypalOrder,
           });
+
+          //send the order to shopify
+          await this.closeOrder({ orderId: newPaypalOrder._id.toString() });
 
           return {
             message: 'Paypal Order Created',
@@ -199,6 +193,7 @@ export class OrderService {
       return error;
     }
   }
+
   async updateOrder(
     updateOrderInput: UpdateOrderInput,
   ): Promise<OrderResponse> {
@@ -310,7 +305,7 @@ export class OrderService {
         orderTotal,
       } = foundOrder;
 
-      console.log('found order', foundOrder);
+      console.log('found order', foundOrder.orderType, foundOrder);
 
       const provinceCode = await this.matchAddressStateWithCode(state);
 
@@ -358,11 +353,24 @@ export class OrderService {
         note_attributes: [
           { name: 'GOLD 2CT ORDER FLOW', value: firstName + lastName },
         ],
-        tags: ['Gold 2ct order flow'],
+        tags: ['Gold 2ct order flow', foundOrder.orderType],
       };
 
       switch (foundOrder.orderType) {
         case 'paypal':
+          const newShopifyPaypalOrder = await this.shopify.createOrder(
+            orderObject,
+          );
+
+          if (!newShopifyPaypalOrder)
+            throw new Error('Could not create an order in shopify');
+
+          if (newShopifyPaypalOrder) {
+            foundOrder.shopifyOrderId = newShopifyPaypalOrder.id;
+            foundOrder.status = 'closed';
+            await foundOrder.save();
+          }
+
           return {
             message: 'Payment captured successfully',
             success: true,

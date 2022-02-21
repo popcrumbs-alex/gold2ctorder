@@ -42,11 +42,12 @@ const Paypal = ({
     // console.log("formatted addy", data_from_paypal);
     try {
       //dynamically add order total for component reuse
+      console.log("items", items);
       const request = await createPaypalOrder({
         variables: {
           createOrderInput: {
             ...formattedAddress,
-            products: [...orderState.myOrder.products],
+            products: items,
             orderTotal,
             paypal_transaction_id: data_from_paypal.id,
             orderType: "paypal",
@@ -87,7 +88,7 @@ const Paypal = ({
       style={{ layout: "horizontal" }}
       options={{
         clientId:
-          "ASyQ9pmZvoxvuzRZxVYCh44dHTljctKvuh_DqYwOkM0iM_2WcQv3s8HA1Ebu15hPINO7JIgfsYBar2Bt",
+          "AaXUIuu5MJJZH8XPBvC0zOYDKCn8V_jpr8mnApb05gva4Zd2UIgkdlv1-SltcOcdtiZmr4PhGO4aw1bQ",
         disableFunding: "card",
         intent: "capture",
       }}
@@ -109,34 +110,39 @@ const Paypal = ({
               },
               shipping: {
                 name: {
-                  full_name: `${orderState.myOrder.contactInfo.firstName} ${orderState.myOrder.contactInfo.lastName}`,
+                  full_name:
+                    `${orderState.myOrder.contactInfo.firstName} ${orderState.myOrder.contactInfo.lastName}` ||
+                    "",
                 },
                 address: {
-                  address_line_1: orderState.myOrder.shippingInfo.address,
+                  address_line_1: orderState.myOrder.shippingInfo.address || "",
                   country_code: "US",
-                  admin_area_2: orderState.myOrder.shippingInfo.city,
-                  postal_code: orderState.myOrder.shippingInfo.zip,
+                  admin_area_2: orderState.myOrder.shippingInfo.city || "",
+                  postal_code: orderState.myOrder.shippingInfo.zip || "",
                 },
               },
-              items: items
-                .map((product: ProductProp) => {
-                  return {
-                    name: product.title,
-                    unit_amount: {
-                      currency_code: "USD",
-                      value: product.price.toFixed(2).toString(),
-                    },
-                    quantity: "1",
-                  };
-                })
-                .concat({
-                  name: "Shipping",
-                  unit_amount: {
-                    value: "0.00",
-                    currency_code: "USD",
-                  },
-                  quantity: "1",
-                }),
+              items:
+                items.length > 0
+                  ? items
+                      .map((product: ProductProp) => {
+                        return {
+                          name: product.title,
+                          unit_amount: {
+                            currency_code: "USD",
+                            value: product.price.toFixed(2).toString(),
+                          },
+                          quantity: "1",
+                        };
+                      })
+                      .concat({
+                        name: "Shipping",
+                        unit_amount: {
+                          value: "0.00",
+                          currency_code: "USD",
+                        },
+                        quantity: "1",
+                      })
+                  : [],
             },
           ],
         });
@@ -146,7 +152,8 @@ const Paypal = ({
         return dispatch(
           setAlert({
             type: "danger",
-            message: typeof error === "string" ? error : "Paypal error",
+            message:
+              typeof error === "string" ? error : "Paypal error:" + error,
           })
         );
       }}

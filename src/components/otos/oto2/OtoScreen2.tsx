@@ -10,6 +10,8 @@ import { setAlert } from "../../../redux/reducers/alert.reducer";
 import LoadingSpinner from "../../loading/LoadingSpinner";
 import { StaticImage } from "gatsby-plugin-image";
 import { EF_TRACK_UPSELL } from "../../../graphql/mutations/everflow.mutations";
+import { InputSelector } from "../../../reusable/Inputs";
+import Paypal from "../../orderpage/order-form/Paypal";
 
 declare const window: any;
 
@@ -58,9 +60,16 @@ const Subheading = styled.h3`
   color: #fff;
 `;
 
-const HeadingTwo = styled.h2`
-  font-weight: 100;
-  color: #666;
+const ContinueBox = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`;
+
+const Text = styled.p`
+  color: #fff;
+  text-align: center;
+  font-weight: 500;
 `;
 
 const Button = styled.button`
@@ -100,15 +109,6 @@ const Divider = styled.div`
   background-color: #999;
 `;
 
-const Options = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  max-width: 70%;
-  margin-top: 2rem;
-  justify-content: center;
-  gap: 3rem;
-`;
 const AddSizebutton = styled.button`
   border-radius: 120px;
   border: 2px solid #fff;
@@ -117,6 +117,7 @@ const AddSizebutton = styled.button`
   transition: all 0.3s ease-in-out;
   padding: 0.5rem 1rem;
   font-size: 1.2rem;
+  margin-top: 0.5rem;
   &:hover {
     cursor: pointer;
     background-color: #fff;
@@ -132,7 +133,7 @@ const ToggleButton = styled.button`
   transition: all 0.3s ease-in-out;
   padding: 0.5rem 1rem;
   font-size: 1.2rem;
-  margin: 2rem 0;
+  margin: 3rem 0 0 0;
   &:hover {
     cursor: pointer;
     background-color: #d748cd99;
@@ -152,7 +153,13 @@ const OtoScreen2 = () => {
 
   const [ringGuideVisibility, toggleVisibility] = useState<boolean>(false);
 
-  const [orderType, setOrderType] = useState<"paypal" | "credit" | "">("");
+  const [ringSizeSelected, selectRingSize] = useState<string>("");
+
+  const [ringOptionSelected, selectRingOption] = useState<OtoOptionProps>(null);
+
+  const [orderType, setOrderType] = useState<"paypal" | "credit" | "">(
+    "credit"
+  );
   //ref needed to scroll to top
   const ref = useRef(null);
 
@@ -169,7 +176,18 @@ const OtoScreen2 = () => {
   const scrollToSizes = () =>
     ref?.current.scrollIntoView({ top: 0, behavior: "smooth" });
 
-  const handleAddOTOTToOrder = async (oto: OtoOptionProps) => {
+  const handleSelectRingSize = (e: React.FormEvent<HTMLSelectElement>) => {
+    const foundOption = OtoDATA[currentOtoIndex].options.filter(
+      (option: OtoOptionProps) => option.name === e.currentTarget.value
+    );
+    console.log("option", foundOption[0], orderType);
+    //set local state for text based ring size
+    selectRingSize(e.currentTarget.value);
+    //set the option selection in storage
+    selectRingOption(foundOption[0]);
+  };
+
+  const handleAddOTOToOrder = async (oto: OtoOptionProps) => {
     const currentOrderId = localStorage.getItem("order_id");
     try {
       dispatch(
@@ -214,7 +232,6 @@ const OtoScreen2 = () => {
       }
 
       if (window.fbq) {
-        console.log("Add To Cart", window.fbq);
         window.fbq("track", "AddToCart", {
           currency: "USD",
           value: oto.numPrice,
@@ -240,7 +257,10 @@ const OtoScreen2 = () => {
   //order type is imperrative for determining checkout process button
   useEffect(() => {
     if (typeof window !== "undefined") {
-      setOrderType(window.localStorage.getItem("orderType"));
+      //only set type if params are set and not empty
+      if (window.localStorage.getItem("orderType") !== null) {
+        setOrderType(window.localStorage.getItem("orderType"));
+      } else setOrderType("credit");
     }
   }, []);
 
@@ -254,7 +274,6 @@ const OtoScreen2 = () => {
       </Section>
     );
   }
-  //TODO figure this out for paypal
   return (
     <Section>
       <Header>
@@ -285,23 +304,56 @@ const OtoScreen2 = () => {
           <span> New Reduced Price $38</span>
         </Heading>
         <Subheading ref={ref}>(Originally $129.95)</Subheading>
-        {/* this page should have ring sizes */}
-        {OtoDATA[currentOtoIndex].options && (
-          <Options>
-            {OtoDATA[currentOtoIndex].options.map(
-              (option: OtoOptionProps, key: number) => {
-                return (
-                  <AddSizebutton
-                    key={key}
-                    onClick={() => handleAddOTOTToOrder(option)}
-                  >
-                    Add Size {option.ring_size}
-                  </AddSizebutton>
-                );
-              }
-            )}
-          </Options>
-        )}
+
+        <InputSelector
+          label="Select A Ring Size"
+          options={OtoDATA[currentOtoIndex].options}
+          name="ringSizeSelected"
+          value={ringSizeSelected}
+          callback={handleSelectRingSize}
+          placeholder="Select a ring size"
+          isRequired={true}
+          type="select"
+          labelStyle={{
+            color: "#fff",
+            fontWeight: "700",
+            fontSize: "2rem",
+            marginTop: "2rem",
+            textAlign: "center",
+          }}
+          inputStyle={{ width: "400px" }}
+        />
+        {ringSizeSelected &&
+          {
+            credit: (
+              <AddSizebutton
+                onClick={() => handleAddOTOToOrder(ringOptionSelected)}
+              >
+                Yes I want the {OtoDATA[currentOtoIndex].title} in size{" "}
+                {ringOptionSelected.name}
+              </AddSizebutton>
+            ),
+            paypal: (
+              <ContinueBox>
+                <Text>Continue With Paypal</Text>
+                <Paypal
+                  orderTotal={ringOptionSelected.numPrice}
+                  nextPage={"/Thankyou"}
+                  items={[
+                    {
+                      price: ringOptionSelected.numPrice,
+                      title: `${OtoDATA[currentOtoIndex].title} size:${ringOptionSelected.name}`,
+                      isRecurring: false,
+                      sku: ringOptionSelected.sku,
+                      id: ringOptionSelected.id,
+                      type: "OTO",
+                      displayPrice: ringOptionSelected.displayPrice,
+                    },
+                  ]}
+                />
+              </ContinueBox>
+            ),
+          }[orderType]}
 
         <ToggleButton onClick={() => toggleVisibility(!ringGuideVisibility)}>
           Don't know your ring size? Click here to find out

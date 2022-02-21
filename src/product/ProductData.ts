@@ -139,6 +139,7 @@ export type OtoOptionProps = {
   id: number;
   ring_size: string;
   type: string;
+  name: string;
 };
 
 export const OtoDATA: Array<OTOProps> = [
@@ -170,6 +171,7 @@ export const OtoDATA: Array<OTOProps> = [
         id: 4354929885284,
         ring_size: "5",
         type: "OTO",
+        name: "5",
       },
       {
         sku: "slvrbngr-6",
@@ -178,6 +180,7 @@ export const OtoDATA: Array<OTOProps> = [
         id: 4354929885284,
         ring_size: "6",
         type: "OTO",
+        name: "6",
       },
       {
         sku: "slvrbngr-7",
@@ -186,6 +189,7 @@ export const OtoDATA: Array<OTOProps> = [
         id: 4354929885284,
         ring_size: "7",
         type: "OTO",
+        name: "7",
       },
       {
         sku: "slvrbngr-8",
@@ -194,6 +198,7 @@ export const OtoDATA: Array<OTOProps> = [
         id: 4354929885284,
         ring_size: "8",
         type: "OTO",
+        name: "8",
       },
       {
         sku: "slvrbngr-9",
@@ -202,6 +207,7 @@ export const OtoDATA: Array<OTOProps> = [
         id: 4354929885284,
         ring_size: "9",
         type: "OTO",
+        name: "9",
       },
       {
         sku: "slvrbngr-10",
@@ -210,6 +216,7 @@ export const OtoDATA: Array<OTOProps> = [
         id: 4354929885284,
         ring_size: "10",
         type: "OTO",
+        name: "10",
       },
       {
         sku: "slvrbngr-65",
@@ -218,6 +225,7 @@ export const OtoDATA: Array<OTOProps> = [
         id: 4354929885284,
         ring_size: "6.5",
         type: "OTO",
+        name: "6.5",
       },
       {
         sku: "slvrbngr-75",
@@ -226,6 +234,7 @@ export const OtoDATA: Array<OTOProps> = [
         id: 4354929885284,
         ring_size: "7.5",
         type: "OTO",
+        name: "7.5",
       },
       {
         sku: "slvrbngr-85",
@@ -234,6 +243,7 @@ export const OtoDATA: Array<OTOProps> = [
         id: 4354929885284,
         ring_size: "8.5",
         type: "OTO",
+        name: "8.5",
       },
       {
         sku: "slvrbngr-95",
@@ -242,6 +252,7 @@ export const OtoDATA: Array<OTOProps> = [
         id: 4354929885284,
         ring_size: "9.5",
         type: "OTO",
+        name: "9.5",
       },
     ],
   },

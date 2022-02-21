@@ -49,6 +49,9 @@ const OrderPage = () => {
       if (window?.localStorage.getItem("order_id")) {
         window?.localStorage.removeItem("order_id");
       }
+      if (window?.localStorage.getItem("orderType") !== null) {
+        window.localStorage.removeItem("orderType");
+      }
     }
   }, []);
 

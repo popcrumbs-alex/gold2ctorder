@@ -146,7 +146,6 @@ const OtoScreen = () => {
             },
           },
         });
-        console.log("everflow_tracking_:", aff_id);
       }
       console.log("request!", request);
       if (request.data.updateOrder.success) {
@@ -215,7 +214,11 @@ const OtoScreen = () => {
                 nextPage={"/otos/Oto2"}
                 items={[
                   {
-                    ...OtoDATA[currentOtoIndex],
+                    sku: OtoDATA[currentOtoIndex].sku,
+                    title: OtoDATA[currentOtoIndex].title,
+                    type: "OTO",
+                    displayPrice: OtoDATA[currentOtoIndex].displayPrice,
+                    id: OtoDATA[currentOtoIndex].id,
                     price: OtoDATA[currentOtoIndex].numPrice,
                     isRecurring: false,
                   },
@@ -223,12 +226,6 @@ const OtoScreen = () => {
               />
             ),
             credit: (
-              <Button onClick={() => handleAddOTOToOrder()}>
-                YES! Add The 1CT Gold Studs For Only $10{" "}
-                <span>Click Only Once</span>
-              </Button>
-            ),
-            "": (
               <Button onClick={() => handleAddOTOToOrder()}>
                 YES! Add The 1CT Gold Studs For Only $10{" "}
                 <span>Click Only Once</span>

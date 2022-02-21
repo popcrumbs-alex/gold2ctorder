@@ -186,6 +186,9 @@ const CreditCardForm = () => {
           addOrderToStorage({ id: response.data.createOrder.Order._id })
         );
 
+        //set order type for oto process to credit
+        window.localStorage.setItem("orderType", "credit");
+
         navigate("/otos/Oto1");
       }
       console.log("response", response);
@@ -214,6 +217,8 @@ const CreditCardForm = () => {
           name="creditCardNumber"
           type="cleaveinput"
           options={null}
+          labelStyle={null}
+          inputStyle={null}
         />
       </Row>
       <Grid>
@@ -227,6 +232,8 @@ const CreditCardForm = () => {
             callback={handleExpiry}
             name="expiry"
             options={null}
+            labelStyle={null}
+            inputStyle={null}
           />
         </Column>
         <Column>
@@ -238,6 +245,8 @@ const CreditCardForm = () => {
             value={cvc}
             callback={handleCVC}
             name="cvc"
+            inputStyle={null}
+            labelStyle={null}
             options={null}
           />
         </Column>

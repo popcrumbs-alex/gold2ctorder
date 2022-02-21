@@ -233,7 +233,11 @@ export class PaymentService {
       const authorization = await this.paypalAuthRequest();
 
       const paypalRequest = await axios({
-        url: `${process.env.PAYPAL_URL}/v2/checkout/orders/${orderID}/authorize`,
+        url: `${
+          process.env.NODE_ENV === 'production'
+            ? process.env.PAYPAL_LIVE_URL
+            : process.env.PAYPAL_URL
+        }/v2/checkout/orders/${orderID}/authorize`,
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -271,17 +275,19 @@ export class PaymentService {
     input: UpdatePaypalOrderInput,
   ): Promise<PaypalOrderUpdateResponse> {
     try {
-      const { itemAmount, paypal_order_id } = input;
-
-      console.log('auth thsikdd', process.env.PAYPAL_SECRET);
+      const { itemAmount } = input;
 
       const authorization = await this.paypalAuthRequest();
 
       if (!authorization.success) throw new Error(authorization.message);
 
-      console.log('auth!', authorization);
+      console.log('new paypal order');
       const paypalRequest = await axios({
-        url: `${process.env.PAYPAL_URL}/v2/checkout/orders`,
+        url: `${
+          process.env.NODE_ENV === 'production'
+            ? process.env.PAYPAL_LIVE_URL
+            : process.env.PAYPAL_URL
+        }/v2/checkout/orders`,
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -323,7 +329,11 @@ export class PaymentService {
   }> {
     try {
       const authRequest = await axios({
-        url: `${process.env.PAYPAL_URL}/v1/oauth2/token`,
+        url: `${
+          process.env.NODE_ENV === 'production'
+            ? process.env.PAYPAL_LIVE_URL
+            : process.env.PAYPAL_URL
+        }/v1/oauth2/token`,
         method: 'POST',
         headers: {
           Accept: 'application/json',
@@ -332,8 +342,13 @@ export class PaymentService {
         },
         auth: {
           username:
-            'ASyQ9pmZvoxvuzRZxVYCh44dHTljctKvuh_DqYwOkM0iM_2WcQv3s8HA1Ebu15hPINO7JIgfsYBar2Bt',
-          password: process.env.PAYPAL_SECRET,
+            process.env.NODE_ENV === 'production'
+              ? process.env.PAYPAL_LIVE_CLIENT_ID
+              : process.env.PAYPAL_CLIENT_ID,
+          password:
+            process.env.NODE_ENV === 'production'
+              ? process.env.PAYPAL_LIVE_SECRET
+              : process.env.PAYPAL_SECRET,
         },
         params: {
           grant_type: 'client_credentials',

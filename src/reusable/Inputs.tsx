@@ -53,6 +53,19 @@ export interface TextInputProps {
   isRequired: boolean;
 }
 
+export type InputProps = {
+  label: string;
+  name: string;
+  value: any;
+  callback: any;
+  isRequired: boolean;
+  options: Array<any>;
+  labelStyle: any;
+  inputStyle: any;
+  placeholder: string;
+  type: string;
+};
+
 export interface SelectInputProps extends TextInputProps {
   options: Array<any>;
 }
@@ -109,6 +122,8 @@ export const Select = ({
   placeholder,
   isRequired,
   options,
+  labelStyle,
+  inputStyle,
 }) => {
   const context = useContext<Theme>(ThemeContext);
 
@@ -125,20 +140,24 @@ export const Select = ({
 
   return (
     <InputColumn>
-      {label && <Label>{label}</Label>}
+      {label && <Label style={labelStyle ? labelStyle : null}>{label}</Label>}
       <SelectInput
         name={name}
         value={value}
         onChange={callback}
         placeholder={placeholder}
         required={isRequired ? true : false}
-        style={{
-          boxShadow: `0 0 0 3px ${
-            alertState.localAlertNames.includes(name)
-              ? context.danger
-              : "transparent"
-          }`,
-        }}
+        style={
+          inputStyle
+            ? inputStyle
+            : {
+                boxShadow: `0 0 0 3px ${
+                  alertState.localAlertNames.includes(name)
+                    ? context.danger
+                    : "transparent"
+                }`,
+              }
+        }
       >
         <option>{placeholder}</option>
         {options.map((opt: { name: string }, key: number) => {
@@ -204,7 +223,9 @@ export const InputSelector = ({
   isRequired,
   type,
   options,
-}: TextInputProps & { options: Array<any> }) => {
+  labelStyle,
+  inputStyle,
+}: InputProps) => {
   if (type === "text" || type === "email") {
     return (
       <TextInput
@@ -228,6 +249,8 @@ export const InputSelector = ({
         isRequired={isRequired}
         placeholder={placeholder}
         options={options}
+        labelStyle={labelStyle}
+        inputStyle={inputStyle}
       />
     );
   }
