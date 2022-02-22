@@ -1,10 +1,12 @@
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { PaymentService } from 'src/services/payment.service';
 import {
+  AddSubscriptionInput,
   CreatePaypalProductInput,
   GetPaypalProductInput,
 } from '../inputs/payment.input';
 import {
+  AddSubscriptionResponse,
   CreatePaypalProductResponse,
   GetPaypalProductResponse,
 } from '../responses/payment.response';
@@ -21,5 +23,10 @@ export class PaymentResolver {
   @Mutation(() => CreatePaypalProductResponse)
   async createPaypalProduct(@Args('input') input: CreatePaypalProductInput) {
     return this.paymentSerivce.createPaypalProduct(input);
+  }
+
+  @Mutation(() => AddSubscriptionResponse)
+  async addSubscriptionToOrder(@Args('input') input: AddSubscriptionInput) {
+    return this.paymentSerivce.addSubscriptionToPurchase(input);
   }
 }

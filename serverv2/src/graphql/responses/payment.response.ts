@@ -12,7 +12,7 @@ export class PaypalOrderUpdateResponse {
 }
 
 @ObjectType()
-export class CreatePaypalSubscriptionPlanResponse {
+export class AddSubscriptionResponse {
   @Field()
   message: string;
   @Field()

@@ -50,6 +50,8 @@ export class CreateOrderInput {
   ef_aff_id: string;
   @Field({ nullable: true })
   paypal_transaction_id: string | undefined;
+  @Field({ nullable: true })
+  paypal_payer_id: string;
 }
 
 @InputType()

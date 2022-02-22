@@ -15,6 +15,12 @@ type PaypalProduct {
   links: [String!]
 }
 
+type AddSubscriptionResponse {
+  message: String!
+  success: Boolean!
+  subscriptionPlan: PaypalProduct!
+}
+
 type CreatePaypalProductResponse {
   message: String!
   success: Boolean!
@@ -89,6 +95,7 @@ type Mutation {
   updateOrder(updateOrderInput: UpdateOrderInput!): OrderResponse!
   closeOrder(closeOrderInput: CloseOrderInput!): OrderResponse!
   createPaypalProduct(input: CreatePaypalProductInput!): CreatePaypalProductResponse!
+  addSubscriptionToOrder(input: AddSubscriptionInput!): AddSubscriptionResponse!
   trackOrder(everflowOrderInput: EverflowOrderTrackInput!): EverflowOrderTrackResponse!
   trackUpsell(everflowOrderInput: EverflowOrderTrackInput!): EverflowOrderTrackResponse!
 }
@@ -109,6 +116,7 @@ input CreateOrderInput {
   products: [ProductInput!]!
   ef_aff_id: String
   paypal_transaction_id: String
+  paypal_payer_id: String
 }
 
 input ProductInput {
@@ -137,6 +145,17 @@ input CreatePaypalProductInput {
   category: String
   image_url: String
   home_url: String
+}
+
+input AddSubscriptionInput {
+  firstName: String!
+  lastName: String!
+  email: String!
+  address: String!
+  city: String!
+  state: String!
+  zip: String!
+  paypal_payer_id: String!
 }
 
 input EverflowOrderTrackInput {

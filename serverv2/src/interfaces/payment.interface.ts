@@ -7,6 +7,10 @@ export interface PaymentSaleOptions {
   amount: number;
   containsRecurringItem: boolean;
   email: string;
+  state: string;
+  city: string;
+  address: string;
+  zip: string;
 }
 
 export interface RecurringPaymentOptions extends PaymentSaleOptions {

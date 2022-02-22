@@ -6,14 +6,15 @@ import {
 import axios from 'axios';
 import { config } from 'dotenv';
 import {
+  AddSubscriptionInput,
   CreatePaypalProductInput,
   GetPaypalProductInput,
   UpdatePaypalOrderInput,
   UpdateTransactionInput,
 } from 'src/graphql/inputs/payment.input';
 import {
+  AddSubscriptionResponse,
   CreatePaypalProductResponse,
-  CreatePaypalSubscriptionPlanResponse,
   GetPaypalProductResponse,
   PaypalOrderUpdateResponse,
 } from 'src/graphql/responses/payment.response';
@@ -104,11 +105,15 @@ export class PaymentService {
       amount,
       containsRecurringItem,
       email,
+      city,
+      state,
+      address,
+      zip,
     } = saleInput;
 
     try {
       const saleResponse = await axios({
-        url: `${this.nmiAPIString}security_key=${process.env.NMI_KEY}&type=auth&ccnumber=${creditCardNumber}&ccexp=${expiry}&first_name=${firstName}&last_name=${lastName}&amount=${amount}&cvv=${cvv}&email=${email}`,
+        url: `${this.nmiAPIString}security_key=${process.env.NMI_KEY}&type=auth&ccnumber=${creditCardNumber}&ccexp=${expiry}&first_name=${firstName}&last_name=${lastName}&amount=${amount}&cvv=${cvv}&email=${email}&shipping_address1=${address}&shipping_city=${city}&shipping_state=${state}&shipping_zip=${zip}&shipping_country=US`,
         method: 'POST',
         headers: {
           'Content-Type': 'application/x-www-form-urlencoded',
@@ -395,18 +400,93 @@ export class PaymentService {
     }
   }
 
-  // async createPaypalSubscriptionPlan(): Promise<CreatePaypalSubscriptionPlanResponse> {
-  //   try {
-  //     const authReguest = await this.paypalAuthRequest();
+  async addSubscriptionToPurchase(
+    input: AddSubscriptionInput,
+  ): Promise<AddSubscriptionResponse> {
+    try {
+      const {
+        address,
+        firstName,
+        lastName,
+        email,
+        state,
+        zip,
+        city,
+        paypal_payer_id,
+      } = input;
+      const authorization = await this.paypalAuthRequest();
 
-  //     // const createPlanRequest = await axios({
-  //     //   headers: {
-  //     //     "Free 2CT Gold Pendant With Insiders Club"
-  //     //   }
-  //     // })
-  //   } catch (error) {}
-  // }
+      const subRequest = await axios({
+        method: 'POST',
+        url: `${
+          process.env.NODE_ENV === 'production'
+            ? process.env.PAYPAL_LIVE_URL
+            : process.env.PAYPAL_URL
+        }/v1/billing/subscriptions`,
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${authorization.response}`,
+          'PayPal-Request-Id': 'SUBSCRIPTION-21092019-001',
+        },
 
+        data: {
+          plan_id: 'P-16S76074SB539451CMIKQKZI',
+          quantity: '1',
+          subscriber: {
+            name: {
+              given_name: firstName,
+              surname: lastName,
+            },
+            email_address: email,
+            shipping_address: {
+              name: {
+                full_name: firstName + ' ' + lastName,
+              },
+              address: {
+                address_line_1: address,
+                address_line_2: '',
+                admin_area_2: city,
+                admin_area_1: state,
+                postal_code: zip,
+                country_code: 'US',
+              },
+            },
+            payer_id: paypal_payer_id,
+          },
+        },
+      });
+
+      console.log('subrequest', subRequest.data);
+
+      if (subRequest.data.id) {
+        await axios({
+          method: 'POST',
+          url: `${
+            process.env.NODE_ENV === 'production'
+              ? process.env.PAYPAL_LIVE_URL
+              : process.env.PAYPAL_URL
+          }/v1/billing/subscriptions/${subRequest.data.id}/activate`,
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${authorization.response}`,
+            'PayPal-Request-Id': 'SUBSCRIPTION-21092019-001',
+          },
+          data: {
+            reason: 'Start subscriptions',
+          },
+        });
+      }
+
+      return {
+        message: 'Successfully added subscription to order',
+        success: true,
+        subscriptionPlan: subRequest.data,
+      };
+    } catch (error) {
+      console.error(error);
+      return error;
+    }
+  }
   async paypalAuthRequest(): Promise<{
     message: string;
     success: boolean;

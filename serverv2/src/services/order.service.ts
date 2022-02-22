@@ -81,6 +81,11 @@ export class OrderService {
         ef_aff_id,
         paypal_transaction_id,
         orderType,
+        paypal_payer_id,
+        city,
+        state,
+        address,
+        zip,
       } = input;
 
       if (products.length === 0) {
@@ -130,7 +135,13 @@ export class OrderService {
             email,
             order: newPaypalOrder,
           });
-
+          //if order contains a sub create it in paypal
+          if (detectASubscriptionItem) {
+            await this.paymentService.addSubscriptionToPurchase({
+              ...input,
+              paypal_payer_id,
+            });
+          }
           //send the order to shopify
           await this.closeOrder({ orderId: newPaypalOrder._id.toString() });
 
@@ -151,6 +162,10 @@ export class OrderService {
             amount: orderTotal,
             email,
             containsRecurringItem: detectASubscriptionItem,
+            city,
+            state,
+            zip,
+            address,
           });
           console.log('payment request', paymentRequest);
           if (paymentRequest.statusMessage !== 'SUCCESS') {

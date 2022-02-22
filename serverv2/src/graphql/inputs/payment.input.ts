@@ -37,3 +37,23 @@ export class GetPaypalProductInput {
   @Field()
   productId: string;
 }
+
+@InputType()
+export class AddSubscriptionInput {
+  @Field()
+  firstName: string;
+  @Field()
+  lastName: string;
+  @Field()
+  email: string;
+  @Field()
+  address: string;
+  @Field()
+  city: string;
+  @Field()
+  state: string;
+  @Field()
+  zip: string;
+  @Field()
+  paypal_payer_id: string;
+}
