@@ -142,6 +142,8 @@ const Popups = () => {
     return () => clearTimeout();
   }, [queued]);
 
+  console.log("socket", socket);
+
   return queued ? (
     <Popup>
       <Content>

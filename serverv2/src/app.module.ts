@@ -10,6 +10,8 @@ import { TaskService } from './services/task.service';
 import { EverflowAPIModule } from './modules/everflowAPI.module';
 import { ShopifyController } from './rest/controllers/shopify.controller';
 import { WebsocketGateway } from './gateways/websockets.gateway';
+import { PaymentService } from './services/payment.service';
+import { PaymentModule } from './modules/payment.module';
 
 config();
 @Module({
@@ -21,6 +23,7 @@ config();
       playground: true,
       cors: {
         origin: [
+          '*',
           'http://localhost:8000',
           'https://serene-jennings-9dcb5a.netlify.app',
           'offers.lucianarose.store',
@@ -32,10 +35,12 @@ config();
         dateScalarMode: 'timestamp',
       },
       context: async ({ req, res }) => {
+        console.log('req', req);
         return { req, res };
       },
     }),
     OrderModule,
+    PaymentModule,
     EverflowAPIModule,
     MongooseModule.forRoot(process.env.MONGO_URI, {
       useNewUrlParser: true,

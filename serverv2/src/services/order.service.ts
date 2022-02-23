@@ -20,7 +20,6 @@ import { PaymentService } from './payment.service';
 import { ShopifyService } from './shopify.service';
 import { CustomerService } from './customer.service';
 import states from 'src/reusable/states';
-import axios from 'axios';
 
 @Injectable()
 export class OrderService {
@@ -55,6 +54,28 @@ export class OrderService {
       const foundOrder = await this.orderModel.findById(id);
 
       return { message: 'Located order', success: true, Order: foundOrder };
+    } catch (error) {
+      console.error(error);
+      return error;
+    }
+  }
+
+  async findOrderFromShopifyId(shopifyOrderId: string): Promise<OrderResponse> {
+    try {
+      const foundOrder = await this.orderModel.findOne({ shopifyOrderId });
+
+      if (!foundOrder) {
+        return {
+          message: 'No shopify order found',
+          success: true,
+          Order: null,
+        };
+      }
+      return {
+        message: 'Found a shopify order',
+        success: true,
+        Order: foundOrder,
+      };
     } catch (error) {
       console.error(error);
       return error;

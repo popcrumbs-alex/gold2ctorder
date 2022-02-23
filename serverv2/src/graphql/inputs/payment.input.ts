@@ -57,3 +57,11 @@ export class AddSubscriptionInput {
   @Field()
   paypal_payer_id: string;
 }
+
+@InputType()
+export class RefundCreditTransactionInput {
+  @Field()
+  transactionId: string;
+  @Field()
+  amount: number;
+}

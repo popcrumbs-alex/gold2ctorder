@@ -105,7 +105,7 @@ export const ProductSelectorItems: Array<ProductProps> = [
     displayPrice: "$9/Pair + Free Shipping",
     numPrice: 27.0,
     bestDeal: true,
-    dealHeadline: `VALENTINE'S DAY DEAL`,
+    dealHeadline: `BEST DEAL`,
     id: 6550551625920,
     isRecurring: false,
   },

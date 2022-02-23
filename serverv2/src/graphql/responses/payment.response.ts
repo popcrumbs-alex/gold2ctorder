@@ -41,3 +41,11 @@ export class GetPaypalProductResponse {
   @Field(() => PaypalProduct)
   product: PaypalProduct;
 }
+
+@ObjectType()
+export class RefundCreditTransactionResponse {
+  @Field()
+  message: string;
+  @Field()
+  success: boolean;
+}

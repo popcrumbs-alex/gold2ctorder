@@ -9,6 +9,7 @@ import {
   AddSubscriptionInput,
   CreatePaypalProductInput,
   GetPaypalProductInput,
+  RefundCreditTransactionInput,
   UpdatePaypalOrderInput,
   UpdateTransactionInput,
 } from 'src/graphql/inputs/payment.input';
@@ -17,6 +18,7 @@ import {
   CreatePaypalProductResponse,
   GetPaypalProductResponse,
   PaypalOrderUpdateResponse,
+  RefundCreditTransactionResponse,
 } from 'src/graphql/responses/payment.response';
 
 config();
@@ -531,6 +533,33 @@ export class PaymentService {
         message: 'Could not get authorization',
         success: false,
         response: error,
+      };
+    }
+  }
+  async refundCreditTransaction(
+    input: RefundCreditTransactionInput,
+  ): Promise<RefundCreditTransactionResponse> {
+    try {
+      const { amount, transactionId } = input;
+
+      console.log('amount', amount);
+
+      const refundRequest = await axios({
+        url: `${this.nmiAPIString}security_key=${process.env.NMI_KEY}&type=refund&transactionid=${transactionId}&amount=${amount}`,
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+        },
+      });
+      console.log('refund request', refundRequest.data);
+      return {
+        message: 'Successfully refunded order',
+        success: true,
+      };
+    } catch (error) {
+      return {
+        message: error,
+        success: false,
       };
     }
   }
