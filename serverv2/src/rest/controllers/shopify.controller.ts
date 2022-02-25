@@ -33,12 +33,6 @@ export class ShopifyController {
   @Post('refunds')
   async handleRefunds(@Req() request: Request, @Res() response: Response) {
     try {
-      console.log(
-        'request and respone',
-        request.body,
-        'id:',
-        request.body.order_id,
-      );
       const { order_id, transactions } = request.body;
 
       if (!order_id) {
@@ -77,8 +71,6 @@ export class ShopifyController {
             console.log('no refund transactions');
             return response.sendStatus(200);
           }
-
-          console.log('refunds', request.body.refund_line_items);
 
           const refundAmount = request.body.transactions.reduce(
             (prev, next) => {
