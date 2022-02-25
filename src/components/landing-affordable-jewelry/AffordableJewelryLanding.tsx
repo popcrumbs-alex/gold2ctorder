@@ -1,8 +1,6 @@
 import React, { useContext } from "react";
 import styled, { keyframes } from "styled-components";
 import { StaticImage } from "gatsby-plugin-image";
-import { Theme } from "../../constants/Colors";
-import { ThemeContext } from "../../pages";
 import { FaCheckCircle } from "react-icons/fa";
 
 const pulse = keyframes`
@@ -145,6 +143,17 @@ const Column = styled.div`
   justify-content: center;
 `;
 
+const ColumnsRow = styled.div`
+  display: flex;
+  background-color: #fff;
+  padding: 2rem;
+  align-items: flex-start;
+  border: 1px solid #ddd;
+  border-radius: 2px;
+  margin-top: 1rem;
+  width: 50%;
+`;
+
 const CheckList = styled.div`
   display: flex;
   flex-direction: column;
@@ -275,9 +284,16 @@ const AffordableJewelryLanding = () => {
           </HeroContent>
         </Hero>
       </Content>
+      {/*  content sections*/}
       <SectionTwo />
+      {/*  */}
       <Divider />
+      {/*  */}
       <SectionThree />
+      {/*  ontent sections */}
+      <SectionFour />
+
+      <Overlap />
     </Container>
   );
 };
@@ -434,39 +450,95 @@ const SectionThree = () => {
           than a retail priced one.
         </Text>
       </Column>
+      <ColumnsRow>
+        <Column>
+          <Text
+            color="#ff00ed"
+            style={{
+              textDecoration: "underline",
+              fontSize: "2rem",
+              textAlign: "left",
+              fontStyle: "italic",
+            }}
+          >
+            And it works for you and us
+          </Text>
+          <Text color="#666" style={{ textAlign: "left", lineHeight: "1.5" }}>
+            You get a gorgeous pair of earrings at a crazy deal.
+          </Text>
+          <Text color="#666" style={{ textAlign: "left", lineHeight: "1.5" }}>
+            We get the chance to WOW you with how high quality our product is.
+          </Text>
+          <Text color="#666" style={{ textAlign: "left", lineHeight: "1.5" }}>
+            The result is 42% of customers make 2 or more purchases with, we
+            have some customers with over 50 purchases.
+          </Text>
+          <Text color="#666" style={{ textAlign: "left", lineHeight: "1.5" }}>
+            We put our product where our marketing is.
+          </Text>
+        </Column>
+        <Column>
+          <ImageContainer>
+            <StaticImage
+              src="../../images/carla-review.png"
+              alt="review"
+              placeholder="blurred"
+              objectFit="contain"
+              imgStyle={{
+                width: "100%",
+              }}
+            />
+          </ImageContainer>
+        </Column>
+      </ColumnsRow>
+    </Content>
+  );
+};
+
+const SectionFour = () => {
+  return (
+    <Content
+      style={{
+        backgroundColor: "#000",
+        alignItems: "center",
+        padding: "2rem 0",
+      }}
+    >
+      <Column style={{ maxWidth: "55%" }}>
+        <Heading style={{ fontSize: "1.7rem", textAlign: "center" }}>
+          Now let’s show you the product, because it's anything but cheap
+        </Heading>
+      </Column>
+    </Content>
+  );
+};
+
+const Overlap = () => {
+  return (
+    <Content style={{ alignItems: "center" }}>
       <Column
         style={{
-          backgroundColor: "#fff",
+          backgroundColor: "#ff00ed",
+          maxWidth: "50%",
           padding: "2rem",
-          width: "50%",
-          alignItems: "flex-start",
-          border: "1px solid #ddd",
-          borderRadius: "2px",
-          marginTop: "1rem",
+          marginTop: "-2rem",
+          border: "5px dashed #000",
+          borderRadius: "5px",
         }}
       >
         <Text
-          color="#ff00ed"
           style={{
-            textDecoration: "underline",
-            fontSize: "2rem",
-            fontStyle: "italic",
+            fontSize: "1.2rem",
+            color: "#fff",
+            textAlign: "left",
+            lineHeight: "1.5",
           }}
         >
-          And it works for you and us
-        </Text>
-        <Text color="#666" style={{ textAlign: "left", lineHeight: "1.5" }}>
-          You get a gorgeous pair of earrings at a crazy deal.
-        </Text>
-        <Text color="#666" style={{ textAlign: "left", lineHeight: "1.5" }}>
-          We get the chance to WOW you with how high quality our product is.
-        </Text>
-        <Text color="#666" style={{ textAlign: "left", lineHeight: "1.5" }}>
-          The result is 42% of customers make 2 or more purchases with, we have
-          some customers with over 50 purchases.
-        </Text>
-        <Text color="#666" style={{ textAlign: "left", lineHeight: "1.5" }}>
-          We put our product where our marketing is.
+          Unlike most cheap earrings our product will not fade, get cloudy or
+          turn on you at any point. When we make our jewelry we add a little
+          extra love to it, and make it better than the rest We take a normal CZ
+          stone and seal it, so no moisture ever gets inside of it and makes it
+          cloudy
         </Text>
       </Column>
     </Content>

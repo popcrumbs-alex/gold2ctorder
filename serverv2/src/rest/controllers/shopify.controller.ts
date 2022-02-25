@@ -57,25 +57,25 @@ export class ShopifyController {
 
       if (!foundOrder.success) {
         console.log('could not locate an order');
-        return response.status(200);
+        return response.sendStatus(200);
       }
 
       if (!foundOrder.Order) {
         console.log('could not locate an order');
-        return response.status(200);
+        return response.sendStatus(200);
       }
 
       switch (foundOrder.Order.orderType) {
         case 'paypal':
           //handle paypal refunds
           console.log('paypal refund');
-          return response.status(200);
+          return response.sendStatus(200);
 
         case 'credit':
           console.log('nmi refund');
           if (request.body.transactions.length === 0) {
             console.log('no refund transactions');
-            return response.status(200);
+            return response.sendStatus(200);
           }
 
           console.log('refunds', request.body.refund_line_items);
@@ -96,17 +96,17 @@ export class ShopifyController {
 
           if (!refundRequest.success) {
             console.log(refundRequest.message);
-            return response.status(200);
+            return response.sendStatus(200);
           }
 
           console.log(foundOrder.message);
-          return response.status(200);
+          return response.sendStatus(200);
       }
 
       console.log('found order', foundOrder.Order);
     } catch (error) {
       console.error(error);
-      return response.status(200);
+      return response.sendStatus(200);
     }
   }
 }
