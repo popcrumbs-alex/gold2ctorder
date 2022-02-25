@@ -1,5 +1,4 @@
-import React, { useEffect } from "react";
-import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
+import React, { useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../../hooks/reduxHooks";
 import {
   addOrderToStorage,
@@ -12,6 +11,7 @@ import { CREATE_ORDER } from "../../../graphql/mutations/order.mutation";
 import { navigate } from "gatsby";
 import LoadingSpinner from "../../loading/LoadingSpinner";
 import { PayPalButton } from "react-paypal-button-v2";
+
 // live
 const paypal_client_id =
   "AaXUIuu5MJJZH8XPBvC0zOYDKCn8V_jpr8mnApb05gva4Zd2UIgkdlv1-SltcOcdtiZmr4PhGO4aw1bQ";
@@ -28,7 +28,7 @@ const Paypal = ({
   items: ProductProp[];
 }) => {
   const orderState = useAppSelector(selectOrderState);
-  console.log("order total", orderTotal);
+
   const dispatch = useAppDispatch();
 
   const [createPaypalOrder, { error, loading }] = useMutation(CREATE_ORDER);
@@ -105,28 +105,16 @@ const Paypal = ({
     );
   }
 
-  //for orders with subscriptions?
-  if (
-    orderState.myOrder.products.filter(
-      (product: ProductProp) => product.isRecurring
-    )[0]
-  ) {
-    return (
+  return (
+    <>
       <PayPalButton
         style={{ layout: "horizontal" }}
         options={{
           clientId: paypal_client_id,
           disableFunding: "card",
           intent: "capture",
-          vault: true,
         }}
         amount={orderState.myOrder.orderTotal.toFixed(2).toString()}
-        createSubscription={(data, actions) => {
-          console.log("actions", actions);
-          return actions.subscription.create({
-            plan_id: "P-16S76074SB539451CMIKQKZI",
-          });
-        }}
         createOrder={(data, actions) => {
           return actions.order.create({
             purchase_units: [
@@ -199,88 +187,7 @@ const Paypal = ({
           });
         }}
       />
-    );
-  }
-  return (
-    <PayPalButton
-      style={{ layout: "horizontal" }}
-      options={{
-        clientId: paypal_client_id,
-        disableFunding: "card",
-        intent: "capture",
-      }}
-      amount={orderState.myOrder.orderTotal.toFixed(2).toString()}
-      createOrder={(data, actions) => {
-        return actions.order.create({
-          purchase_units: [
-            {
-              amount: {
-                currency_code: "USD",
-                value: orderTotal.toFixed(2).toString(),
-                breakdown: {
-                  item_total: {
-                    /* Required when including the `items` array */
-                    currency_code: "USD",
-                    value: orderTotal.toFixed(2).toString(),
-                  },
-                },
-              },
-              shipping: {
-                name: {
-                  full_name:
-                    `${orderState.myOrder.contactInfo.firstName} ${orderState.myOrder.contactInfo.lastName}` ||
-                    "",
-                },
-                address: {
-                  address_line_1: orderState.myOrder.shippingInfo.address || "",
-                  country_code: "US",
-                  admin_area_2: orderState.myOrder.shippingInfo.city || "",
-                  postal_code: orderState.myOrder.shippingInfo.zip || "",
-                },
-              },
-              items:
-                items.length > 0
-                  ? items
-                      .map((product: ProductProp) => {
-                        return {
-                          name: product.title,
-                          unit_amount: {
-                            currency_code: "USD",
-                            value: product.price.toFixed(2).toString(),
-                          },
-                          quantity: "1",
-                        };
-                      })
-                      .concat({
-                        name: "Shipping",
-                        unit_amount: {
-                          value: "0.00",
-                          currency_code: "USD",
-                        },
-                        quantity: "1",
-                      })
-                  : [],
-            },
-          ],
-        });
-      }}
-      onError={(error) => {
-        console.log("paypal error", error);
-        return dispatch(
-          setAlert({
-            type: "danger",
-            message:
-              typeof error === "string" ? error : "Paypal error:" + error,
-          })
-        );
-      }}
-      onApprove={(data, actions) => {
-        return actions.order.capture().then((response) => {
-          console.log("appreove response", response);
-          handlePaypalOrder(response);
-        });
-      }}
-    />
+    </>
   );
 };
 
