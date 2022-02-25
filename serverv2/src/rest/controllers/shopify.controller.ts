@@ -24,10 +24,10 @@ export class ShopifyController {
 
       await this.gateway.handleRecentOrder(formattedRecentOrder);
 
-      return response.status(200);
+      return response.sendStatus(200);
     } catch (error) {
       console.error(error);
-      return response.status(200);
+      return response.sendStatus(200);
     }
   }
   @Post('refunds')
