@@ -78,7 +78,11 @@ export class OrderService {
       };
     } catch (error) {
       console.error(error);
-      return error;
+      return {
+        message: error,
+        success: true,
+        Order: null,
+      };
     }
   }
   calculateOrderTotal(prices: number[]): number {

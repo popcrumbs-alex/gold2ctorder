@@ -33,10 +33,21 @@ export class ShopifyController {
   @Post('refunds')
   async handleRefunds(@Req() request: Request, @Res() response: Response) {
     try {
-      console.log('request and respone', request.body, 'id:', request.body.id);
+      console.log(
+        'request and respone',
+        request.body,
+        'id:',
+        request.body.order_id,
+      );
+      const { order_id, transactions } = request.body;
 
-      if (!request.body.order_id) {
+      if (!order_id) {
         console.log('no order id');
+        return response.status(200);
+      }
+
+      if (transactions.length === 0) {
+        console.log('no transactions');
         return response.status(200);
       }
 
@@ -54,14 +65,12 @@ export class ShopifyController {
         return response.status(200);
       }
 
-      if (foundOrder?.Order?.orderType === 'paypal') {
-        //handle paypal refunds
-      }
-
       switch (foundOrder.Order.orderType) {
         case 'paypal':
           //handle paypal refunds
           console.log('paypal refund');
+          return response.status(200);
+
         case 'credit':
           console.log('nmi refund');
           if (request.body.transactions.length === 0) {
@@ -69,11 +78,12 @@ export class ShopifyController {
             return response.status(200);
           }
 
-          console.log('transactions', request.body.transactions);
+          console.log('refunds', request.body.refund_line_items);
+
           const refundAmount = request.body.transactions.reduce(
             (prev, next) => {
               console.log('prv', prev, 'next', next.amount);
-              return parseFloat(prev) + parseFloat(next.amount);
+              return prev + parseFloat(next.amount);
             },
             0,
           );
@@ -89,14 +99,14 @@ export class ShopifyController {
             return response.status(200);
           }
 
-          console.log('successfully refunded order', foundOrder);
+          console.log(foundOrder.message);
           return response.status(200);
       }
 
       console.log('found order', foundOrder.Order);
     } catch (error) {
       console.error(error);
-      return error;
+      return response.status(200);
     }
   }
 }
