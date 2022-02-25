@@ -45,6 +45,8 @@ export class Order {
   paypal_transaction_id: string;
   @Prop()
   orderType: string;
+  @Prop({ default: 'not-a-paypal-payment' })
+  paypal_payment_id: string;
 }
 
 export type OrderDocument = Order & Document;

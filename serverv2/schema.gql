@@ -57,6 +57,7 @@ type OrderTypeDef {
   zip: String!
   orderTotal: Float!
   paypal_transaction_id: String
+  payapl_payment_id: String
   orderType: String
 }
 
@@ -117,6 +118,7 @@ input CreateOrderInput {
   ef_aff_id: String
   paypal_transaction_id: String
   paypal_payer_id: String
+  paypal_payment_id: String
 }
 
 input ProductInput {

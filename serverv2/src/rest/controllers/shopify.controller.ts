@@ -59,10 +59,28 @@ export class ShopifyController {
         return response.sendStatus(200);
       }
 
+      //handle total amount to refund
+      const refundAmount = request.body.transactions.reduce((prev, next) => {
+        console.log('prv', prev, 'next', next.amount);
+        return prev + parseFloat(next.amount);
+      }, 0);
+
       switch (foundOrder.Order.orderType) {
         case 'paypal':
           //handle paypal refunds
           console.log('paypal refund');
+
+          const paypalRefundRequest =
+            await this.paymentService.refundPaypalTransaction({
+              paypalTransactionId: foundOrder.Order.paypal_payment_id,
+              amount: refundAmount.toFixed(2),
+            });
+
+          if (!paypalRefundRequest.success) {
+            console.log(paypalRefundRequest.message);
+            return response.sendStatus(200);
+          }
+
           return response.sendStatus(200);
 
         case 'credit':
@@ -71,14 +89,6 @@ export class ShopifyController {
             console.log('no refund transactions');
             return response.sendStatus(200);
           }
-
-          const refundAmount = request.body.transactions.reduce(
-            (prev, next) => {
-              console.log('prv', prev, 'next', next.amount);
-              return prev + parseFloat(next.amount);
-            },
-            0,
-          );
 
           const refundRequest =
             await this.paymentService.refundCreditTransaction({

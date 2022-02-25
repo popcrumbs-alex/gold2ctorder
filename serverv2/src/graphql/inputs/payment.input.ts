@@ -65,3 +65,11 @@ export class RefundCreditTransactionInput {
   @Field()
   amount: number;
 }
+
+@InputType()
+export class RefundPaypalTransactionInput {
+  @Field()
+  paypalTransactionId: string;
+  @Field()
+  amount: number;
+}

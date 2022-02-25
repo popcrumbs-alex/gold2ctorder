@@ -12,11 +12,12 @@ import { CREATE_ORDER } from "../../../graphql/mutations/order.mutation";
 import { navigate } from "gatsby";
 import LoadingSpinner from "../../loading/LoadingSpinner";
 import { PayPalButton } from "react-paypal-button-v2";
-
+// live
 const paypal_client_id =
   "AaXUIuu5MJJZH8XPBvC0zOYDKCn8V_jpr8mnApb05gva4Zd2UIgkdlv1-SltcOcdtiZmr4PhGO4aw1bQ";
+//sandbox
+// const paypal_client_id = `ASyQ9pmZvoxvuzRZxVYCh44dHTljctKvuh_DqYwOkM0iM_2WcQv3s8HA1Ebu15hPINO7JIgfsYBar2Bt`;
 
-console.log("client id?", paypal_client_id);
 const Paypal = ({
   orderTotal,
   nextPage,
@@ -70,6 +71,8 @@ const Paypal = ({
             paypal_transaction_id: data_from_paypal.id,
             orderType: "paypal",
             paypal_payer_id: data_from_paypal.payer.payer_id,
+            paypal_payment_id:
+              data_from_paypal.purchase_units[0].payments.captures[0].id || "",
           },
         },
       });
@@ -198,7 +201,6 @@ const Paypal = ({
       />
     );
   }
-  //TODO add paypal button for each oto????
   return (
     <PayPalButton
       style={{ layout: "horizontal" }}

@@ -10,6 +10,7 @@ import {
   CreatePaypalProductInput,
   GetPaypalProductInput,
   RefundCreditTransactionInput,
+  RefundPaypalTransactionInput,
   UpdatePaypalOrderInput,
   UpdateTransactionInput,
 } from 'src/graphql/inputs/payment.input';
@@ -19,6 +20,7 @@ import {
   GetPaypalProductResponse,
   PaypalOrderUpdateResponse,
   RefundCreditTransactionResponse,
+  RefundPaypalTransactionResponse,
 } from 'src/graphql/responses/payment.response';
 
 config();
@@ -489,6 +491,47 @@ export class PaymentService {
       return error;
     }
   }
+
+  async refundPaypalTransaction(
+    input: RefundPaypalTransactionInput,
+  ): Promise<RefundPaypalTransactionResponse> {
+    try {
+      const { paypalTransactionId, amount } = input;
+      const authorization = await this.paypalAuthRequest();
+
+      const refundRequest = await axios({
+        method: 'POST',
+        url: `${
+          process.env.NODE_ENV === 'production'
+            ? process.env.PAYPAL_LIVE_URL
+            : process.env.PAYPAL_URL
+        }/v1/payments/capture/${paypalTransactionId}/refund `,
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${authorization.response}`,
+        },
+        data: {
+          amount: {
+            total: amount,
+            currency: 'USD',
+          },
+        },
+      });
+
+      console.log('paypal refund request', refundRequest.data);
+      return {
+        message: 'Refund to paypal transaction, successful',
+        success: true,
+      };
+    } catch (error) {
+      console.error(error);
+      return {
+        message: error,
+        success: false,
+      };
+    }
+  }
+
   async paypalAuthRequest(): Promise<{
     message: string;
     success: boolean;

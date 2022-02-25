@@ -52,6 +52,8 @@ export class CreateOrderInput {
   paypal_transaction_id: string | undefined;
   @Field({ nullable: true })
   paypal_payer_id: string;
+  @Field({ nullable: true })
+  paypal_payment_id: string | undefined;
 }
 
 @InputType()

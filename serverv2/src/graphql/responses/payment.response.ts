@@ -49,3 +49,11 @@ export class RefundCreditTransactionResponse {
   @Field()
   success: boolean;
 }
+
+@ObjectType()
+export class RefundPaypalTransactionResponse {
+  @Field()
+  message: string;
+  @Field()
+  success: boolean;
+}
