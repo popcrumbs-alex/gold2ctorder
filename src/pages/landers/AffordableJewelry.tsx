@@ -1,6 +1,7 @@
 import React from "react";
 import styled, { createGlobalStyle } from "styled-components";
 import AffordableJewelryLanding from "../../components/landing-affordable-jewelry/AffordableJewelryLanding";
+import HelmetWrapper from "../layout/HelmetWrapper";
 
 const Main = styled.main`
   display: flex;
@@ -21,10 +22,13 @@ const Globalstyle = createGlobalStyle`
 
 const AffordableJewelry = () => {
   return (
-    <Main>
-      <Globalstyle />
-      <AffordableJewelryLanding />
-    </Main>
+    <>
+      <HelmetWrapper pageTitle="Affordable Jewelry" efScript="" />
+      <Main>
+        <Globalstyle />
+        <AffordableJewelryLanding />
+      </Main>
+    </>
   );
 };
 

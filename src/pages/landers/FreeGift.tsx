@@ -2,6 +2,7 @@ import React from "react";
 import styled, { createGlobalStyle } from "styled-components";
 import FreeGiftComponent from "../../components/free-gift/FreeGiftComponent";
 import Colors from "../../constants/Colors";
+import HelmetWrapper from "../layout/HelmetWrapper";
 
 const Main = styled.main``;
 
@@ -23,10 +24,13 @@ declare const window: any;
 
 const FreeGift = () => {
   return (
-    <Main>
-      <Globalstyle />
-      <FreeGiftComponent />
-    </Main>
+    <>
+      <HelmetWrapper pageTitle="Free Gift" efScript="" />
+      <Main>
+        <Globalstyle />
+        <FreeGiftComponent />
+      </Main>
+    </>
   );
 };
 

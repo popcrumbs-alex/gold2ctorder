@@ -2,7 +2,7 @@ import { StaticImage } from "gatsby-plugin-image";
 import React from "react";
 import styled from "styled-components";
 import ProductData from "../../../product/ProductData";
-import Timer from "./Timer";
+import Timer from "../../../reusable/Timer";
 
 const Container = styled.header`
   display: flex;

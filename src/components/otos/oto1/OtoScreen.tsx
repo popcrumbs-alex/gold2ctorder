@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useState } from "react";
 import styled from "styled-components";
-import Timer from "../../orderpage/hero/Timer";
+import Timer from "../../../reusable/Timer";
 import { OtoDATA } from "../../../product/ProductData";
 import { Link, navigate } from "gatsby";
 import { useAppDispatch, useAppSelector } from "../../../hooks/reduxHooks";
