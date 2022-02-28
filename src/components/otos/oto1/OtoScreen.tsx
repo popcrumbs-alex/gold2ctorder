@@ -86,24 +86,37 @@ const Divider = styled.div`
   background-color: #999;
 `;
 
+//This is the first oto in the flow
 const OtoScreen = () => {
+  //The oto to be selected from within the product data file
+  //Not necessarily needed to be kept in local state
+  //could just use index
   const [currentOtoIndex, setCurrentOtoIndex] = useState<number>(0);
 
+  //everflow id being passed by url params and stored in storage on the order page
+  //window check for buildtime since not available until successful build
   const aff_id =
     typeof window !== "undefined" && window.localStorage.getItem("ef_aff_id");
 
+  //dispatching redux state actions
   const dispatch = useAppDispatch();
 
+  //current order state at this point in order flow
   const orderState = useAppSelector(selectOrderState);
 
+  //determine what payment processor to be used if user previously used credit or paypal
   const [orderType, setOrderType] = useState<"paypal" | "credit" | "">("");
 
-  const [updateOrder, { error, data, loading }] = useMutation(UPDATE_ORDER);
+  //graphql mutation for adding oto product to order
+  //only needed if payment was credit card
+  const [updateOrder, { error, loading }] = useMutation(UPDATE_ORDER);
 
   //Everflow tracking api endpoint
   const [trackUpsell] = useMutation(EF_TRACK_UPSELL);
 
-  //TODO Pass order into storage to continue order processing
+  //handle the order update in local redux state
+  //send mutation to graphql endpoint for order update
+  //handle everflow tracking via mutation to gql endpoint
   const handleAddOTOToOrder = async () => {
     const currentOrderId = localStorage.getItem("order_id");
     try {
@@ -243,12 +256,7 @@ const OtoScreen = () => {
 const EverflowMutationWrapper = ({ aff_id }: { aff_id: string }) => {
   const orderState = useAppSelector(selectOrderState);
 
-  const [
-    trackOrder,
-    { error: trackError, data: trackData, loading: trackLoading },
-  ] = useMutation(EF_TRACK_ORDER);
-
-  console.log("order track?", trackError, trackData, trackLoading);
+  const [trackOrder] = useMutation(EF_TRACK_ORDER);
 
   useMemo(() => {
     trackOrder({

@@ -344,7 +344,11 @@ const FreeGiftComponent = () => {
           See What Others Have To Say When They <br />
           Received <strong>Their Free Earrings</strong>
         </SubHeading>
-        <div id="looxReviews" data-product-id="4349401399396"></div>
+        <div
+          id="looxReviews"
+          data-product-id="4349401399396"
+          style={{ width: "100%" }}
+        ></div>
       </Content>
       <Footer>
         <ImageContainer style={{ maxWidth: "100px" }}>

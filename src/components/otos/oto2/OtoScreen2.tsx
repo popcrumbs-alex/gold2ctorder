@@ -149,6 +149,9 @@ const ImageContainer = styled.div`
 `;
 
 const OtoScreen2 = () => {
+  //The oto to be selected from within the product data file
+  //Not necessarily needed to be kept in local state
+  //could just use index
   const [currentOtoIndex, setCurrentOtoIndex] = useState<number>(1);
 
   const [ringGuideVisibility, toggleVisibility] = useState<boolean>(false);

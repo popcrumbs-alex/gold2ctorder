@@ -256,4 +256,26 @@ export const OtoDATA: Array<OTOProps> = [
       },
     ],
   },
+  {
+    imgOrVideoSrc:
+      "https://images.clickfunnels.com/05/8050bb7a4d4bcab8ecc4a1959bd448/Rose-Gold-2ct-Earrings.jpg",
+    sku: "RGOLDEAR",
+    id: 4273994367076,
+    title: "Add The 2CT Rose Gold Studs Only $15",
+    displayPrice: "$15",
+    numPrice: 15.0,
+    type: "OTO",
+    options: null,
+  },
+  {
+    imgOrVideoSrc:
+      "https://images.clickfunnels.com/55/fbc1b39d544a57b6ceb311fab07708/White-18.jpg",
+    sku: "ROSEEARPEND",
+    id: 4171609636964,
+    title: "Add The 2CT Rose Gold Studs and Pendant - $25",
+    displayPrice: "$25",
+    numPrice: 25.0,
+    type: "OTO",
+    options: null,
+  },
 ];
