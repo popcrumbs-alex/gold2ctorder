@@ -16,7 +16,7 @@ const Content = styled.section`
   align-items: center;
   width: 100%;
   margin-top: 1rem;
-
+  padding-bottom: 4rem;
   background-color: ${(props) => props.color};
 `;
 
@@ -56,7 +56,8 @@ const ColumnsRow = styled.div`
   margin-top: 1rem;
   width: 60%;
   @media screen and (max-width: 760px) {
-    width: 90%;
+    width: 80%;
+    flex-direction: column;
   }
 `;
 

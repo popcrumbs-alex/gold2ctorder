@@ -28,6 +28,9 @@ const Text = styled.p`
   font-size: 1.2rem;
   margin: 0.2rem 0;
   font-size: ${(props) => props["data-font-size"]};
+  @media screen and (max-width: 760px) {
+    line-height: 1.5;
+  }
 `;
 
 const Content = styled.section`
@@ -47,6 +50,9 @@ const Column = styled.div`
   width: 60%;
   background-color: #ecd93b1a;
   border: 3px dashed #222;
+  @media screen and (max-width: 760px) {
+    width: 80%;
+  }
 `;
 
 const Button = styled.button`
@@ -71,6 +77,9 @@ const Button = styled.button`
   }
   &:hover {
     cursor: pointer;
+  }
+  @media screen and (max-width: 760px) {
+    width: 100%;
   }
 `;
 

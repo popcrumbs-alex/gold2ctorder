@@ -24,6 +24,9 @@ const Content = styled.section`
   align-items: center;
   padding: 4rem 0;
   background: #eee;
+  @media screen and (max-width: 760px) {
+    padding: 2rem 0;
+  }
 `;
 
 const ImageContainer = styled.div`
@@ -56,7 +59,9 @@ const ColumnsRow = styled.div`
   margin-top: 1rem;
   width: 60%;
   @media screen and (max-width: 760px) {
-    width: 90%;
+    width: 80%;
+    flex-direction: column;
+    padding: 1rem;
   }
 `;
 

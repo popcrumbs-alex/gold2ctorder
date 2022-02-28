@@ -37,6 +37,9 @@ const Nav = styled.nav`
   justify-content: center;
   align-items: center;
   padding: 1rem 0;
+  @media screen and (max-width: 760px) {
+    padding: 1rem 0;
+  }
 `;
 const NavContent = styled.div`
   width: 70%;
@@ -46,6 +49,7 @@ const NavContent = styled.div`
   @media screen and (max-width: 760px) {
     width: 90%;
     flex-direction: column;
+    gap: 1rem;
   }
 `;
 
@@ -95,7 +99,6 @@ const Hero = styled.header`
   align-items: center;
   padding: 2rem 0;
   position: relative;
-
   &::before {
     content: "";
     width: 100%;
@@ -123,6 +126,9 @@ const Heading = styled.h1`
   font-size: 3rem;
   text-align: center;
   margin: 0.2rem 0;
+  @media screen and (max-width: 760px) {
+    font-size: 2.2rem;
+  }
 `;
 const Subheading = styled.h3`
   font-size: 2rem;

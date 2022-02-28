@@ -26,13 +26,16 @@ const Column = styled.div`
 const Row = styled.div`
   display: flex;
   align-items: center;
+  @media screen and (max-width: 760px) {
+    flex-direction: column;
+  }
 `;
 
 const ReviewsSection = () => {
   return (
     <Content>
       <Row>
-        <FaSmile size={35} style={{ marginRight: ".2rem" }} />
+        <FaSmile size={35} />
         <Heading>
           Don’t Just Listen To Us, Check Out What Our Customers Have To Say
         </Heading>

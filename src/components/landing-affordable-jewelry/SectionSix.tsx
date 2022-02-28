@@ -43,10 +43,17 @@ const Column = styled.div`
   justify-content: center;
   width: 50%;
   margin: 0 2rem;
+  @media screen and (max-width: 760px) {
+    width: 100%;
+    margin: 0;
+  }
 `;
 const Row = styled.div`
   display: flex;
   align-items: center;
+  @media screen and (max-width: 760px) {
+    flex-direction: column;
+  }
 `;
 const ColumnsRow = styled.div`
   display: flex;
@@ -58,6 +65,7 @@ const ColumnsRow = styled.div`
   width: 60%;
   @media screen and (max-width: 760px) {
     width: 90%;
+    flex-direction: column;
   }
 `;
 
@@ -65,7 +73,7 @@ const SectionSix = () => {
   return (
     <Content>
       <Row>
-        <FaTruck size={30} style={{ marginRight: "1rem" }} />
+        <FaTruck size={40} style={{ marginRight: "1rem" }} />
         <Heading>When you order today they arrive in 3-6 days</Heading>
       </Row>
       <ColumnsRow>

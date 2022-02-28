@@ -16,14 +16,22 @@ const Content = styled.section`
   align-items: center;
   width: 100%;
   padding: 2rem 0;
+  @media screen and (max-width: 760px) {
+    padding: 1rem 0;
+  }
 `;
 
 const Heading = styled.h1`
   color: #fff;
-  font-size: 2rem;
+  font-size: rem;
   text-align: center;
   margin: 0.2rem 0;
   padding: 2rem 0;
+  @media screen and (max-width: 760px) {
+    padding: 2rem 1rem;
+    font-size: 1.6rem;
+    line-height: 1.5;
+  }
 `;
 
 const Column = styled.div`
@@ -38,6 +46,10 @@ const OverlapBox = styled.div`
   padding: 2rem;
   border: 5px dashed #222;
   margin-top: -3rem;
+  @media screen and (max-width: 760px) {
+    width: 80%;
+    padding: 1rem;
+  }
 `;
 
 const Text = styled.p`

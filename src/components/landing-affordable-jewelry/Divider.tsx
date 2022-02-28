@@ -6,6 +6,9 @@ const Text = styled.p`
   font-weight: 700;
   margin: 0.2rem 0;
   font-size: ${(props) => props["data-font-size"]};
+  @media screen and (max-width: 760px) {
+    font-size: 1.4rem;
+  }
 `;
 
 const DividerContent = styled.section`
@@ -21,7 +24,8 @@ const OutlineBox = styled.div`
   padding: 2rem;
   width: 50%;
   @media screen and (max-width: 760px) {
-    width: 90%;
+    width: 80%;
+    padding: 0.5rem;
   }
 `;
 

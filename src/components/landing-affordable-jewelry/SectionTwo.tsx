@@ -33,11 +33,15 @@ const Content = styled.section`
   display: flex;
   flex-direction: column;
   background-color: ${(props) => props.color};
+  @media screen and (max-width: 760px) {
+    align-items: center;
+  }
 `;
 
 const TextRow = styled.div`
   display: flex;
   align-items: center;
+  justify-content: center;
   padding: 0.2rem;
 `;
 const ImageContainer = styled.div`
@@ -69,20 +73,6 @@ const Column = styled.div`
   justify-content: center;
 `;
 
-const ColumnsRow = styled.div`
-  display: flex;
-  background-color: #fff;
-  padding: 2rem;
-  align-items: flex-start;
-  border: 1px solid #ddd;
-  border-radius: 2px;
-  margin-top: 1rem;
-  width: 50%;
-  @media screen and (max-width: 760px) {
-    width: 90%;
-  }
-`;
-
 const CheckList = styled.div`
   display: flex;
   flex-direction: column;
@@ -105,39 +95,6 @@ const AddToCartButton = styled.button`
     transform: translateY(-2vh);
     cursor: pointer;
     box-shadow: 0 0 0 10px #ff00ed20;
-  }
-`;
-
-const OutlineBox = styled.div`
-  border: 2px solid #fff;
-  padding: 2rem;
-  width: 50%;
-  @media screen and (max-width: 760px) {
-    width: 90%;
-  }
-`;
-
-const Button = styled.button`
-  background-color: #ff00ed;
-  border-radius: 5px;
-  padding: 1rem 2rem;
-  border: 0;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  color: #fff;
-  font-size: 1.6rem;
-  text-transform: uppercase;
-  font-weight: 700;
-  margin: 1rem 0;
-  animation: ${bounce} 1s linear infinite;
-  & span {
-    font-weight: 100;
-    color: #eeeeee80;
-    font-size: 1rem;
-  }
-  &:hover {
-    cursor: pointer;
   }
 `;
 
