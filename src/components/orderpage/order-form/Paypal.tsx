@@ -58,7 +58,6 @@ const Paypal = ({
         data_from_paypal.purchase_units[0].shipping.address.postal_code ||
         orderState.myOrder.shippingInfo.zip,
     };
-    // console.log("formatted addy", data_from_paypal);
     try {
       //dynamically add order total for component reuse
       console.log("other data", formattedAddress);
@@ -96,6 +95,8 @@ const Paypal = ({
       dispatch(setAlert({ message: error.message, type: "danger" }));
     }
   }, [error]);
+
+  console.log("items", items.filter((item) => item.isRecurring).length > 0);
 
   if (loading) {
     return (
@@ -147,6 +148,7 @@ const Paypal = ({
                 items:
                   items.length > 0
                     ? items
+                        .filter((item) => !item.isRecurring)
                         .map((product: ProductProp) => {
                           return {
                             name: product.title,

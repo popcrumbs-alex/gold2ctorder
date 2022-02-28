@@ -293,6 +293,7 @@ const AffordableJewelryLanding = () => {
       {/*  ontent sections */}
       <SectionFour />
 
+      <SectionFive />
       <Overlap />
     </Container>
   );
@@ -538,9 +539,24 @@ const Overlap = () => {
           turn on you at any point. When we make our jewelry we add a little
           extra love to it, and make it better than the rest We take a normal CZ
           stone and seal it, so no moisture ever gets inside of it and makes it
-          cloudy
+          cloudy.
         </Text>
       </Column>
+    </Content>
+  );
+};
+
+const SectionFive = () => {
+  return (
+    <Content>
+      <ColumnsRow>
+        <Column>
+          <Heading style={{ color: "#ff00ed", fontStyle: "italic" }}>
+            Assignment #1, make CZ’s last forever
+          </Heading>
+          <Text>We use only the best metals in our jewelry</Text>
+        </Column>
+      </ColumnsRow>
     </Content>
   );
 };
