@@ -37,12 +37,12 @@ export class ShopifyController {
 
       if (!order_id) {
         console.log('no order id');
-        return response.status(200);
+        return response.sendStatus(200);
       }
 
       if (transactions.length === 0) {
         console.log('no transactions');
-        return response.status(200);
+        return response.sendStatus(200);
       }
 
       const foundOrder = await this.orderService.findOrderFromShopifyId(
