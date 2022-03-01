@@ -12,12 +12,6 @@ const HelmetWrapper = ({
 
   const pathname = location.pathname;
 
-  console.log(
-    "current location",
-    pathname === "/otos/Oto1/",
-    pathname,
-    location
-  );
   return (
     <Helmet>
       <title>{pageTitle}</title>
@@ -73,6 +67,22 @@ fbq('init', '355361339685041');
         r.src=t+h._hjSettings.hjid+j+h._hjSettings.hjsv;
         a.appendChild(r);
     })(window,document,'https://static.hotjar.com/c/hotjar-','.js?sv=');`}
+      </script>
+      <script
+        async
+        src="https://www.googletagmanager.com/gtag/js?id=AW-1003840432"
+      ></script>
+      <script>{` window.dataLayer = window.dataLayer || []; function gtag(){dataLayer.push(arguments);} gtag('js', new Date()); gtag('config', 'AW-1003840432');  `}</script>
+
+      <script>
+        {`!function(e){if(!window.pintrk){window.pintrk = function () {
+window.pintrk.queue.push(Array.prototype.slice.call(arguments))};var
+      n=window.pintrk;n.queue=[],n.version="3.0";var
+      t=document.createElement("script");t.async=!0,t.src=e;var
+      r=document.getElementsByTagName("script")[0];
+      r.parentNode.insertBefore(t,r)}}("https://s.pinimg.com/ct/core.js");
+pintrk('load', '2613435595600', {em: '<user_email_address>'});
+pintrk('page');`}
       </script>
     </Helmet>
   );

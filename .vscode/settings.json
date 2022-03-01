@@ -1,0 +1,6 @@
+{
+  "terminal.integrated.commandsToSkipShell": [
+    "\"editor.bracketPairColorization.enabled\": true",
+    "\"editor.guides.bracketPairs\":\"active\""
+  ]
+}

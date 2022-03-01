@@ -4,6 +4,14 @@ module.exports = {
     siteUrl: `https://offers.lucianarose.store/`,
   },
   plugins: [
+    {
+      resolve: "gatsby-plugin-google-tagmanager",
+      options: {
+        id: "GTM-WWCSW8Z",
+
+        includeInDevelopment: true,
+      },
+    },
     "gatsby-plugin-styled-components",
     "gatsby-plugin-apollo",
     {
@@ -42,6 +50,5 @@ module.exports = {
         url: "http://localhost:3000/graphql",
       },
     },
- 
   ],
 };
