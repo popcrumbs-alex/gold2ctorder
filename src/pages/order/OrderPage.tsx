@@ -67,7 +67,7 @@ const OrderPage = () => {
   return (
     <ThemeContext.Provider value={Colors}>
       <Globalstyle />
-      <HelmetWrapper pageTitle="Gold 2CT Stud Order Page" efScript="" />
+      <HelmetWrapper pageTitle="Silver 2CT Stud Order Page" efScript="" />
       <Nav />
       <Main>
         <Alert />

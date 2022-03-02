@@ -9,3 +9,9 @@ export default {
   text: "#fefefe",
   danger: "#D62246",
 };
+
+export const silverStudsColors = {
+  main: "#fd5c56",
+  text: "#fefefe",
+  danger: "#D62246",
+};
