@@ -47,6 +47,8 @@ export class Order {
   orderType: string;
   @Prop({ default: 'not-a-paypal-payment' })
   paypal_payment_id: string;
+  @Prop()
+  funnel_name: string;
 }
 
 export type OrderDocument = Order & Document;

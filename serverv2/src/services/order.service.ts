@@ -392,9 +392,9 @@ export class OrderService {
         ],
         line_items: lineItems,
         note_attributes: [
-          { name: 'GOLD 2CT ORDER FLOW', value: firstName + lastName },
+          { name: foundOrder.funnel_name, value: firstName + lastName },
         ],
-        tags: ['Gold 2ct order flow', foundOrder.orderType],
+        tags: [foundOrder.funnel_name, foundOrder.orderType],
       };
 
       switch (foundOrder.orderType) {
