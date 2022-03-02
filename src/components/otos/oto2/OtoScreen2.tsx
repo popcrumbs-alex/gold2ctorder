@@ -39,6 +39,8 @@ const HeaderContent = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  @media screen and (max-width: 760px) {
+    width:90%;
 `;
 
 const Content = styled.div`
@@ -46,6 +48,9 @@ const Content = styled.div`
   flex-direction: column;
   align-items: center;
   padding: 2rem 0;
+  @media screen and (max-width: 760px) {
+    width: 95%;
+  }
 `;
 
 const Heading = styled.h1`
@@ -54,10 +59,17 @@ const Heading = styled.h1`
   & span {
     color: #ffe300;
   }
+  @media screen and (max-width: 760px) {
+    line-height: 1.5;
+    text-align: center;
+  }
 `;
 
 const Subheading = styled.h3`
   color: #fff;
+  @media screen and (max-width: 760px) {
+    text-align: center;
+  }
 `;
 
 const ContinueBox = styled.div`

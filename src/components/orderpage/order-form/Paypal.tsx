@@ -11,6 +11,7 @@ import { CREATE_ORDER } from "../../../graphql/mutations/order.mutation";
 import { navigate } from "gatsby";
 import LoadingSpinner from "../../loading/LoadingSpinner";
 import { PayPalButton } from "react-paypal-button-v2";
+import ProductData from "../../../product/ProductData";
 
 // live
 const paypal_client_id =
@@ -61,6 +62,7 @@ const Paypal = ({
     try {
       //dynamically add order total for component reuse
       console.log("other data", formattedAddress);
+      const { funnel_name } = ProductData;
       const request = await createPaypalOrder({
         variables: {
           createOrderInput: {
@@ -72,6 +74,7 @@ const Paypal = ({
             paypal_payer_id: data_from_paypal.payer.payer_id,
             paypal_payment_id:
               data_from_paypal.purchase_units[0].payments.captures[0].id || "",
+            funnel_name,
           },
         },
       });

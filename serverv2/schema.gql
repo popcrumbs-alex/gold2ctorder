@@ -119,6 +119,7 @@ input CreateOrderInput {
   paypal_transaction_id: String
   paypal_payer_id: String
   paypal_payment_id: String
+  funnel_name: String
 }
 
 input ProductInput {

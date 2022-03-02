@@ -40,17 +40,44 @@ const Heading = styled.h1`
   & span {
     font-weight: 300;
   }
+  @media screen and (max-width: 760px) {
+    text-align: center;
+    font-size: 1.5rem;
+    font-weight: 600;
+
+    & span {
+      font-weight: 600;
+    }
+  }
 `;
 
 const Subheading = styled.h3`
   color: #333;
+  @media screen and (max-width: 760px) {
+    text-align: center;
+    font-size: 1rem;
+    font-weight: 400;
+    margin-top: 0.2rem;
+  }
 `;
 
 const HeadingTwo = styled.h2`
   font-weight: 100;
   color: #666;
+  @media screen and (max-width: 760px) {
+    text-align: center;
+    font-size: 0.8rem;
+    font-weight: 400;
+    margin: 1rem 0;
+  }
 `;
-
+const Row = styled.div`
+  display: flex;
+  align-items: center;
+  @media screen and (max-width: 760px) {
+    flex-direction: column;
+  }
+`;
 const Button = styled.button`
   background-color: #111;
   padding: 1rem 2rem;
@@ -73,10 +100,20 @@ const Button = styled.button`
     cursor: pointer;
     background-color: #333;
   }
+  @media screen and (max-width: 760px) {
+    text-align: center;
+    font-size: 1.2rem;
+    font-weight: 500;
+    margin-top: 0.2rem;
+    padding: 0.5rem;
+  }
 `;
 
 const Image = styled.img`
   max-width: 350px;
+  @media screen and (max-width: 760px) {
+    max-width: 250px;
+  }
 `;
 
 const Divider = styled.div`
@@ -219,6 +256,12 @@ const OtoScreen = () => {
         />
         <Image src={OtoDATA[currentOtoIndex].imgOrVideoSrc} alt="product" />
         {/* set conditional for paypal button & other payments */}
+        {!orderType && (
+          <Button onClick={() => handleAddOTOToOrder()}>
+            YES! Add The 1CT Gold Studs For Only $10{" "}
+            <span>Click Only Once</span>
+          </Button>
+        )}
         {
           {
             paypal: (

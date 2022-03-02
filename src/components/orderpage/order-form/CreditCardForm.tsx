@@ -12,6 +12,7 @@ import {
 import { InputSelector } from "../../../reusable/Inputs";
 import { navigate } from "gatsby";
 import LoadingSpinner from "../../loading/LoadingSpinner";
+import ProductData from "../../../product/ProductData";
 
 const Container = styled.form`
   display: flex;
@@ -167,6 +168,8 @@ const CreditCardForm = () => {
         cvc: cvc,
       };
 
+      const { funnel_name } = ProductData;
+
       const response = await createOrder({
         variables: {
           createOrderInput: {
@@ -177,6 +180,7 @@ const CreditCardForm = () => {
             ...cardInfo,
             ef_aff_id: ef_aff_id ? ef_aff_id : "non-ef-order",
             orderType: "credit",
+            funnel_name,
           },
         },
       });
