@@ -123,7 +123,7 @@ const OTOTitle = styled.h3`
 `;
 
 //IMPORTANT: this screen contains multiple products
-//This is the first oto in the flow
+
 const OtoThreeScreen = () => {
   //The oto to be selected from within the product data file
   //Not necessarily needed to be kept in local state
@@ -198,7 +198,7 @@ const OtoThreeScreen = () => {
       }
       console.log("request!", request);
       if (request.data.updateOrder.success) {
-        navigate("/Thankyou");
+        navigate("/otos/Oto4");
       }
     } catch (error) {
       console.error(error);
@@ -264,7 +264,7 @@ const OtoThreeScreen = () => {
                   <PaymentProcessorButton
                     orderType={orderType}
                     oto={oto}
-                    nextPage="/Thankyou"
+                    nextPage="/otos/Oto4"
                     handleAddOTOToOrder={handleAddOTOToOrder}
                     selectedIndex={index}
                     buttonText={oto.displayPrice}
@@ -274,7 +274,7 @@ const OtoThreeScreen = () => {
             );
           })}
         </OTORow>
-        <Link to="/Thankyou">No thanks, I don't need this now</Link>
+        <Link to="/otos/Oto4">No thanks, I don't need this now</Link>
       </Content>
       {/* set conditional for paypal button & other payments */}
     </Section>

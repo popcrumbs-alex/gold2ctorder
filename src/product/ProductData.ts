@@ -62,8 +62,7 @@ export const orderBumps: Array<BumpProps> = [
   {
     imgSrc:
       "https://images.clickfunnels.com/b0/b9943eab2048f58e780b4a90b5dd1e/White_15_1024x1024-2x-1-.jpg",
-    checkboxHeadline:
-      "Yes, I Add The 2CT Silver Earrings + Pendant For Only $24",
+    checkboxHeadline: "Yes! Add The 2CT Silver Earrings + Pendant For Only $24",
     otoHeadline: "{Almost Sold Out} - Discount Ends Soon:",
     otoText:
       "On sale today for only $24 more, get our signature Lulu Rose earrings with matching 2CT pendant in sterling silver Vermeil. Purchased separately these cost over $140 but today you get them for only $24 when added on to this order only.",
@@ -276,6 +275,17 @@ export const OtoDATA: Array<OTOProps> = [
     title: "Add The 2CT Rose Gold Studs and Pendant - $25",
     displayPrice: "YES! Add The Set For $25",
     numPrice: 25.0,
+    type: "OTO",
+    options: null,
+  },
+  {
+    imgOrVideoSrc:
+      "https://cdn.shopify.com/videos/c/vp/d97d88897caa47baa9cee1b5c4575037/d97d88897caa47baa9cee1b5c4575037.HD-1080p-7.2Mbps.mp4",
+    sku: "VICT-11",
+    id: 4362661134436,
+    title: "Victoria Lab ‘Diamond’ Earrings",
+    displayPrice: "$16",
+    numPrice: 16.0,
     type: "OTO",
     options: null,
   },

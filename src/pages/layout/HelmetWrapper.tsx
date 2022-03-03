@@ -12,6 +12,11 @@ const HelmetWrapper = ({
 
   const pathname = location.pathname;
 
+  const regex = new RegExp(/oto1/, "gi");
+
+  const matches = pathname.match(regex) || [];
+  console.log("pathname", matches.length > 0);
+
   return (
     <Helmet>
       <title>{pageTitle}</title>
@@ -25,13 +30,27 @@ s.parentNode.insertBefore(t,s)}(window, document,'script',
 'https://connect.facebook.net/en_US/fbevents.js');
 fbq('init', '355361339685041');
 `}</script>
-      {pathname === "/otos/Oto1/" && (
+      {matches.length > 0 && (
         <script async={true} type="text/javascript">{`!function (w, d, t) {
 		  w.TiktokAnalyticsObject=t;var ttq=w[t]=w[t]||[];ttq.methods=["page","track","identify","instances","debug","on","off","once","ready","alias","group","enableCookie","disableCookie"],ttq.setAndDefer=function(t,e){t[e]=function(){t.push([e].concat(Array.prototype.slice.call(arguments,0)))}};for(var i=0;i<ttq.methods.length;i++)ttq.setAndDefer(ttq,ttq.methods[i]);ttq.instance=function(t){for(var e=ttq._i[t]||[],n=0;n<ttq.methods.length;n++)ttq.setAndDefer(e,ttq.methods[n]);return e},ttq.load=function(e,n){var i="https://analytics.tiktok.com/i18n/pixel/events.js";ttq._i=ttq._i||{},ttq._i[e]=[],ttq._i[e]._u=i,ttq._t=ttq._t||{},ttq._t[e]=+new Date,ttq._o=ttq._o||{},ttq._o[e]=n||{};var o=document.createElement("script");o.type="text/javascript",o.async=!0,o.src=i+"?sdkid="+e+"&lib="+t;var a=document.getElementsByTagName("script")[0];a.parentNode.insertBefore(o,a)};
 		
 		  ttq.load('C09I65DOQ3DFKFN94SEG');
 		  ttq.page();
 		}(window, document, 'ttq');`}</script>
+      )}
+      <script
+        async
+        src="https://www.googletagmanager.com/gtag/js?id=AW-1003840432"
+      ></script>
+
+      {matches.length > 0 && (
+        <script>
+          {`window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'AW-1003840432')`}
+        </script>
       )}
       <script
         async={true}
@@ -68,10 +87,7 @@ fbq('init', '355361339685041');
         a.appendChild(r);
     })(window,document,'https://static.hotjar.com/c/hotjar-','.js?sv=');`}
       </script>
-      <script
-        async
-        src="https://www.googletagmanager.com/gtag/js?id=AW-1003840432"
-      ></script>
+
       <script>{` window.dataLayer = window.dataLayer || []; function gtag(){dataLayer.push(arguments);} gtag('js', new Date()); gtag('config', 'AW-1003840432');  `}</script>
 
       <script>
