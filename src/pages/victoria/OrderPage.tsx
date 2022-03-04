@@ -1,11 +1,11 @@
 import * as React from "react";
 import styled, { createGlobalStyle, keyframes } from "styled-components";
-import Hero from "../../silver-components/orderpage/hero/Hero";
-import Nav from "../../silver-components/orderpage/nav/Nav";
-import Form from "../../silver-components/orderpage/order-form/Form";
-import Message from "../../silver-components/orderpage/section/Message";
-import Colors, { silverStudsColors } from "../../constants/Colors";
-import Loox from "../../silver-components/reviews/Loox";
+import Hero from "../../victoria-components/orderpage/hero/Hero";
+import Nav from "../../victoria-components/orderpage/nav/Nav";
+import Form from "../../victoria-components/orderpage/order-form/Form";
+import Message from "../../victoria-components/orderpage/section/Message";
+import { victoriaColors } from "../../constants/Colors";
+import Loox from "../../victoria-components/reviews/Loox";
 import { useEffect } from "react";
 import HelmetWrapper from "../layout/HelmetWrapper";
 import Popups from "../../reusable/Popups";
@@ -27,7 +27,7 @@ const Main = styled.main`
   animation: ${fadein} 1s linear forwards;
 `;
 
-export const ThemeContext = React.createContext(silverStudsColors);
+export const ThemeContext = React.createContext(victoriaColors);
 
 const Globalstyle = createGlobalStyle`
     @import url("https://use.typekit.net/wzi3sml.css");
@@ -65,9 +65,9 @@ const OrderPage = () => {
   }, []);
 
   return (
-    <ThemeContext.Provider value={silverStudsColors}>
+    <ThemeContext.Provider value={victoriaColors}>
       <Globalstyle />
-      <HelmetWrapper pageTitle="Silver 2CT Stud Order Page" efScript="" />
+      <HelmetWrapper pageTitle="Victoria Stud Order Page" efScript="" />
       <Nav />
       <Main>
         <Alert />

@@ -200,7 +200,7 @@ const OtoScreen = () => {
       }
       console.log("request!", request);
       if (request.data.updateOrder.success) {
-        navigate("/silverstuds/otos/Oto2");
+        navigate("/silverstuds/otos/EternityBand");
       }
     } catch (error) {
       console.error(error);
@@ -276,7 +276,7 @@ const OtoScreen = () => {
             paypal: (
               <Paypal
                 orderTotal={OtoDATA[currentOtoIndex].numPrice}
-                nextPage={"/silverstuds/otos/Oto2"}
+                nextPage={"/silverstuds/otos/EternityBand"}
                 items={[
                   {
                     sku: OtoDATA[currentOtoIndex].sku,
@@ -302,7 +302,9 @@ const OtoScreen = () => {
           }[orderType]
         }
 
-        <Link to="/silverstuds/otos/Oto2">No thanks I don't need this now</Link>
+        <Link to="/silverstuds/otos/EternityBand">
+          No thanks I don't need this now
+        </Link>
       </Content>
     </Section>
   );

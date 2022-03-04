@@ -2,7 +2,6 @@ import React from "react";
 import styled, { keyframes } from "styled-components";
 import { StaticImage } from "gatsby-plugin-image";
 import { navigate } from "gatsby";
-import Footer from "../footer.tsx/Footer";
 import SectionTwo from "./SectionTwo";
 import Divider from "./Divider";
 import SectionThree from "./SectionThree";
@@ -245,7 +244,6 @@ const AffordableJewelryLanding = () => {
       <SectionSix />
       <ReviewsSection />
       <OfferBox />
-      <Footer />
     </Container>
   );
 };

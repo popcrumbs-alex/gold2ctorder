@@ -12,10 +12,10 @@ const HelmetWrapper = ({
 
   const pathname = location.pathname;
 
-  const regex = new RegExp(/oto1/, "gi");
+  const regex = new RegExp(/onectgoldstuds/, "gi");
 
   const matches = pathname.match(regex) || [];
-  console.log("pathname", matches.length > 0);
+  console.log("location", location);
 
   return (
     <Helmet>

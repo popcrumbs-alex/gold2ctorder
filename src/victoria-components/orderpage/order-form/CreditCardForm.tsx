@@ -12,7 +12,7 @@ import {
 import { InputSelector } from "../../../reusable/Inputs";
 import { navigate } from "gatsby";
 import LoadingSpinner from "../../loading/LoadingSpinner";
-import ProductData from "../../../product/ProductData";
+import ProductData from "../../../product/VictoriaProductData";
 
 const Container = styled.form`
   display: flex;
@@ -41,7 +41,7 @@ const Grid = styled.div`
 `;
 
 const Button = styled.button`
-  background-color: #111;
+  background-color: dodgerblue;
   color: #fff;
   border-radius: 5px;
   padding: 1rem;
@@ -54,6 +54,7 @@ const Button = styled.button`
   flex-direction: column;
   align-items: center;
   box-shadow: 0 1px 20px #44444420;
+  text-transform: uppercase;
   &:hover {
     cursor: pointer;
     background-color: #333;
@@ -193,7 +194,7 @@ const CreditCardForm = () => {
         //set order type for oto process to credit
         window.localStorage.setItem("orderType", "credit");
 
-        navigate("/otos/OneCtGoldStuds");
+        navigate("/otos/Oto1");
       }
       console.log("response", response);
     } catch (error) {
@@ -261,10 +262,7 @@ const CreditCardForm = () => {
           <p style={{ marginLeft: "20px" }}>Processing Order</p>
         </LoadingContainer>
       ) : (
-        <Button onSubmit={(e) => submitOrder(e)}>
-          Submit My Order For RUSH Shipping
-          <span>Click Here</span>
-        </Button>
+        <Button onSubmit={(e) => submitOrder(e)}>ship my order now</Button>
       )}
     </Container>
   );

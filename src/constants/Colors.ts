@@ -15,3 +15,9 @@ export const silverStudsColors = {
   text: "#fefefe",
   danger: "#D62246",
 };
+
+export const victoriaColors = {
+  main: "#2e82ff",
+  text: "#fefefe",
+  danger: "#D62246",
+};

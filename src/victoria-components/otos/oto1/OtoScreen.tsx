@@ -1,7 +1,7 @@
-import React, { useMemo, useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import styled from "styled-components";
 import Timer from "../../../reusable/Timer";
-import { OtoDATA, OTOProps } from "../../../product/ProductData";
+import { OtoDATA } from "../../../product/ProductData";
 import { Link, navigate } from "gatsby";
 import { useAppDispatch, useAppSelector } from "../../../hooks/reduxHooks";
 import {
@@ -40,19 +40,44 @@ const Heading = styled.h1`
   & span {
     font-weight: 300;
   }
+  @media screen and (max-width: 760px) {
+    text-align: center;
+    font-size: 1.5rem;
+    font-weight: 600;
+
+    & span {
+      font-weight: 600;
+    }
+  }
 `;
 
 const Subheading = styled.h3`
   color: #333;
+  @media screen and (max-width: 760px) {
+    text-align: center;
+    font-size: 1rem;
+    font-weight: 400;
+    margin-top: 0.2rem;
+  }
 `;
 
 const HeadingTwo = styled.h2`
   font-weight: 100;
   color: #666;
+  @media screen and (max-width: 760px) {
+    text-align: center;
+    font-size: 0.8rem;
+    font-weight: 400;
+    margin: 1rem 0;
+  }
 `;
-
-const Text = styled.p``;
-
+const Row = styled.div`
+  display: flex;
+  align-items: center;
+  @media screen and (max-width: 760px) {
+    flex-direction: column;
+  }
+`;
 const Button = styled.button`
   background-color: #111;
   padding: 1rem 2rem;
@@ -75,60 +100,35 @@ const Button = styled.button`
     cursor: pointer;
     background-color: #333;
   }
+  @media screen and (max-width: 760px) {
+    text-align: center;
+    font-size: 1.2rem;
+    font-weight: 500;
+    margin-top: 0.2rem;
+    padding: 0.5rem;
+  }
 `;
 
 const Image = styled.img`
-  width: 350px;
-  height: 350px;
-  object-fit: cover;
-  object-position: center;
-  border-radius: 10px;
-  border: 1px solid #eee;
+  max-width: 350px;
+  @media screen and (max-width: 760px) {
+    max-width: 250px;
+  }
 `;
 
 const Divider = styled.div`
   display: block;
   height: 1.2px;
-  width: 100%;
-  background-color: #99999920;
+  width: 80%;
+  background-color: #999;
 `;
 
-const OTORow = styled.div`
-  display: grid;
-  width: 100%;
-  grid-template-columns: 1fr 1fr;
-  justify-content: space-between;
-  gap: 1rem;
-  margin-bottom: 3rem;
-  @media screen and (max-width: 760px) {
-    display: flex;
-    flex-direction: column;
-  }
-`;
-const OTOColumn = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding: 1rem;
-  border-radius: 5px;
-  box-shadow: 0 0 0px 1px #eee;
-`;
-
-const OTOTitle = styled.h3`
-  text-align: center;
-  max-width: 70%;
-  font-size: 1.2rem;
-  line-height: 1.5;
-`;
-
-//IMPORTANT: this screen contains multiple products
-
-const OtoThreeScreen = () => {
+//This is the first oto in the flow
+const OtoScreen = () => {
   //The oto to be selected from within the product data file
   //Not necessarily needed to be kept in local state
   //could just use index
-  const [currentOtoIndex, setCurrentOtoIndex] = useState<number[]>([2, 3]);
+  const [currentOtoIndex, setCurrentOtoIndex] = useState<number>(0);
 
   //everflow id being passed by url params and stored in storage on the order page
   //window check for buildtime since not available until successful build
@@ -154,23 +154,18 @@ const OtoThreeScreen = () => {
   //handle the order update in local redux state
   //send mutation to graphql endpoint for order update
   //handle everflow tracking via mutation to gql endpoint
-  const handleAddOTOToOrder = async (selectedIndex: number) => {
+  const handleAddOTOToOrder = async () => {
     const currentOrderId = localStorage.getItem("order_id");
-
-    const selectedProduct = {
-      price: OtoDATA[selectedIndex].numPrice,
-      title: OtoDATA[selectedIndex].title,
-      type: "OTO",
-      isRecurring: false,
-      id: OtoDATA[selectedIndex].id,
-      displayPrice: OtoDATA[selectedIndex].displayPrice,
-      sku: OtoDATA[selectedIndex].sku,
-    };
-
     try {
       dispatch(
         addOtoToOrder({
-          ...selectedProduct,
+          price: OtoDATA[currentOtoIndex].numPrice,
+          title: "1Ct Gold Studs",
+          type: "OTO",
+          isRecurring: false,
+          id: OtoDATA[currentOtoIndex].id,
+          displayPrice: OtoDATA[currentOtoIndex].displayPrice,
+          sku: OtoDATA[currentOtoIndex].sku,
         })
       );
 
@@ -178,7 +173,13 @@ const OtoThreeScreen = () => {
         variables: {
           updateOrderInput: {
             product: {
-              ...selectedProduct,
+              displayPrice: OtoDATA[currentOtoIndex].displayPrice,
+              price: OtoDATA[currentOtoIndex].numPrice,
+              title: "1CT Gold Studs",
+              sku: OtoDATA[currentOtoIndex].sku,
+              isRecurring: false,
+              type: "OTO",
+              id: OtoDATA[currentOtoIndex].id,
             },
             orderId: currentOrderId,
           },
@@ -191,14 +192,14 @@ const OtoThreeScreen = () => {
           variables: {
             everflowOrderInput: {
               aff_id: aff_id,
-              amount: OtoDATA[selectedIndex].numPrice,
+              amount: OtoDATA[currentOtoIndex].numPrice,
             },
           },
         });
       }
       console.log("request!", request);
       if (request.data.updateOrder.success) {
-        navigate("/otos/VictoriaEarrings");
+        navigate("/otos/Oto2");
       }
     } catch (error) {
       console.error(error);
@@ -241,94 +242,58 @@ const OtoThreeScreen = () => {
       {aff_id && <EverflowMutationWrapper aff_id={aff_id} />}
       <Content>
         <Heading>
-          <strong>PICK YOUR DEAL:</strong> Get Them In Rose Gold
+          BONUS DEAL: <span>Add The 1CT Gold Studs</span>
         </Heading>
         <Subheading>
-          Get Our Signature Studs In rose Gold for Only $15, Add The Pendant Too
-          For Only $10 More.
+          Get the smaller version of the 2CT for this one time price of only $10
         </Subheading>
-        <Text>
+        <Divider />
+        <HeadingTwo>
           Click The Button Below To Add To Your Order While Time Remains
-        </Text>
+        </HeadingTwo>
         <Timer
-          timeProps={{ hoursProp: "00", minutesProp: "10", secondsProp: "59" }}
+          timeProps={{ hoursProp: "00", minutesProp: "09", secondsProp: "59" }}
         />
-        <Divider style={{ margin: "2rem 0" }} />
-        <OTORow>
-          {OtoDATA.map((oto: OTOProps, index: number) => {
-            return (
-              currentOtoIndex.includes(index) && (
-                <OTOColumn key={index}>
-                  <Image src={oto.imgOrVideoSrc} alt={oto.title} />
-                  <OTOTitle>{oto.title}</OTOTitle>
-                  <PaymentProcessorButton
-                    orderType={orderType}
-                    oto={oto}
-                    nextPage="/otos/VictoriaEarrings"
-                    handleAddOTOToOrder={handleAddOTOToOrder}
-                    selectedIndex={index}
-                    buttonText={oto.displayPrice}
-                  />
-                </OTOColumn>
-              )
-            );
-          })}
-        </OTORow>
-        <Link to="/otos/VictoriaEarrings">
-          No thanks, I don't need this now
-        </Link>
+        <Image src={OtoDATA[currentOtoIndex].imgOrVideoSrc} alt="product" />
+        {/* set conditional for paypal button & other payments */}
+        {!orderType && (
+          <Button onClick={() => handleAddOTOToOrder()}>
+            YES! Add The 1CT Gold Studs For Only $10{" "}
+            <span>Click Only Once</span>
+          </Button>
+        )}
+        {
+          {
+            paypal: (
+              <Paypal
+                orderTotal={OtoDATA[currentOtoIndex].numPrice}
+                nextPage={"/otos/Oto2"}
+                items={[
+                  {
+                    sku: OtoDATA[currentOtoIndex].sku,
+                    title: OtoDATA[currentOtoIndex].title,
+                    type: "OTO",
+                    displayPrice: OtoDATA[currentOtoIndex].displayPrice,
+                    id: OtoDATA[currentOtoIndex].id,
+                    price: OtoDATA[currentOtoIndex].numPrice,
+                    isRecurring: false,
+                  },
+                ]}
+              />
+            ),
+            credit: (
+              <Button onClick={() => handleAddOTOToOrder()}>
+                YES! Add The 1CT Gold Studs For Only $10{" "}
+                <span>Click Only Once</span>
+              </Button>
+            ),
+          }[orderType]
+        }
+
+        <Link to="/otos/Oto2">No thanks I don't need this now</Link>
       </Content>
-      {/* set conditional for paypal button & other payments */}
     </Section>
   );
-};
-
-const PaymentProcessorButton = ({
-  orderType,
-  oto,
-  handleAddOTOToOrder,
-  nextPage,
-  buttonText,
-  selectedIndex,
-}: {
-  orderType: "paypal" | "credit" | "";
-  handleAddOTOToOrder: (index: number) => Promise<any>;
-  oto: OTOProps;
-  nextPage: string;
-  buttonText: string;
-  selectedIndex: number;
-}) => {
-  if (!orderType) {
-    return (
-      <Button onClick={() => handleAddOTOToOrder(selectedIndex)}>
-        {buttonText}
-      </Button>
-    );
-  }
-  return {
-    paypal: (
-      <Paypal
-        orderTotal={oto.numPrice}
-        nextPage={nextPage}
-        items={[
-          {
-            sku: oto.sku,
-            title: oto.title,
-            type: "OTO",
-            displayPrice: oto.displayPrice,
-            id: oto.id,
-            price: oto.numPrice,
-            isRecurring: false,
-          },
-        ]}
-      />
-    ),
-    credit: (
-      <Button onClick={() => handleAddOTOToOrder(selectedIndex)}>
-        {buttonText}
-      </Button>
-    ),
-  }[orderType];
 };
 
 const EverflowMutationWrapper = ({ aff_id }: { aff_id: string }) => {
@@ -356,4 +321,4 @@ const EverflowMutationWrapper = ({ aff_id }: { aff_id: string }) => {
   return <></>;
 };
 
-export default OtoThreeScreen;
+export default OtoScreen;

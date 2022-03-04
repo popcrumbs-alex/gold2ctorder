@@ -2,6 +2,7 @@ import React from "react";
 import styled, { createGlobalStyle } from "styled-components";
 import FreeGiftComponent from "../../components/free-gift/FreeGiftComponent";
 import Colors from "../../constants/Colors";
+import Footer from "../../reusable/footer";
 import HelmetWrapper from "../layout/HelmetWrapper";
 
 const Main = styled.main``;
@@ -20,8 +21,6 @@ const Globalstyle = createGlobalStyle`
     box-sizing:border-box;
 }`;
 
-declare const window: any;
-
 const FreeGift = () => {
   return (
     <>
@@ -29,6 +28,7 @@ const FreeGift = () => {
       <Main>
         <Globalstyle />
         <FreeGiftComponent />
+        <Footer ThemeContext={ThemeContext} />
       </Main>
     </>
   );

@@ -1,10 +1,10 @@
 import * as React from "react";
 import styled, { createGlobalStyle, keyframes } from "styled-components";
-import Colors, { silverStudsColors } from "../../constants/Colors";
+import { silverStudsColors } from "../../constants/Colors";
 import { useEffect } from "react";
 import Lander from "../../silver-components/landing-one/Lander";
-import Footer from "../../components/footer.tsx/Footer";
 import HelmetWrapper from "../layout/HelmetWrapper";
+import Footer from "../../reusable/footer";
 
 const fadein = keyframes`
 0%{
@@ -61,7 +61,7 @@ const IndexPage = () => {
       <Main>
         <Lander />
       </Main>
-      <Footer />
+      <Footer ThemeContext={ThemeContext} />
     </ThemeContext.Provider>
   );
 };

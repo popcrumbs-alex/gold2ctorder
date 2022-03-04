@@ -1,10 +1,10 @@
 import * as React from "react";
 import styled, { createGlobalStyle, keyframes } from "styled-components";
-import Colors from "../constants/Colors";
+import Colors, { victoriaColors } from "../../constants/Colors";
 import { useEffect } from "react";
-import Lander from "../components/landing-one/Lander";
-import HelmetWrapper from "./layout/HelmetWrapper";
-import Footer from "../reusable/footer";
+import HelmetWrapper from "../layout/HelmetWrapper";
+import Lander from "../../victoria-components/landing-one/Lander";
+import Footer from "../../reusable/footer";
 
 const fadein = keyframes`
 0%{
@@ -19,7 +19,7 @@ const Main = styled.main`
   animation: ${fadein} 1s linear forwards;
 `;
 
-export const ThemeContext = React.createContext(Colors);
+export const ThemeContext = React.createContext(victoriaColors);
 
 const Globalstyle = createGlobalStyle`
     @import url("https://use.typekit.net/wzi3sml.css");
@@ -55,9 +55,9 @@ const IndexPage = () => {
   }, []);
 
   return (
-    <ThemeContext.Provider value={Colors}>
+    <ThemeContext.Provider value={victoriaColors}>
       <Globalstyle />
-      <HelmetWrapper pageTitle="Gold 2CT Studs" efScript="" />
+      <HelmetWrapper pageTitle="Victoria Studs" efScript="" />
       <Main>
         <Lander />
       </Main>

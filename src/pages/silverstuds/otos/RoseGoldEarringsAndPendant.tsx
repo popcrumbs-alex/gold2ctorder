@@ -1,9 +1,8 @@
 import React, { FC, useEffect } from "react";
 import styled, { createGlobalStyle } from "styled-components";
-import Alert from "../../components/alert/Alert";
-import OtoThreeScreen from "../../components/otos/oto3/OtoThreeScreen";
-import OtoFourScreen from "../../components/otos/oto4/OtoFourScreen";
-import HelmetWrapper from "../layout/HelmetWrapper";
+import Alert from "../../../reusable/Alert";
+import OtoThreeScreen from "../../../silver-components/otos/oto3/OtoThreeScreen";
+import HelmetWrapper from "../../layout/HelmetWrapper";
 const Main = styled.main``;
 
 declare const window: any;
@@ -20,7 +19,7 @@ const Globalstyle = createGlobalStyle`
     box-sizing:border-box;
 }`;
 
-const Oto4: FC = () => {
+const RoseGoldEarringsAndPendant: FC = () => {
   useEffect(() => {
     if (typeof window !== "undefined") {
       if (window.fbq) {
@@ -31,12 +30,12 @@ const Oto4: FC = () => {
   }, []);
   return (
     <Main>
-      <HelmetWrapper pageTitle="Victoria Earrings" efScript="" />
+      <HelmetWrapper pageTitle="Rose Gold Earrings and Pendant" efScript="" />
       <Globalstyle />
       <Alert />
-      <OtoFourScreen />
+      <OtoThreeScreen />
     </Main>
   );
 };
 
-export default Oto4;
+export default RoseGoldEarringsAndPendant;

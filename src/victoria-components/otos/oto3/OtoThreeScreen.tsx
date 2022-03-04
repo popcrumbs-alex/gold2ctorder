@@ -198,7 +198,7 @@ const OtoThreeScreen = () => {
       }
       console.log("request!", request);
       if (request.data.updateOrder.success) {
-        navigate("/otos/VictoriaEarrings");
+        navigate("/otos/Oto4");
       }
     } catch (error) {
       console.error(error);
@@ -264,7 +264,7 @@ const OtoThreeScreen = () => {
                   <PaymentProcessorButton
                     orderType={orderType}
                     oto={oto}
-                    nextPage="/otos/VictoriaEarrings"
+                    nextPage="/otos/Oto4"
                     handleAddOTOToOrder={handleAddOTOToOrder}
                     selectedIndex={index}
                     buttonText={oto.displayPrice}
@@ -274,9 +274,7 @@ const OtoThreeScreen = () => {
             );
           })}
         </OTORow>
-        <Link to="/otos/VictoriaEarrings">
-          No thanks, I don't need this now
-        </Link>
+        <Link to="/otos/Oto4">No thanks, I don't need this now</Link>
       </Content>
       {/* set conditional for paypal button & other payments */}
     </Section>

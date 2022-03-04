@@ -1,9 +1,9 @@
 import React, { useContext, useEffect } from "react";
 import styled, { keyframes } from "styled-components";
-import { Theme } from "../../constants/Colors";
-import { ThemeContext } from "../../pages";
-import { useAppDispatch, useAppSelector } from "../../hooks/reduxHooks";
-import { resetAlert, selectAlert } from "../../redux/reducers/alert.reducer";
+import { Theme } from "../constants/Colors";
+import { ThemeContext } from "../pages";
+import { useAppDispatch, useAppSelector } from "../hooks/reduxHooks";
+import { resetAlert, selectAlert } from "../redux/reducers/alert.reducer";
 import { FiAlertCircle } from "react-icons/fi";
 
 const slideIn = keyframes`

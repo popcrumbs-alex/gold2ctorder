@@ -1,16 +1,17 @@
 import * as React from "react";
 import styled, { createGlobalStyle, keyframes } from "styled-components";
-import Footer from "../../components/footer.tsx/Footer";
 import Hero from "../../components/orderpage/hero/Hero";
 import Nav from "../../components/orderpage/nav/Nav";
 import Form from "../../components/orderpage/order-form/Form";
 import Message from "../../components/orderpage/section/Message";
 import Colors from "../../constants/Colors";
 import Loox from "../../components/reviews/Loox";
-import Alert from "../../components/alert/Alert";
+
 import { useEffect } from "react";
 import HelmetWrapper from "../layout/HelmetWrapper";
 import Popups from "../../reusable/Popups";
+import Alert from "../../reusable/Alert";
+import Footer from "../../reusable/footer";
 
 declare const window: any;
 
@@ -75,7 +76,7 @@ const OrderPage = () => {
         <Message />
         <Form />
         <Loox />
-        <Footer />
+        <Footer ThemeContext={ThemeContext} />
         <Popups />
       </Main>
     </ThemeContext.Provider>

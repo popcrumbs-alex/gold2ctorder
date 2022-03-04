@@ -258,7 +258,7 @@ const OtoScreen2 = () => {
 
       console.log("request!", request);
       if (request.data.updateOrder.success) {
-        navigate("/silverstuds/otos/Oto3");
+        navigate("/silverstuds/otos/RoseGoldEarringsAndPendant");
       }
     } catch (error) {
       console.error(error);
@@ -356,7 +356,7 @@ const OtoScreen2 = () => {
                 <Text>Continue With Paypal</Text>
                 <Paypal
                   orderTotal={ringOptionSelected.numPrice}
-                  nextPage={"/otos/Oto3"}
+                  nextPage={"/otos/RoseGoldEarringsAndPendant"}
                   items={[
                     {
                       price: ringOptionSelected.numPrice,
@@ -415,7 +415,7 @@ const OtoScreen2 = () => {
         </Button>
 
         <Link
-          to="/silverstuds/otos/Oto3"
+          to="/silverstuds/otos/RoseGoldEarringsAndPendant"
           color="#eee"
           style={{ color: "#eee" }}
         >

@@ -1,9 +1,11 @@
 import React, { FC, useEffect } from "react";
 import styled, { createGlobalStyle } from "styled-components";
-import Alert from "../../../silver-components/alert/Alert";
-import OtoReviews from "../../../silver-components/otos/oto2/OtoReviews";
-import OtoScreen2 from "../../../silver-components/otos/oto2/OtoScreen2";
+import OtoScreen from "../../../silver-components/otos/oto1/OtoScreen";
+import { useAppSelector } from "../../../hooks/reduxHooks";
+import { selectOrderState } from "../../../redux/reducers/order.reducer";
+import BodyTags from "../../layout/BodyTags";
 import HelmetWrapper from "../../layout/HelmetWrapper";
+import Alert from "../../../reusable/Alert";
 const Main = styled.main``;
 
 declare const window: any;
@@ -20,7 +22,13 @@ const Globalstyle = createGlobalStyle`
     box-sizing:border-box;
 }`;
 
-const Oto2: FC = () => {
+const OneCtGoldStuds: FC = () => {
+  const orderState = useAppSelector(selectOrderState);
+
+  const {
+    myOrder: { orderTotal },
+  } = orderState;
+
   useEffect(() => {
     if (typeof window !== "undefined") {
       if (window.fbq) {
@@ -31,13 +39,16 @@ const Oto2: FC = () => {
   }, []);
   return (
     <Main>
-      <HelmetWrapper pageTitle="Eternity Band" efScript="" />
+      <HelmetWrapper
+        pageTitle="1CT Gold Studs"
+        efScript={`EF.conversion({offer_id: 75, amount: ${orderTotal}});`}
+      />
       <Globalstyle />
       <Alert />
-      <OtoScreen2 />
-      <OtoReviews />
+      <OtoScreen />
+      <BodyTags />
     </Main>
   );
 };
 
-export default Oto2;
+export default OneCtGoldStuds;

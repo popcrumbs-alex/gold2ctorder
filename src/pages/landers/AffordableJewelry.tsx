@@ -1,12 +1,15 @@
 import React from "react";
 import styled, { createGlobalStyle } from "styled-components";
 import AffordableJewelryLanding from "../../components/landing-affordable-jewelry/AffordableJewelryLanding";
+import Colors from "../../constants/Colors";
+import Footer from "../../reusable/footer";
 import HelmetWrapper from "../layout/HelmetWrapper";
 
 const Main = styled.main`
   display: flex;
   flex-direction: column;
 `;
+export const ThemeContext = React.createContext(Colors);
 
 const Globalstyle = createGlobalStyle`
     @import url("https://use.typekit.net/wzi3sml.css");
@@ -22,13 +25,14 @@ const Globalstyle = createGlobalStyle`
 
 const AffordableJewelry = () => {
   return (
-    <>
+    <ThemeContext.Provider value={Colors}>
       <HelmetWrapper pageTitle="Affordable Jewelry" efScript="" />
       <Main>
         <Globalstyle />
         <AffordableJewelryLanding />
+        <Footer ThemeContext={ThemeContext} />
       </Main>
-    </>
+    </ThemeContext.Provider>
   );
 };
 

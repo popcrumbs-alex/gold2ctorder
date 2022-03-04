@@ -199,7 +199,7 @@ const OtoScreen = () => {
       }
       console.log("request!", request);
       if (request.data.updateOrder.success) {
-        navigate("/otos/Oto2");
+        navigate("/otos/EternityBand");
       }
     } catch (error) {
       console.error(error);
@@ -267,7 +267,7 @@ const OtoScreen = () => {
             paypal: (
               <Paypal
                 orderTotal={OtoDATA[currentOtoIndex].numPrice}
-                nextPage={"/otos/Oto2"}
+                nextPage={"/otos/EternityBand"}
                 items={[
                   {
                     sku: OtoDATA[currentOtoIndex].sku,
@@ -290,7 +290,7 @@ const OtoScreen = () => {
           }[orderType]
         }
 
-        <Link to="/otos/Oto2">No thanks I don't need this now</Link>
+        <Link to="/otos/EternityBand">No thanks I don't need this now</Link>
       </Content>
     </Section>
   );

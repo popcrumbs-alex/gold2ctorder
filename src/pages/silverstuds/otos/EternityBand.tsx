@@ -1,9 +1,9 @@
 import React, { FC, useEffect } from "react";
 import styled, { createGlobalStyle } from "styled-components";
-import Alert from "../../components/alert/Alert";
-import OtoReviews from "../../components/otos/oto2/OtoReviews";
-import OtoScreen2 from "../../components/otos/oto2/OtoScreen2";
-import HelmetWrapper from "../layout/HelmetWrapper";
+import Alert from "../../../reusable/Alert";
+import OtoReviews from "../../../silver-components/otos/oto2/OtoReviews";
+import OtoScreen2 from "../../../silver-components/otos/oto2/OtoScreen2";
+import HelmetWrapper from "../../layout/HelmetWrapper";
 const Main = styled.main``;
 
 declare const window: any;
@@ -20,7 +20,7 @@ const Globalstyle = createGlobalStyle`
     box-sizing:border-box;
 }`;
 
-const Oto2: FC = () => {
+const EternityBand: FC = () => {
   useEffect(() => {
     if (typeof window !== "undefined") {
       if (window.fbq) {
@@ -40,4 +40,4 @@ const Oto2: FC = () => {
   );
 };
 
-export default Oto2;
+export default EternityBand;

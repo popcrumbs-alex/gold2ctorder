@@ -1,7 +1,8 @@
 import React, { FC, useEffect } from "react";
 import styled, { createGlobalStyle } from "styled-components";
-import Alert from "../../components/alert/Alert";
-import OtoThreeScreen from "../../components/otos/oto3/OtoThreeScreen";
+import OtoReviews from "../../components/otos/oto2/OtoReviews";
+import OtoScreen2 from "../../components/otos/oto2/OtoScreen2";
+import Alert from "../../reusable/Alert";
 import HelmetWrapper from "../layout/HelmetWrapper";
 const Main = styled.main``;
 
@@ -19,7 +20,7 @@ const Globalstyle = createGlobalStyle`
     box-sizing:border-box;
 }`;
 
-const Oto3: FC = () => {
+const EternityBand: FC = () => {
   useEffect(() => {
     if (typeof window !== "undefined") {
       if (window.fbq) {
@@ -30,12 +31,13 @@ const Oto3: FC = () => {
   }, []);
   return (
     <Main>
-      <HelmetWrapper pageTitle="Rose Gold Earrings and Pendant" efScript="" />
+      <HelmetWrapper pageTitle="Eternity Band" efScript="" />
       <Globalstyle />
       <Alert />
-      <OtoThreeScreen />
+      <OtoScreen2 />
+      <OtoReviews />
     </Main>
   );
 };
 
-export default Oto3;
+export default EternityBand;

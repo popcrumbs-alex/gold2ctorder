@@ -1,10 +1,7 @@
 import React, { FC, useEffect } from "react";
 import styled, { createGlobalStyle } from "styled-components";
-import Alert from "../../components/alert/Alert";
-import OtoScreen from "../../components/otos/oto1/OtoScreen";
-import { useAppSelector } from "../../hooks/reduxHooks";
-import { selectOrderState } from "../../redux/reducers/order.reducer";
-import BodyTags from "../layout/BodyTags";
+import OtoThreeScreen from "../../components/otos/oto3/OtoThreeScreen";
+import Alert from "../../reusable/Alert";
 import HelmetWrapper from "../layout/HelmetWrapper";
 const Main = styled.main``;
 
@@ -22,13 +19,7 @@ const Globalstyle = createGlobalStyle`
     box-sizing:border-box;
 }`;
 
-const Oto1: FC = () => {
-  const orderState = useAppSelector(selectOrderState);
-
-  const {
-    myOrder: { orderTotal },
-  } = orderState;
-
+const RoseGoldEarringsAndPendant: FC = () => {
   useEffect(() => {
     if (typeof window !== "undefined") {
       if (window.fbq) {
@@ -39,18 +30,12 @@ const Oto1: FC = () => {
   }, []);
   return (
     <Main>
-      <HelmetWrapper
-        pageTitle="1CT Gold Studs"
-        efScript={`EF.conversion({offer_id: 75, amount: ${orderTotal}});`}
-      />
+      <HelmetWrapper pageTitle="Rose Gold Earrings and Pendant" efScript="" />
       <Globalstyle />
       <Alert />
-      <OtoScreen />
-      <BodyTags />
+      <OtoThreeScreen />
     </Main>
   );
 };
 
-Oto1.propTypes = {};
-
-export default Oto1;
+export default RoseGoldEarringsAndPendant;

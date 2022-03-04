@@ -1,25 +1,33 @@
-import React, { useContext } from "react";
+import React from "react";
 import styled from "styled-components";
+import { useContext } from "react";
+import { ThemeContext } from "../../../pages/victoria/OrderPage";
 import { StaticImage } from "gatsby-plugin-image";
-import { ThemeContext } from "../../pages";
+import { FC } from "react";
+import { Theme } from "../../../constants/Colors";
 
-const Container = styled.footer`
+const NavContainer = styled.nav`
   width: 100%;
-  background-color: #666;
   display: flex;
+  flex-direction: row;
+  align-items: center;
   justify-content: center;
-  padding: 2rem 0;
+  padding: 1rem 0;
+  min-height: 4rem;
+  background: ${(props) => props.color};
 `;
+
 const Content = styled.div`
   width: 70%;
   display: flex;
   justify-content: space-between;
   @media screen and (max-width: 760px) {
-    width: 95%;
+    width: 90%;
     flex-direction: column;
     align-items: center;
   }
 `;
+
 const Column = styled.div`
   display: flex;
   flex-direction: column;
@@ -35,7 +43,7 @@ const Heading = styled.h4`
   margin: 0.2rem 0;
   @media screen and (max-width: 760px) {
     text-align: center;
-    font-size: 1rem;
+    font-size: 0.9rem;
   }
 `;
 
@@ -45,32 +53,39 @@ const Text = styled.p`
   margin: 0.2rem 0;
   @media screen and (max-width: 760px) {
     text-align: center;
-    font-size: 0.8rem;
+    font-size: 0.7rem;
   }
 `;
 
-const Footer = (props) => {
-  const context = useContext(ThemeContext);
+const ImageContainer = styled.div`
+  max-width: 150px;
+  display: flex;
+  justify-content: center;
+`;
+
+const Nav: FC = () => {
+  const context = useContext<Theme>(ThemeContext);
+
   return (
-    <Container>
+    <NavContainer color={context.main}>
       <Content>
-        <StaticImage
-          src="../../images/lululogo.png"
-          alt="logo"
-          placeholder="blurred"
-          objectFit="contain"
-          imgStyle={{ width: "100%" }}
-        />
+        <ImageContainer>
+          <StaticImage
+            src="../../../images/lululogo.png"
+            alt="logo"
+            placeholder="blurred"
+            objectFit="contain"
+            imgStyle={{ width: "100%" }}
+          />
+        </ImageContainer>
         <Column>
           <Heading color={context.text}>Need Support?</Heading>
           <Text color={context.text}>support@lulurosecouture.com</Text>
           <Text color={context.text}>(516) 289-9264</Text>
         </Column>
       </Content>
-    </Container>
+    </NavContainer>
   );
 };
 
-Footer.propTypes = {};
-
-export default Footer;
+export default Nav;

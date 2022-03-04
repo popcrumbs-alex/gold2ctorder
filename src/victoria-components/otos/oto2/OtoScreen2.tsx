@@ -255,7 +255,7 @@ const OtoScreen2 = () => {
 
       console.log("request!", request);
       if (request.data.updateOrder.success) {
-        navigate("/otos/RoseGoldEarringsAndPendant");
+        navigate("/otos/Oto3");
       }
     } catch (error) {
       console.error(error);
@@ -353,7 +353,7 @@ const OtoScreen2 = () => {
                 <Text>Continue With Paypal</Text>
                 <Paypal
                   orderTotal={ringOptionSelected.numPrice}
-                  nextPage={"/otos/RoseGoldEarringsAndPendant/"}
+                  nextPage={"/otos/Oto3"}
                   items={[
                     {
                       price: ringOptionSelected.numPrice,
@@ -411,11 +411,7 @@ const OtoScreen2 = () => {
           I want this ring for $38
         </Button>
 
-        <Link
-          to="/otos/RoseGoldEarringsAndPendant"
-          color="#eee"
-          style={{ color: "#eee" }}
-        >
+        <Link to="/otos/Oto3" color="#eee" style={{ color: "#eee" }}>
           No thanks I don't need this now
         </Link>
       </Content>
