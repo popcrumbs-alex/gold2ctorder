@@ -46,17 +46,17 @@ export const orderBumps: Array<BumpProps> = [
   },
   {
     imgSrc:
-      "https://images.clickfunnels.com/f5/10777429e24c45b4548ee5059afabb/signature-lulu-couture-gold-pendants-1_1024x1024-2x.png",
+      "https://images.clickfunnels.com/78/927c7704cd4c6d920c0394145a476d/victoria-pendant-gold.jpg",
     checkboxHeadline: "Added Bonus: If Checked This Matching Pendant is FREE!",
     otoHeadline: "Become a Part of our Insiders Club and Get This For FREE:",
     otoText:
-      "Every month we curate a different piece of outstanding jewelry and ship it at no obligation to you (Return items you do not like), pieces are made with pure sterling silver, 14k gold or other precious metals. These are pieces that will last a lifetime and grow in value over time. For just $59.95 a month you’ll get first access to our very best pieces, try it for 10 days and get your first piece (14K Gold Vermeil Matching 2CT Pendant) sent at no cost to you",
-    sku: "GOLDPEND",
+      "Every month we curate a different piece of outstanding jewelry and ship it at no obligation to you (Return items you do not like), pieces are made with pure sterling silver, 14k gold or other precious metals. These are pieces that will last a lifetime and grow in value over time. For just $59.95 a month you’ll get first access to our very best pieces, try it for 10 days and get your first piece (14K Gold Vermeil Matching Victoria Pendant) sent at no cost to you",
+    sku: "victpend-g",
     checkboxColor: "#ffe300",
-    orderSummaryText: "Free 2CT Gold Pendant With Insiders Club",
+    orderSummaryText: "Free Gold Victoria Pendant With Insiders Club",
     displayPrice: "FREE",
     numPrice: 0,
-    id: 4255185109092,
+    id: 7154422120640,
     isRecurring: true,
   },
   {
