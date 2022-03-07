@@ -277,6 +277,7 @@ const OtoScreen = () => {
               <Paypal
                 orderTotal={OtoDATA[currentOtoIndex].numPrice}
                 nextPage={"/silverstuds/otos/EternityBand"}
+                fromOrderPage={false}
                 items={[
                   {
                     sku: OtoDATA[currentOtoIndex].sku,

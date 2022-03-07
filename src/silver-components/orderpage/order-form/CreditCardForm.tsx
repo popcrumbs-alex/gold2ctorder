@@ -193,7 +193,11 @@ const CreditCardForm = () => {
         //set order type for oto process to credit
         window.localStorage.setItem("orderType", "credit");
 
-        navigate("/silverstuds/otos/OneCtGoldStuds");
+        navigate("/silverstuds/otos/OneCtGoldStuds", {
+          state: {
+            fromOrderPage: true,
+          },
+        });
       }
       console.log("response", response);
     } catch (error) {

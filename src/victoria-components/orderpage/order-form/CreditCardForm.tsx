@@ -194,7 +194,11 @@ const CreditCardForm = () => {
         //set order type for oto process to credit
         window.localStorage.setItem("orderType", "credit");
 
-        navigate("/otos/Oto1");
+        navigate("/victoria/otos/EternityBand", {
+          state: {
+            fromOrderPage: true,
+          },
+        });
       }
       console.log("response", response);
     } catch (error) {

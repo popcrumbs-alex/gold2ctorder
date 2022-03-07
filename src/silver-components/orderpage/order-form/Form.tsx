@@ -360,8 +360,9 @@ const Form: FC = () => {
                 {paypalOrCreditCard === "paypal" ? (
                   <Paypal
                     orderTotal={orderState.myOrder.orderTotal}
-                    nextPage={"/otos/OneCtGoldStuds"}
+                    nextPage={"/silverstuds/otos/OneCtGoldStuds"}
                     items={orderState.myOrder.products}
+                    fromOrderPage={true}
                   />
                 ) : (
                   <CreditCardForm />

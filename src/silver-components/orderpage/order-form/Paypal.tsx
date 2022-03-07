@@ -23,10 +23,12 @@ const Paypal = ({
   orderTotal,
   nextPage,
   items,
+  fromOrderPage,
 }: {
   orderTotal: number;
   nextPage: string;
   items: ProductProp[];
+  fromOrderPage: boolean;
 }) => {
   const orderState = useAppSelector(selectOrderState);
 
@@ -85,7 +87,11 @@ const Paypal = ({
       if (request.data.createOrder.success) {
         dispatch(addOrderToStorage({ id: request.data.createOrder.Order._id }));
         //on successful order go to next page
-        navigate(nextPage);
+        navigate(nextPage, {
+          state: {
+            fromOrderPage,
+          },
+        });
       }
     } catch (error) {
       console.error("error", error, error.message);

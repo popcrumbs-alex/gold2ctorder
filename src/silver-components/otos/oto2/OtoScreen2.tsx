@@ -356,7 +356,8 @@ const OtoScreen2 = () => {
                 <Text>Continue With Paypal</Text>
                 <Paypal
                   orderTotal={ringOptionSelected.numPrice}
-                  nextPage={"/otos/RoseGoldEarringsAndPendant"}
+                  nextPage={"/silverstuds/otos/RoseGoldEarringsAndPendant"}
+                  fromOrderPage={false}
                   items={[
                     {
                       price: ringOptionSelected.numPrice,

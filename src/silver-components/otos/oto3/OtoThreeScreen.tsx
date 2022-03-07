@@ -308,6 +308,7 @@ const PaymentProcessorButton = ({
       <Paypal
         orderTotal={oto.numPrice}
         nextPage={nextPage}
+        fromOrderPage={false}
         items={[
           {
             sku: oto.sku,
