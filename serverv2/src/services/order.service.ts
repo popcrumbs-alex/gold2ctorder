@@ -51,6 +51,7 @@ export class OrderService {
 
   async loadOrder(id: string): Promise<OrderResponse> {
     try {
+      console.log('order id', id);
       const foundOrder = await this.orderModel.findById(id);
 
       if (!foundOrder) {
