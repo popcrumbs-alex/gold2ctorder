@@ -53,6 +53,13 @@ export class OrderService {
     try {
       const foundOrder = await this.orderModel.findById(id);
 
+      if (!foundOrder) {
+        return {
+          message: 'Could not locate an order',
+          success: false,
+          Order: null,
+        };
+      }
       return { message: 'Located order', success: true, Order: foundOrder };
     } catch (error) {
       console.error(error);
@@ -85,6 +92,7 @@ export class OrderService {
       };
     }
   }
+
   calculateOrderTotal(prices: number[]): number {
     return Number(
       prices
