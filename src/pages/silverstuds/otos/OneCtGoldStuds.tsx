@@ -3,8 +3,8 @@ import styled, { createGlobalStyle } from "styled-components";
 import OtoScreen from "../../../silver-components/otos/oto1/OtoScreen";
 import { useAppSelector } from "../../../hooks/reduxHooks";
 import { selectOrderState } from "../../../redux/reducers/order.reducer";
-import BodyTags from "../../layout/BodyTags";
-import HelmetWrapper from "../../layout/HelmetWrapper";
+import BodyTags from "../../../layout/BodyTags";
+import HelmetWrapper from "../../../layout/HelmetWrapper";
 import Alert from "../../../reusable/Alert";
 const Main = styled.main``;
 

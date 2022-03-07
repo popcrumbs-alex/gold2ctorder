@@ -4,13 +4,13 @@ import Hero from "../../silver-components/orderpage/hero/Hero";
 import Nav from "../../silver-components/orderpage/nav/Nav";
 import Form from "../../silver-components/orderpage/order-form/Form";
 import Message from "../../silver-components/orderpage/section/Message";
-import Colors, { silverStudsColors } from "../../constants/Colors";
+import { silverStudsColors } from "../../constants/Colors";
 import Loox from "../../silver-components/reviews/Loox";
 import { useEffect } from "react";
-import HelmetWrapper from "../layout/HelmetWrapper";
+import HelmetWrapper from "../../layout/HelmetWrapper";
 import Popups from "../../reusable/Popups";
 import Alert from "../../reusable/Alert";
-import Footer from "../../reusable/footer";
+import Footer from "../../layout/Footer";
 
 declare const window: any;
 

@@ -1,10 +1,10 @@
 import * as React from "react";
 import styled, { createGlobalStyle, keyframes } from "styled-components";
-import Colors, { victoriaColors } from "../../constants/Colors";
+import { victoriaColors } from "../../constants/Colors";
 import { useEffect } from "react";
-import HelmetWrapper from "../layout/HelmetWrapper";
+import HelmetWrapper from "../../layout/HelmetWrapper";
 import Lander from "../../victoria-components/landing-one/Lander";
-import Footer from "../../reusable/footer";
+import Footer from "../../layout/Footer";
 
 const fadein = keyframes`
 0%{

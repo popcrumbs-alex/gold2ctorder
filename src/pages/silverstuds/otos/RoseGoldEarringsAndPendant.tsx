@@ -2,7 +2,7 @@ import React, { FC, useEffect } from "react";
 import styled, { createGlobalStyle } from "styled-components";
 import Alert from "../../../reusable/Alert";
 import OtoThreeScreen from "../../../silver-components/otos/oto3/OtoThreeScreen";
-import HelmetWrapper from "../../layout/HelmetWrapper";
+import HelmetWrapper from "../../../layout/HelmetWrapper";
 const Main = styled.main``;
 
 declare const window: any;

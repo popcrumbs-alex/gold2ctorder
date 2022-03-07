@@ -3,8 +3,8 @@ import styled, { createGlobalStyle, keyframes } from "styled-components";
 import { silverStudsColors } from "../../constants/Colors";
 import { useEffect } from "react";
 import Lander from "../../silver-components/landing-one/Lander";
-import HelmetWrapper from "../layout/HelmetWrapper";
-import Footer from "../../reusable/footer";
+import HelmetWrapper from "../../layout/HelmetWrapper";
+import Footer from "../../layout/Footer";
 
 const fadein = keyframes`
 0%{

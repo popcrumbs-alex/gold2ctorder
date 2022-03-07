@@ -4,7 +4,7 @@ import { ThemeContext } from ".";
 import ThankyouPage from "../components/thankyou/ThankyouPage";
 import Colors from "../constants/Colors";
 import Alert from "../reusable/Alert";
-import HelmetWrapper from "./layout/HelmetWrapper";
+import HelmetWrapper from "../layout/HelmetWrapper";
 const Main = styled.main``;
 
 const Globalstyle = createGlobalStyle`

@@ -4,8 +4,8 @@ import OtoScreen from "../../components/otos/oto1/OtoScreen";
 import { useAppSelector } from "../../hooks/reduxHooks";
 import { selectOrderState } from "../../redux/reducers/order.reducer";
 import Alert from "../../reusable/Alert";
-import BodyTags from "../layout/BodyTags";
-import HelmetWrapper from "../layout/HelmetWrapper";
+import BodyTags from "../../layout/BodyTags";
+import HelmetWrapper from "../../layout/HelmetWrapper";
 const Main = styled.main``;
 
 declare const window: any;

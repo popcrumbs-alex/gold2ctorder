@@ -3,7 +3,7 @@ import styled, { createGlobalStyle } from "styled-components";
 import OtoReviews from "../../components/otos/oto2/OtoReviews";
 import OtoScreen2 from "../../components/otos/oto2/OtoScreen2";
 import Alert from "../../reusable/Alert";
-import HelmetWrapper from "../layout/HelmetWrapper";
+import HelmetWrapper from "../../layout/HelmetWrapper";
 const Main = styled.main``;
 
 declare const window: any;

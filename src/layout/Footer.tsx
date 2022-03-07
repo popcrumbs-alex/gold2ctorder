@@ -71,6 +71,4 @@ const Footer = ({ ThemeContext }: { ThemeContext: Context<Theme> }) => {
   );
 };
 
-Footer.propTypes = {};
-
 export default Footer;
