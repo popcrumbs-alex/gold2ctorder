@@ -1,8 +1,8 @@
 import React, { FC, useEffect } from "react";
 import styled, { createGlobalStyle } from "styled-components";
 import Alert from "../../../reusable/Alert";
-import OtoReviews from "../../../victoria-components/otos/oto2/OtoReviews";
-import EternityBandScreen from "../../../victoria-components/otos/oto2/EternityBandScreen";
+import OtoReviews from "../../../victoria-components/otos/oto3/OtoReviews";
+import RoyaltyRingScreen from "../../../victoria-components/otos/oto3/RoyaltyRingScreen";
 import HelmetWrapper from "../../../layout/HelmetWrapper";
 const Main = styled.main``;
 
@@ -20,7 +20,7 @@ const Globalstyle = createGlobalStyle`
     box-sizing:border-box;
 }`;
 
-const EternityBand: FC = () => {
+const RoyaltyRing: FC = () => {
   useEffect(() => {
     if (typeof window !== "undefined") {
       if (window.fbq) {
@@ -31,13 +31,13 @@ const EternityBand: FC = () => {
   }, []);
   return (
     <Main>
-      <HelmetWrapper pageTitle="Eternity Band" efScript="" />
+      <HelmetWrapper pageTitle="Royalty Ring" efScript="" />
       <Globalstyle />
       <Alert />
-      <EternityBandScreen />
+      <RoyaltyRingScreen />
       <OtoReviews />
     </Main>
   );
 };
 
-export default EternityBand;
+export default RoyaltyRing;

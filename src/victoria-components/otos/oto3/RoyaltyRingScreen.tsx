@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
-import { OtoDATA, OtoOptionProps } from "../../../product/ProductData";
+import { OtoDATA, OtoOptionProps } from "../../../product/VictoriaProductData";
 import { Link, navigate } from "gatsby";
 import { useAppDispatch } from "../../../hooks/reduxHooks";
 import { addOtoToOrder } from "../../../redux/reducers/order.reducer";
@@ -24,6 +24,7 @@ const Section = styled.section`
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
+  background-attachment: fixed;
 `;
 
 const Header = styled.nav`
@@ -32,6 +33,7 @@ const Header = styled.nav`
   display: flex;
   justify-content: center;
   align-items: center;
+  width: 100%;
 `;
 
 const HeaderContent = styled.div`
@@ -48,6 +50,7 @@ const Content = styled.div`
   flex-direction: column;
   align-items: center;
   padding: 2rem 0;
+  width: 60%;
   @media screen and (max-width: 760px) {
     width: 95%;
   }
@@ -56,8 +59,13 @@ const Content = styled.div`
 const Heading = styled.h1`
   color: #fff;
   text-align: center;
+  font-size: 2.3rem;
+  margin: 0.5rem 0;
+  text-align: center;
+  max-width: 80%;
   & span {
     color: #ffe300;
+    font-size: 2rem;
   }
   @media screen and (max-width: 760px) {
     line-height: 1.5;
@@ -67,6 +75,9 @@ const Heading = styled.h1`
 
 const Subheading = styled.h3`
   color: #fff;
+  font-size: 1.6rem;
+  max-width: 80%;
+  text-align: center;
   @media screen and (max-width: 760px) {
     text-align: center;
   }
@@ -81,7 +92,8 @@ const ContinueBox = styled.div`
 const Text = styled.p`
   color: #fff;
   text-align: center;
-  font-weight: 500;
+  font-weight: 300;
+  line-height: 1.5;
 `;
 
 const Button = styled.button`
@@ -111,15 +123,10 @@ const Button = styled.button`
 `;
 
 const Image = styled.img`
-  max-width: 350px;
+  width: 450px;
 `;
 
-const Divider = styled.div`
-  display: block;
-  height: 1.2px;
-  width: 80%;
-  background-color: #999;
-`;
+const Details = styled.ul``;
 
 const AddSizebutton = styled.button`
   border-radius: 120px;
@@ -160,11 +167,11 @@ const ImageContainer = styled.div`
   margin: 2rem 0;
 `;
 
-const OtoScreen2 = () => {
+const RoyaltyRingScreen = () => {
   //The oto to be selected from within the product data file
   //Not necessarily needed to be kept in local state
   //could just use index
-  const [currentOtoIndex, setCurrentOtoIndex] = useState<number>(1);
+  const [currentOtoIndex, setCurrentOtoIndex] = useState<number>(2);
 
   const [ringGuideVisibility, toggleVisibility] = useState<boolean>(false);
 
@@ -208,7 +215,7 @@ const OtoScreen2 = () => {
       dispatch(
         addOtoToOrder({
           price: oto.numPrice,
-          title: "Eternity Band",
+          title: "Royalty Ring",
           type: oto.type,
           isRecurring: false,
           id: oto.id,
@@ -223,7 +230,7 @@ const OtoScreen2 = () => {
             product: {
               displayPrice: oto.displayPrice,
               price: oto.numPrice,
-              title: "Eternity Band",
+              title: "Royalty Ring",
               sku: oto.sku,
               isRecurring: false,
               type: oto.type,
@@ -255,7 +262,7 @@ const OtoScreen2 = () => {
 
       console.log("request!", request);
       if (request.data.updateOrder.success) {
-        navigate("/otos/Oto3");
+        navigate("/Thankyou");
       }
     } catch (error) {
       console.error(error);
@@ -294,31 +301,29 @@ const OtoScreen2 = () => {
       <Header>
         <HeaderContent>
           <Heading>
-            <span>Congratulations! 🎉</span>
-            <br /> You've Just Unlocked Wholesale Pricing On Some Of Our Best
-            Items, Please Consider Adding These
-            <span>Heavily Discounted Items</span> To Your Order Now As They Will
-            Never Be Offered At This <span>Low a Price</span> Again.💎
+            <span>New Release!</span>
           </Heading>
         </HeaderContent>
       </Header>
       <Content>
-        <Heading>
-          Add This Everlasting Eternity Band At a<br />
-          <span> HUGE Discount %</span>
+        <Heading style={{ fontWeight: "100" }}>
+          Be among the first to stand out with the Royalty Ring for $129.95 Just
+          $38
         </Heading>
 
-        <Subheading>
-          14K White Gold Vermeil Filled With Our Signature Lab Finished Stones
+        <Subheading style={{ fontWeight: "100" }}>
+          “The elegance, brilliance made my eyes bug out of my head.” — Lynda
+          C., Verified purchase
         </Subheading>
-        <Divider />
 
         <Image src={OtoDATA[currentOtoIndex].imgOrVideoSrc} alt="product" />
 
-        <Heading>
-          <span> New Reduced Price $38</span>
+        <Heading ref={ref}>
+          <span>
+            Reg $129.95 <br />
+            $38 (Save 71%)
+          </span>
         </Heading>
-        <Subheading ref={ref}>(Originally $129.95)</Subheading>
 
         <InputSelector
           label="Select A Ring Size"
@@ -338,6 +343,7 @@ const OtoScreen2 = () => {
           }}
           inputStyle={{ width: "400px" }}
         />
+        <Text>100% No-Risk Money Back Guarantee</Text>
         {ringSizeSelected &&
           {
             credit: (
@@ -353,7 +359,8 @@ const OtoScreen2 = () => {
                 <Text>Continue With Paypal</Text>
                 <Paypal
                   orderTotal={ringOptionSelected.numPrice}
-                  nextPage={"/otos/Oto3"}
+                  nextPage={"/Thankyou"}
+                  fromOrderPage={false}
                   items={[
                     {
                       price: ringOptionSelected.numPrice,
@@ -394,29 +401,77 @@ const OtoScreen2 = () => {
           <ImageContainer style={{ maxHeight: "0vh" }}></ImageContainer>
         )}
 
-        <Heading>
-          Add Our Angel Infinity Ring For <span>Only $38</span>
-        </Heading>
+        <Heading>Your Royalty Ring Includes:</Heading>
 
-        <Subheading>
-          Made with 100% .925 Sterling Silver coated in 14K White Gold
-        </Subheading>
+        <Details>
+          <li>
+            <Text>
+              ● Oval-cut Lab-Finished diamonds set in a 925 Sterling Silver band
+            </Text>
+          </li>
+          <li>
+            <Text>● Free shipping and handling</Text>
+          </li>
+          <li>
+            <Text>● Hypoallergenic and Conflict-Free materials</Text>
+          </li>
+          <li>
+            <Text>● A premium gift box</Text>
+          </li>
+        </Details>
 
         <Image
-          src="https://images.clickfunnels.com/29/8e14b490ab4423a7e6905c7732b32e/Product-1.jpg"
+          src="https://images.clickfunnels.com/19/4652adb1bc4d48b785bcad1dc3fc27/Product-11.png"
           alt="product"
         />
+
+        <Subheading style={{ fontStyle: "italic" }}>
+          WHY would we do this, you’re probably wondering?
+        </Subheading>
+        <Text style={{ lineHeight: "1.5" }}>
+          Our 4CT studs and Angel Ring are beautiful and elegant… but the
+          Royalty Ring is pure, eye-catching extravagance that can take your
+          look to an entirely new level.
+        </Text>
+        <Text style={{ lineHeight: "1.5" }}>
+          And when you add the Royalty Ring to your order today, we save on the
+          cost of shipping and fulfillment… which means we can pass those
+          savings onto you. That’s why we want to give you a chance to add the
+          Royalty Ring to your order now… at a greatly reduced and secret price
+          that you won’t see anywhere else (and cheaper than we will even sell
+          it for on Black Friday).
+        </Text>
 
         <Button onClick={() => scrollToSizes()}>
           I want this ring for $38
         </Button>
 
-        <Link to="/otos/Oto3" color="#eee" style={{ color: "#eee" }}>
-          No thanks I don't need this now
+        <Text>100% No-Risk Money Back Guarantee</Text>
+        <Link to="/Thankyou" color="#eee" style={{ color: "#eee" }}>
+          No Thanks, I Don’t Want to Take My Look to Another Level
         </Link>
+        <Subheading style={{ marginTop: "6rem" }}>
+          Your No-Risk Guarantee on This One-Time Offer
+        </Subheading>
+        <Text>
+          Your purchase is backed by our 180/60-Day Money Back Guarantee.
+        </Text>
+        <Text>
+          At Luciana Rose Couture, we stand behind the quality of our
+          products--so we put all the risk on us. Our [industry-leading - 60 Day
+          Money Back Guarantee means either you’re 100% satisfied, or you get a
+          full refund of the purchase price of your items. You can place your
+          order safely, knowing that absolutely nothing can go wrong.
+        </Text>
+        <Text>
+          Click below and add the Royalty Ring for only $38 + Free Shipping and
+          Handling (and an instant $91.95 savings).
+        </Text>
+
+        <Button onClick={() => scrollToSizes()}>Claim My Ring</Button>
       </Content>
     </Section>
   );
 };
 
-export default OtoScreen2;
+export default RoyaltyRingScreen;

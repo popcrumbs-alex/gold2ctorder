@@ -32,6 +32,4 @@ const Thankyou = () => {
   );
 };
 
-Thankyou.propTypes = {};
-
 export default Thankyou;
