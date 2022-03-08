@@ -4,12 +4,18 @@ import { Order } from 'src/mongo/schemas/order.model';
 import { OrderService } from './order.service';
 import * as mongoose from 'mongoose';
 import { config } from 'dotenv';
+import { ShopifyService } from './shopify.service';
+import { WebsocketGateway } from 'src/gateways/websockets.gateway';
 
 config();
 
 @Injectable()
 export class TaskService {
-  constructor(private readonly orderService: OrderService) {}
+  constructor(
+    private readonly orderService: OrderService,
+    private readonly shopifyService: ShopifyService,
+    private readonly gateway: WebsocketGateway,
+  ) {}
   private readonly logger = new Logger(TaskService.name);
 
   @Cron('45 * * * * *')
@@ -49,6 +55,27 @@ export class TaskService {
       );
     } catch (error) {
       console.error(error);
+    }
+  }
+  @Cron('45 * * * * *')
+  async retrieveMostRecentOrders() {
+    try {
+      const order = await this.shopifyService.getRecentOrder();
+
+      const { customer, line_items } = order[0];
+
+      const formattedRecentOrder = {
+        name: `${customer.first_name} ${customer.last_name}`,
+        product: line_items[0].name,
+        location: customer?.default_address.city,
+      };
+
+      console.log('orders!', formattedRecentOrder);
+
+      await this.gateway.handleRecentOrder(formattedRecentOrder);
+    } catch (error) {
+      console.error('cron error', error);
+      return error;
     }
   }
 }

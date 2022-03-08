@@ -41,4 +41,8 @@ export class ShopifyService {
   async locateOrder(id: string) {
     return await this.shopify.order.get(id);
   }
+
+  async getRecentOrder(): Promise<Array<any>> {
+    return (await this.shopify.order.list({ limit: 1 })) || [];
+  }
 }

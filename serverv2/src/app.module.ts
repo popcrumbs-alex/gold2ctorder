@@ -12,6 +12,8 @@ import { ShopifyController } from './rest/controllers/shopify.controller';
 import { WebsocketGateway } from './gateways/websockets.gateway';
 import { PaymentService } from './services/payment.service';
 import { PaymentModule } from './modules/payment.module';
+import { ShopifyService } from './services/shopify.service';
+import { ShopifyModule } from './modules/shopify.module';
 
 config();
 @Module({
@@ -42,6 +44,7 @@ config();
     OrderModule,
     PaymentModule,
     EverflowAPIModule,
+    ShopifyModule,
     MongooseModule.forRoot(process.env.MONGO_URI, {
       useNewUrlParser: true,
       useUnifiedTopology: true,
