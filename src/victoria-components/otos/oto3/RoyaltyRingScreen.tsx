@@ -262,7 +262,7 @@ const RoyaltyRingScreen = () => {
 
       console.log("request!", request);
       if (request.data.updateOrder.success) {
-        navigate("/Thankyou");
+        navigate("/victoria/otos/SilverPendant");
       }
     } catch (error) {
       console.error(error);
@@ -359,7 +359,7 @@ const RoyaltyRingScreen = () => {
                 <Text>Continue With Paypal</Text>
                 <Paypal
                   orderTotal={ringOptionSelected.numPrice}
-                  nextPage={"/Thankyou"}
+                  nextPage={"/victoria/otos/SilverPendant"}
                   fromOrderPage={false}
                   items={[
                     {
@@ -447,7 +447,11 @@ const RoyaltyRingScreen = () => {
         </Button>
 
         <Text>100% No-Risk Money Back Guarantee</Text>
-        <Link to="/Thankyou" color="#eee" style={{ color: "#eee" }}>
+        <Link
+          to="/victoria/otos/SilverPendant"
+          color="#eee"
+          style={{ color: "#eee" }}
+        >
           No Thanks, I Don’t Want to Take My Look to Another Level
         </Link>
         <Subheading style={{ marginTop: "6rem" }}>

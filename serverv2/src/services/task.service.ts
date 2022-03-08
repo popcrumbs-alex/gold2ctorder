@@ -57,7 +57,7 @@ export class TaskService {
       console.error(error);
     }
   }
-  @Cron('45 * * * * *')
+  @Cron('55 * * * * *')
   async retrieveMostRecentOrders() {
     try {
       const order = await this.shopifyService.getRecentOrder();

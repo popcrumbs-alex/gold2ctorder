@@ -324,12 +324,12 @@ export const OtoDATA: Array<OTOProps> = [
   },
   {
     imgOrVideoSrc:
-      "https://images.clickfunnels.com/55/fbc1b39d544a57b6ceb311fab07708/White-18.jpg",
-    sku: "ROSEEARPEND",
-    id: 4171609636964,
-    title: "Add The 2CT Rose Gold Studs and Pendant - $25",
-    displayPrice: "YES! Add The Set For $25",
-    numPrice: 25.0,
+      "https://images.clickfunnels.com/52/b8a052b9bf4aa18124f3511f67977c/61Rem213S-L._UL1500_.jpg",
+    sku: "1CTNECK",
+    id: 4171607539812,
+    title: "Silver Stud Pendant",
+    displayPrice: "$20",
+    numPrice: 20.0,
     type: "OTO",
     options: null,
   },
