@@ -126,6 +126,9 @@ export class OrderService {
         throw new Error('Must have products in order to purchase?');
       }
 
+      const lazyValidateEmail = new RegExp(/@/, 'g');
+      if (!email.match(lazyValidateEmail)) throw new Error('Please enter a valid email address');
+
       //handle errors for incoming input
       for (let inputElement in input) {
         if (!input[inputElement]) {
