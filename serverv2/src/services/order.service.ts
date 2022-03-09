@@ -127,7 +127,9 @@ export class OrderService {
       }
 
       const lazyValidateEmail = new RegExp(/@/, 'g');
-      if (!email.match(lazyValidateEmail)) throw new Error('Please enter a valid email address');
+
+      if (!email.match(lazyValidateEmail))
+        throw new Error('Please enter a valid email address');
 
       //handle errors for incoming input
       for (let inputElement in input) {
@@ -453,6 +455,103 @@ export class OrderService {
             Order: foundOrder,
           };
       }
+    } catch (error) {
+      console.error(error);
+      return error;
+    }
+  }
+
+  async manuallyCloseOrder(
+    closeOrderInput: CloseOrderInput,
+  ): Promise<OrderResponse> {
+    try {
+      const { orderId } = closeOrderInput;
+
+      const foundOrder = await this.orderModel.findById(orderId);
+
+      if (!foundOrder) throw new Error('Could not locate an order');
+
+      if (foundOrder.status === 'closed')
+        throw new Error('Order has already been closed');
+
+      //return products selected as formatted shopify line items
+      const lineItems = await this.shopify.getProducts(foundOrder.products);
+
+      const {
+        firstName,
+        lastName,
+        city,
+        address,
+        email,
+        state,
+        zip,
+        orderTotal,
+      } = foundOrder;
+
+      console.log('found order', foundOrder.orderType, foundOrder);
+
+      const provinceCode = await this.matchAddressStateWithCode(state);
+
+      //Create shopify specific order objects
+      const customer: CustomerType = {
+        first_name: firstName,
+        last_name: lastName,
+        email,
+      };
+      //Create shopify specific order objects
+      const shipping_address: ShippingAddress = {
+        address1: address,
+        address2: '',
+        city,
+        country: 'United States',
+        country_code: 'US',
+        country_name: 'United States',
+        company: '',
+        first_name: firstName,
+        last_name: lastName,
+        name: firstName + ' ' + lastName,
+        phone: '',
+        province: state,
+        province_code: provinceCode || '',
+        zip,
+      };
+      //Create shopify specific order objects
+      const orderObject: OrderObjectParams = {
+        customer,
+        shipping_address,
+        billing_address: shipping_address,
+        total_tax: 0,
+        financial_status: 'paid',
+        tax_lines: [{ price: 0, rate: 'n/a', title: 'Tax' }],
+        transactions: [
+          {
+            kind: 'sale',
+            status: 'success',
+            amount: orderTotal,
+          },
+        ],
+        line_items: lineItems,
+        note_attributes: [
+          { name: foundOrder.funnel_name, value: firstName + lastName },
+        ],
+        tags: [foundOrder.funnel_name, foundOrder.orderType],
+      };
+
+      const shopifyOrder = await this.shopify.createOrder(orderObject);
+
+      if (shopifyOrder) {
+        foundOrder.shopifyOrderId = shopifyOrder.id;
+        foundOrder.status = 'closed';
+      }
+
+      foundOrder.status = 'closed';
+
+      await foundOrder.save();
+      return {
+        message: 'Order closed manually',
+        success: true,
+        Order: foundOrder,
+      };
     } catch (error) {
       console.error(error);
       return error;

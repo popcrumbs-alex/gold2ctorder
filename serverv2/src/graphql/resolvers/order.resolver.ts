@@ -35,4 +35,10 @@ export class OrderResolver {
   async closeOrder(@Args('closeOrderInput') closeOrderInput: CloseOrderInput) {
     return this.orderService.closeOrder(closeOrderInput);
   }
+  @Mutation(() => OrderResponse)
+  async closeOrderManually(
+    @Args('closeOrderInput') closeOrderInput: CloseOrderInput,
+  ) {
+    return this.orderService.manuallyCloseOrder(closeOrderInput);
+  }
 }
