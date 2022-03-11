@@ -6,7 +6,7 @@ import {
   FindOrderInput,
   UpdateOrderInput,
 } from '../inputs/order.input';
-import { OrderResponse } from '../responses/order.response';
+import { OrderResponse, StickyAuthResponse } from '../responses/order.response';
 
 @Resolver()
 export class OrderResolver {
@@ -15,6 +15,11 @@ export class OrderResolver {
   @Query(() => OrderResponse)
   async findOrder(@Args('findOrderInput') findOrderInput: FindOrderInput) {
     return this.orderService.loadOrder(findOrderInput.id);
+  }
+
+  @Query(() => StickyAuthResponse)
+  async getStickyAuthCreds() {
+    return this.orderService.getStickyIOCredentials();
   }
 
   @Mutation(() => OrderResponse)

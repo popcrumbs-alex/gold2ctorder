@@ -214,6 +214,12 @@ const OtoScreen2 = () => {
           id: oto.id,
           displayPrice: oto.displayPrice,
           sku: oto.sku,
+          sticky_billing_model_id: oto.sticky_billing_model_id,
+          sticky_offer_id: oto.sticky_offer_id,
+          sticky_product_id: oto.sticky_product_id,
+          sticky_quantity: oto.sticky_quantity,
+          sticky_trial_product_id: undefined,
+          sticky_variant_object: oto.sticky_variant_object,
         })
       );
 
@@ -228,6 +234,12 @@ const OtoScreen2 = () => {
               isRecurring: false,
               type: oto.type,
               id: oto.id,
+              sticky_billing_model_id: oto.sticky_billing_model_id,
+              sticky_offer_id: oto.sticky_offer_id,
+              sticky_product_id: oto.sticky_product_id,
+              sticky_quantity: oto.sticky_quantity,
+              sticky_trial_product_id: undefined,
+              sticky_variant_object: oto.sticky_variant_object,
             },
             orderId: currentOrderId,
           },
@@ -337,6 +349,7 @@ const OtoScreen2 = () => {
             textAlign: "center",
           }}
           inputStyle={{ width: "400px" }}
+          typeCallback={null}
         />
         {ringSizeSelected &&
           {
@@ -363,8 +376,18 @@ const OtoScreen2 = () => {
                       id: ringOptionSelected.id,
                       type: "OTO",
                       displayPrice: ringOptionSelected.displayPrice,
+                      sticky_billing_model_id:
+                        OtoDATA[currentOtoIndex].sticky_billing_model_id,
+                      sticky_offer_id: OtoDATA[currentOtoIndex].sticky_offer_id,
+                      sticky_product_id:
+                        OtoDATA[currentOtoIndex].sticky_product_id,
+                      sticky_quantity: OtoDATA[currentOtoIndex].sticky_quantity,
+                      sticky_trial_product_id: undefined,
+                      sticky_variant_object:
+                        OtoDATA[currentOtoIndex].sticky_variant_object,
                     },
                   ]}
+                  fromOrderPage={false}
                 />
               </ContinueBox>
             ),

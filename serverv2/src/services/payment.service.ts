@@ -22,6 +22,7 @@ import {
   RefundCreditTransactionResponse,
   RefundPaypalTransactionResponse,
 } from 'src/graphql/responses/payment.response';
+import { CreateOrderInput, ProductInput } from 'src/graphql/inputs/order.input';
 
 config();
 
@@ -95,69 +96,178 @@ export class PaymentService {
     }
   }
 
-  async authSale(saleInput: PaymentSaleOptions): Promise<{
+  async authSale(saleInput: CreateOrderInput): Promise<{
     statusMessage: string;
     transactionId: string;
-    responseObject: any;
+    sticky_order_id: string;
   }> {
     const {
       firstName,
       lastName,
       creditCardNumber,
-      cvv,
+      cvc,
       expiry,
-      amount,
-      containsRecurringItem,
       email,
       city,
       state,
       address,
       zip,
+      sticky_campaign_id,
+      sticky_shipping_id,
+      creditCardType,
+      products,
+      affiliate_data,
     } = saleInput;
 
     try {
-      const saleResponse = await axios({
-        url: `${this.nmiAPIString}security_key=${process.env.NMI_KEY}&type=auth&ccnumber=${creditCardNumber}&ccexp=${expiry}&first_name=${firstName}&last_name=${lastName}&amount=${amount}&cvv=${cvv}&email=${email}&shipping_address1=${address}&shipping_city=${city}&shipping_state=${state}&shipping_zip=${zip}&shipping_country=US`,
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/x-www-form-urlencoded',
-        },
+      //if affiliate data exists, configure it for the order
+      const affData = JSON.parse(affiliate_data) || null;
+      //value to determine to make subscription call to stickyio
+      let hasRecurringProduct: boolean = false;
+      //if there is arecurring product, configure this data
+      const nextRecurringProductData: {
+        quantity: number | undefined;
+        product_id: number | undefined;
+        new_recurring_product_id: number | undefined;
+      } = {
+        quantity: undefined,
+        product_id: undefined,
+        new_recurring_product_id: undefined,
+      };
+
+      const formattedProductArray = products.map((product: ProductInput) => {
+        const obj: {
+          offer_id: number;
+          product_id: number;
+          billing_model_id: number;
+          quantity: number;
+          trial:
+            | {
+                product_id: number | undefined;
+              }
+            | undefined;
+          new_recurring_product_id: number | undefined;
+        } = {
+          offer_id: product.sticky_offer_id,
+          product_id: product.sticky_product_id,
+          billing_model_id: product.sticky_billing_model_id,
+          quantity: product.sticky_quantity,
+          trial: undefined,
+          new_recurring_product_id: undefined,
+        };
+
+        //configure recurring object here
+        //there is only one recurring product per funnel, so this will work for now
+        if (product.sticky_trial_product_id !== undefined) {
+          obj.trial = { product_id: product.sticky_product_id };
+          obj.new_recurring_product_id =
+            product.sticky_next_recurring_product_id;
+
+          hasRecurringProduct = true;
+
+          //recurring data object
+          nextRecurringProductData.new_recurring_product_id =
+            product.sticky_next_recurring_product_id;
+          nextRecurringProductData.quantity = 1;
+          nextRecurringProductData.product_id = product.sticky_product_id;
+        }
+
+        return obj;
       });
 
-      const responseObject: any = this.formatPaymentGatewayResponse(
-        saleResponse.data,
-      );
+      const data = JSON.stringify({
+        firstName,
+        lastName,
+        billingFirstName: firstName,
+        billingLastName: lastName,
+        billingAddress1: address,
+        billingAddress2: '',
+        billingCity: city,
+        billingState: state,
+        billingZip: zip,
+        billingCountry: 'US',
+        phone: '5555555555',
+        email,
+        tranType: 'Sale',
+        creditCardType,
+        creditCardNumber,
+        expirationDate: expiry,
+        CVV: cvc,
+        ipAddress: '198.4.3.2',
+        shippingId: sticky_shipping_id,
+        campaignId: sticky_campaign_id,
+        offers: formattedProductArray,
+        billingSameAsShipping: 'YES',
+        shippingAddress1: address,
+        shippingAddress2: '',
+        shippingCity: city,
+        shippingState: state,
+        shippingZip: zip,
+        shippingCountry: 'US',
+        ...affData,
+      });
 
-      console.log(
-        'sale response!',
-        saleResponse.data,
-        responseObject['response_code'],
-      );
+      const request = await axios({
+        method: 'POST',
+        url: 'https://popbrands.sticky.io/api/v1/new_order',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Basic ${Buffer.from(
+            process.env.STICKY_USERNAME + ':' + process.env.STICKY_PASSWORD,
+          ).toString('base64')}`,
+        },
+        data,
+      });
 
-      if (responseObject['response_code'] !== '100')
-        throw new Error(responseObject['responsetext']);
+      //status wll only be 100 for successful purchase
+      if (request.data.provider_response_code !== '100') {
+        return {
+          statusMessage: request.data.decline_reason,
+          transactionId: '',
+          sticky_order_id: '',
+        };
+      }
 
-      if (containsRecurringItem) {
-        await this.handleRecurringItem({
-          ...saleInput,
-          sourceTransactionId: responseObject.transactionid,
+      console.log('next recurring product', nextRecurringProductData);
+
+      //todo see if there is a recurring item in the order
+      if (hasRecurringProduct) {
+        const updateOrderWithNextRecurringItem = await axios({
+          method: 'POST',
+          url: 'https://popbrands.sticky.io/api/v1/subscription_order_update',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Basic ${Buffer.from(
+              process.env.STICKY_USERNAME + ':' + process.env.STICKY_PASSWORD,
+            ).toString('base64')}`,
+          },
+          data: JSON.stringify({
+            order_id: request.data.order_id,
+            ...nextRecurringProductData,
+          }),
         });
+
+        console.log(
+          'update request success',
+          updateOrderWithNextRecurringItem.data,
+        );
       }
 
       return {
         statusMessage: 'SUCCESS',
-        transactionId: responseObject.transactionid,
-        responseObject,
+        transactionId: request.data.transactionID,
+        sticky_order_id: request.data.order_id,
       };
     } catch (error) {
       console.error('payment request error:', error);
       return {
         statusMessage: error,
         transactionId: '',
-        responseObject: error,
+        sticky_order_id: '',
       };
     }
   }
+
   async updateTransaction(
     input: UpdateTransactionInput,
   ): Promise<{ newTransactionId: string }> {

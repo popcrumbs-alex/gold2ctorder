@@ -2,6 +2,7 @@ import { Inject, Injectable } from '@nestjs/common';
 import { OrderObjectParams } from '../interfaces/order.interface';
 import { Product } from 'src/mongo/schemas/order.model';
 
+//This service is deprecated, STICKYIO is primary crm
 @Injectable()
 export class ShopifyService {
   constructor(@Inject('SHOPIFY') private readonly shopify) {}

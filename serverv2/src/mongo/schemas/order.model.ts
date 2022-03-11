@@ -9,6 +9,11 @@ export interface Product {
   displayPrice: string;
   id: number;
   isRecurring: boolean;
+  sticky_offer_id: number;
+  sticky_product_id: number;
+  sticky_billing_model_id: number;
+  sticky_quantity: number;
+  sticky_trial_product_id: number;
 }
 
 @Schema()
@@ -49,6 +54,12 @@ export class Order {
   paypal_payment_id: string;
   @Prop()
   funnel_name: string;
+  @Prop()
+  sticky_order_id: string;
+  @Prop()
+  sticky_shipping_id: string;
+  @Prop()
+  sticky_campaign_id: string;
 }
 
 export type OrderDocument = Order & Document;

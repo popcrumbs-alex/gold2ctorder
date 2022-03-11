@@ -234,6 +234,12 @@ const OtoFourScreen = () => {
       id: OtoDATA[selectedIndex].id,
       displayPrice: OtoDATA[selectedIndex].displayPrice,
       sku: OtoDATA[selectedIndex].sku,
+      sticky_billing_model_id: OtoDATA[selectedIndex].sticky_billing_model_id,
+      sticky_offer_id: OtoDATA[selectedIndex].sticky_offer_id,
+      sticky_product_id: OtoDATA[selectedIndex].sticky_product_id,
+      sticky_quantity: OtoDATA[selectedIndex].sticky_quantity,
+      sticky_trial_product_id: undefined,
+      sticky_variant_object: undefined,
     };
 
     try {
@@ -361,6 +367,13 @@ const OtoFourScreen = () => {
                 type: "OTO",
                 price: OtoDATA[currentOtoIndex].numPrice,
                 isRecurring: false,
+                sticky_billing_model_id:
+                  OtoDATA[currentOtoIndex].sticky_billing_model_id,
+                sticky_offer_id: OtoDATA[currentOtoIndex].sticky_offer_id,
+                sticky_product_id: OtoDATA[currentOtoIndex].sticky_product_id,
+                sticky_quantity: OtoDATA[currentOtoIndex].sticky_quantity,
+                sticky_trial_product_id: undefined,
+                sticky_variant_object: undefined,
               },
             ]}
             cartButton={
@@ -438,6 +451,13 @@ const OtoFourScreen = () => {
                 type: "OTO",
                 price: OtoDATA[currentOtoIndex].numPrice,
                 isRecurring: false,
+                sticky_billing_model_id:
+                  OtoDATA[currentOtoIndex].sticky_billing_model_id,
+                sticky_offer_id: OtoDATA[currentOtoIndex].sticky_offer_id,
+                sticky_product_id: OtoDATA[currentOtoIndex].sticky_product_id,
+                sticky_quantity: OtoDATA[currentOtoIndex].sticky_quantity,
+                sticky_trial_product_id: undefined,
+                sticky_variant_object: undefined,
               },
             ]}
             cartButton={
@@ -495,6 +515,13 @@ const OtoFourScreen = () => {
                 type: "OTO",
                 price: OtoDATA[currentOtoIndex].numPrice,
                 isRecurring: false,
+                sticky_billing_model_id:
+                  OtoDATA[currentOtoIndex].sticky_billing_model_id,
+                sticky_offer_id: OtoDATA[currentOtoIndex].sticky_offer_id,
+                sticky_product_id: OtoDATA[currentOtoIndex].sticky_product_id,
+                sticky_quantity: OtoDATA[currentOtoIndex].sticky_quantity,
+                sticky_trial_product_id: undefined,
+                sticky_variant_object: undefined,
               },
             ]}
             cartButton={
@@ -548,6 +575,13 @@ const OtoFourScreen = () => {
                 type: "OTO",
                 price: OtoDATA[currentOtoIndex].numPrice,
                 isRecurring: false,
+                sticky_billing_model_id:
+                  OtoDATA[currentOtoIndex].sticky_billing_model_id,
+                sticky_offer_id: OtoDATA[currentOtoIndex].sticky_offer_id,
+                sticky_product_id: OtoDATA[currentOtoIndex].sticky_product_id,
+                sticky_quantity: OtoDATA[currentOtoIndex].sticky_quantity,
+                sticky_trial_product_id: undefined,
+                sticky_variant_object: undefined,
               },
             ]}
             cartButton={

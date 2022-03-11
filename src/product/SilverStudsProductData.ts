@@ -4,6 +4,26 @@ export default {
   funnel_name: "Silver Earrings Funnel",
 };
 
+export const stickyConfig = {
+  oto_billing_model: 2,
+  recurring_billing_model: 3,
+  sticky_campaign_id: 1,
+  sticky_offer_id: 1,
+  sticky_trial_product_id: 2,
+  sticky_shipping_id: 2,
+  sticky_next_recurring_product: 4,
+};
+
+const {
+  oto_billing_model,
+  recurring_billing_model,
+  sticky_campaign_id,
+  sticky_offer_id,
+  sticky_next_recurring_product,
+} = stickyConfig;
+
+//TODO configure all products for sticky.io
+
 export type BumpProps = {
   imgSrc: string;
   checkboxHeadline: string;
@@ -16,6 +36,18 @@ export type BumpProps = {
   numPrice: number;
   id: number;
   isRecurring: boolean;
+  sticky_offer_id: number;
+  sticky_product_id: number;
+  sticky_billing_model_id: number;
+  sticky_quantity: number;
+  sticky_trial_product_id: number | undefined;
+  sticky_next_recurring_product_id: number | undefined;
+  sticky_variant_object:
+    | undefined
+    | {
+        attribute_name: string;
+        attribute_value: string;
+      };
 };
 
 //info is pulled from shopify
@@ -28,6 +60,18 @@ export type SelectedBump = {
   type: string;
   id: number;
   isRecurring: boolean;
+  sticky_offer_id: number;
+  sticky_product_id: number;
+  sticky_billing_model_id: number;
+  sticky_quantity: number;
+  sticky_trial_product_id: number | undefined;
+  sticky_next_recurring_product_id: number | undefined;
+  sticky_variant_object:
+    | undefined
+    | {
+        attribute_name: string;
+        attribute_value: string;
+      };
 };
 
 export const orderBumps: Array<BumpProps> = [
@@ -45,6 +89,13 @@ export const orderBumps: Array<BumpProps> = [
     numPrice: 99.95,
     id: 5353157427357,
     isRecurring: false,
+    sticky_product_id: 9,
+    sticky_offer_id,
+    sticky_billing_model_id: oto_billing_model,
+    sticky_quantity: 1,
+    sticky_trial_product_id: undefined,
+    sticky_next_recurring_product_id: undefined,
+    sticky_variant_object: undefined,
   },
   {
     imgSrc:
@@ -60,6 +111,13 @@ export const orderBumps: Array<BumpProps> = [
     numPrice: 0,
     id: 4349439508580,
     isRecurring: true,
+    sticky_product_id: 2,
+    sticky_offer_id,
+    sticky_billing_model_id: recurring_billing_model,
+    sticky_quantity: 1,
+    sticky_trial_product_id: 2,
+    sticky_next_recurring_product_id: sticky_next_recurring_product,
+    sticky_variant_object: undefined,
   },
   {
     imgSrc:
@@ -75,6 +133,13 @@ export const orderBumps: Array<BumpProps> = [
     numPrice: 34.0,
     id: 4171609604196,
     isRecurring: false,
+    sticky_product_id: 10,
+    sticky_offer_id,
+    sticky_billing_model_id: oto_billing_model,
+    sticky_quantity: 1,
+    sticky_trial_product_id: undefined,
+    sticky_next_recurring_product_id: undefined,
+    sticky_variant_object: undefined,
   },
 ];
 
@@ -87,6 +152,17 @@ export interface ProductProps {
   dealHeadline: string | undefined;
   id: number;
   isRecurring: boolean;
+  sticky_offer_id: number;
+  sticky_product_id: number;
+  sticky_billing_model_id: number;
+  sticky_quantity: number;
+  sticky_trial_product_id: undefined;
+  sticky_variant_object:
+    | undefined
+    | {
+        attribute_name: string;
+        attribute_value: string;
+      };
 }
 
 export const ProductSelectorItems: Array<ProductProps> = [
@@ -99,17 +175,14 @@ export const ProductSelectorItems: Array<ProductProps> = [
     dealHeadline: undefined,
     id: 4349401399396,
     isRecurring: false,
+    sticky_product_id: 1,
+    sticky_offer_id,
+    sticky_billing_model_id: oto_billing_model,
+    sticky_quantity: 1,
+    sticky_trial_product_id: undefined,
+    sticky_variant_object: undefined,
   },
-  {
-    sku: "SGCOMBO",
-    title: `2 Pairs of Lab Diamond Earrings: One in .925 Silver + One Pair In Gold Vermeil - (Originally $179.85)`,
-    displayPrice: "$27 + $9.99 S/H",
-    numPrice: 27.0,
-    bestDeal: false,
-    dealHeadline: undefined,
-    id: 5598578770077,
-    isRecurring: false,
-  },
+
   {
     sku: "3STUDS",
     title: `3 Pairs of 2CT Lab Diamond Earrings: ( .925 Silver, Gold Vermeil, Rose Gold Vermeil) - (Originally $279.85)`,
@@ -119,16 +192,12 @@ export const ProductSelectorItems: Array<ProductProps> = [
     dealHeadline: "BEST DEAL",
     id: 5598601019549,
     isRecurring: false,
-  },
-  {
-    sku: "6MMStud-11",
-    title: `1CT Ea. Lab Diamond Earrings in .925 Sterling Silver - (Originally $79.95)`,
-    displayPrice: "$8 + 9.95 S/H",
-    numPrice: 17.95,
-    bestDeal: false,
-    dealHeadline: undefined,
-    id: 4349401399396,
-    isRecurring: false,
+    sticky_product_id: 11,
+    sticky_offer_id,
+    sticky_billing_model_id: oto_billing_model,
+    sticky_quantity: 1,
+    sticky_trial_product_id: undefined,
+    sticky_variant_object: undefined,
   },
   {
     sku: "BBNK3SETS",
@@ -139,6 +208,12 @@ export const ProductSelectorItems: Array<ProductProps> = [
     dealHeadline: undefined,
     id: 6098425610432,
     isRecurring: false,
+    sticky_product_id: 12,
+    sticky_offer_id,
+    sticky_billing_model_id: oto_billing_model,
+    sticky_quantity: 1,
+    sticky_trial_product_id: undefined,
+    sticky_variant_object: undefined,
   },
 ];
 
@@ -151,6 +226,16 @@ export type OTOProps = {
   title: string;
   type: string;
   options: Array<OtoOptionProps> | undefined;
+  sticky_offer_id: number;
+  sticky_product_id: number;
+  sticky_billing_model_id: number;
+  sticky_quantity: number;
+  sticky_variant_object:
+    | undefined
+    | {
+        attribute_name: string;
+        attribute_value: string;
+      };
 };
 
 export type OtoOptionProps = {
@@ -161,6 +246,16 @@ export type OtoOptionProps = {
   ring_size: string;
   type: string;
   name: string;
+  sticky_offer_id: number;
+  sticky_product_id: number;
+  sticky_billing_model_id: number;
+  sticky_quantity: number;
+  sticky_variant_object:
+    | undefined
+    | {
+        attribute_name: string;
+        attribute_value: string;
+      };
 };
 
 export const OtoDATA: Array<OTOProps> = [
@@ -174,6 +269,11 @@ export const OtoDATA: Array<OTOProps> = [
     title: "1CT Silver Studs",
     type: "OTO",
     options: undefined,
+    sticky_product_id: 13,
+    sticky_offer_id,
+    sticky_billing_model_id: oto_billing_model,
+    sticky_quantity: 1,
+    sticky_variant_object: undefined,
   },
   {
     imgOrVideoSrc:
@@ -184,6 +284,14 @@ export const OtoDATA: Array<OTOProps> = [
     id: 4354929885284,
     title: "Eternity Band",
     type: "OTO",
+    sticky_product_id: 17,
+    sticky_offer_id,
+    sticky_billing_model_id: oto_billing_model,
+    sticky_quantity: 1,
+    sticky_variant_object: {
+      attribute_name: "Size",
+      attribute_value: "5",
+    },
     options: [
       {
         sku: "slvrbngr-5",
@@ -193,6 +301,14 @@ export const OtoDATA: Array<OTOProps> = [
         ring_size: "5",
         type: "OTO",
         name: "5",
+        sticky_product_id: 17,
+        sticky_offer_id,
+        sticky_billing_model_id: oto_billing_model,
+        sticky_quantity: 1,
+        sticky_variant_object: {
+          attribute_name: "Size",
+          attribute_value: "5",
+        },
       },
       {
         sku: "slvrbngr-6",
@@ -202,6 +318,14 @@ export const OtoDATA: Array<OTOProps> = [
         ring_size: "6",
         type: "OTO",
         name: "6",
+        sticky_product_id: 17,
+        sticky_offer_id,
+        sticky_billing_model_id: oto_billing_model,
+        sticky_quantity: 1,
+        sticky_variant_object: {
+          attribute_name: "Size",
+          attribute_value: "6",
+        },
       },
       {
         sku: "slvrbngr-7",
@@ -211,6 +335,14 @@ export const OtoDATA: Array<OTOProps> = [
         ring_size: "7",
         type: "OTO",
         name: "7",
+        sticky_product_id: 17,
+        sticky_offer_id,
+        sticky_billing_model_id: oto_billing_model,
+        sticky_quantity: 1,
+        sticky_variant_object: {
+          attribute_name: "Size",
+          attribute_value: "7",
+        },
       },
       {
         sku: "slvrbngr-8",
@@ -220,6 +352,14 @@ export const OtoDATA: Array<OTOProps> = [
         ring_size: "8",
         type: "OTO",
         name: "8",
+        sticky_product_id: 17,
+        sticky_offer_id,
+        sticky_billing_model_id: oto_billing_model,
+        sticky_quantity: 1,
+        sticky_variant_object: {
+          attribute_name: "Size",
+          attribute_value: "8",
+        },
       },
       {
         sku: "slvrbngr-9",
@@ -229,6 +369,14 @@ export const OtoDATA: Array<OTOProps> = [
         ring_size: "9",
         type: "OTO",
         name: "9",
+        sticky_product_id: 17,
+        sticky_offer_id,
+        sticky_billing_model_id: oto_billing_model,
+        sticky_quantity: 1,
+        sticky_variant_object: {
+          attribute_name: "Size",
+          attribute_value: "9",
+        },
       },
       {
         sku: "slvrbngr-10",
@@ -238,6 +386,14 @@ export const OtoDATA: Array<OTOProps> = [
         ring_size: "10",
         type: "OTO",
         name: "10",
+        sticky_product_id: 17,
+        sticky_offer_id,
+        sticky_billing_model_id: oto_billing_model,
+        sticky_quantity: 1,
+        sticky_variant_object: {
+          attribute_name: "Size",
+          attribute_value: "10.0",
+        },
       },
       {
         sku: "slvrbngr-65",
@@ -247,6 +403,14 @@ export const OtoDATA: Array<OTOProps> = [
         ring_size: "6.5",
         type: "OTO",
         name: "6.5",
+        sticky_product_id: 17,
+        sticky_offer_id,
+        sticky_billing_model_id: oto_billing_model,
+        sticky_quantity: 1,
+        sticky_variant_object: {
+          attribute_name: "Size",
+          attribute_value: "6.5",
+        },
       },
       {
         sku: "slvrbngr-75",
@@ -256,6 +420,14 @@ export const OtoDATA: Array<OTOProps> = [
         ring_size: "7.5",
         type: "OTO",
         name: "7.5",
+        sticky_product_id: 17,
+        sticky_offer_id,
+        sticky_billing_model_id: oto_billing_model,
+        sticky_quantity: 1,
+        sticky_variant_object: {
+          attribute_name: "Size",
+          attribute_value: "7.5",
+        },
       },
       {
         sku: "slvrbngr-85",
@@ -265,6 +437,14 @@ export const OtoDATA: Array<OTOProps> = [
         ring_size: "8.5",
         type: "OTO",
         name: "8.5",
+        sticky_product_id: 17,
+        sticky_offer_id,
+        sticky_billing_model_id: oto_billing_model,
+        sticky_quantity: 1,
+        sticky_variant_object: {
+          attribute_name: "Size",
+          attribute_value: "8.5",
+        },
       },
       {
         sku: "slvrbngr-95",
@@ -274,6 +454,14 @@ export const OtoDATA: Array<OTOProps> = [
         ring_size: "9.5",
         type: "OTO",
         name: "9.5",
+        sticky_product_id: 17,
+        sticky_offer_id,
+        sticky_billing_model_id: oto_billing_model,
+        sticky_quantity: 1,
+        sticky_variant_object: {
+          attribute_name: "Size",
+          attribute_value: "9.5",
+        },
       },
     ],
   },
@@ -287,6 +475,11 @@ export const OtoDATA: Array<OTOProps> = [
     numPrice: 15.0,
     type: "OTO",
     options: null,
+    sticky_product_id: 37,
+    sticky_offer_id,
+    sticky_billing_model_id: oto_billing_model,
+    sticky_quantity: 1,
+    sticky_variant_object: undefined,
   },
   {
     imgOrVideoSrc:
@@ -298,5 +491,10 @@ export const OtoDATA: Array<OTOProps> = [
     numPrice: 25.0,
     type: "OTO",
     options: null,
+    sticky_product_id: 15,
+    sticky_offer_id,
+    sticky_billing_model_id: oto_billing_model,
+    sticky_quantity: 1,
+    sticky_variant_object: undefined,
   },
 ];

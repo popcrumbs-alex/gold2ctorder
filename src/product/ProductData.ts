@@ -4,6 +4,24 @@ export default {
   funnel_name: "Gold 2CT Funnel",
 };
 
+export const stickyConfig = {
+  oto_billing_model: 2,
+  recurring_billing_model: 3,
+  sticky_campaign_id: 3,
+  sticky_offer_id: 3,
+  sticky_trial_product_id: 3,
+  sticky_shipping_id: 2,
+  sticky_next_recurring_product: 4,
+};
+
+const {
+  oto_billing_model,
+  recurring_billing_model,
+  sticky_campaign_id,
+  sticky_offer_id,
+  sticky_next_recurring_product,
+} = stickyConfig;
+
 export type BumpProps = {
   imgSrc: string;
   checkboxHeadline: string;
@@ -16,8 +34,19 @@ export type BumpProps = {
   numPrice: number;
   id: number;
   isRecurring: boolean;
+  sticky_offer_id: number;
+  sticky_product_id: number;
+  sticky_billing_model_id: number;
+  sticky_quantity: number;
+  sticky_trial_product_id: number | undefined;
+  sticky_next_recurring_product_id: number | undefined;
+  sticky_variant_object:
+    | undefined
+    | {
+        attribute_name: string;
+        attribute_value: string;
+      };
 };
-
 export type SelectedBump = {
   title: string;
   price: number;
@@ -26,6 +55,80 @@ export type SelectedBump = {
   type: string;
   id: number;
   isRecurring: boolean;
+  sticky_offer_id: number;
+  sticky_product_id: number;
+  sticky_billing_model_id: number;
+  sticky_quantity: number;
+  sticky_trial_product_id: number | undefined;
+  sticky_next_recurring_product_id: number | undefined;
+  sticky_variant_object:
+    | undefined
+    | {
+        attribute_name: string;
+        attribute_value: string;
+      };
+};
+
+export interface ProductProps {
+  sku: string;
+  title: string;
+  displayPrice: string;
+  numPrice: number;
+  bestDeal: boolean;
+  dealHeadline: string | undefined;
+  id: number;
+  isRecurring: boolean;
+  sticky_offer_id: number;
+  sticky_product_id: number;
+  sticky_billing_model_id: number;
+  sticky_quantity: number;
+  sticky_trial_product_id: undefined;
+  sticky_variant_object:
+    | undefined
+    | {
+        attribute_name: string;
+        attribute_value: string;
+      };
+}
+export type OTOProps = {
+  imgOrVideoSrc: string;
+  displayPrice: string;
+  numPrice: number;
+  id: number;
+  sku: string;
+  title: string;
+  type: string;
+  options: Array<OtoOptionProps> | undefined;
+  sticky_offer_id: number;
+  sticky_product_id: number;
+  sticky_billing_model_id: number;
+  sticky_quantity: number;
+  sticky_variant_object:
+    | undefined
+    | {
+        attribute_name: string;
+        attribute_value: string;
+      };
+};
+
+export type OtoOptionProps = {
+  sku: string;
+  displayPrice: string;
+  numPrice: number;
+  id: number;
+  ring_size: string;
+  type: string;
+  name: string;
+  sticky_offer_id: number;
+  sticky_product_id: number;
+  sticky_billing_model_id: number;
+  sticky_quantity: number;
+  sticky_variant_object:
+    | undefined
+    | {
+        attribute_name: string;
+        attribute_value: string;
+      };
 };
 
 export const orderBumps: Array<BumpProps> = [
@@ -43,6 +146,13 @@ export const orderBumps: Array<BumpProps> = [
     numPrice: 99.95,
     id: 5353157427357,
     isRecurring: false,
+    sticky_billing_model_id: oto_billing_model,
+    sticky_next_recurring_product_id: undefined,
+    sticky_offer_id,
+    sticky_product_id: 9,
+    sticky_quantity: 1,
+    sticky_trial_product_id: undefined,
+    sticky_variant_object: undefined,
   },
   {
     imgSrc:
@@ -58,6 +168,13 @@ export const orderBumps: Array<BumpProps> = [
     numPrice: 0,
     id: 4255185109092,
     isRecurring: true,
+    sticky_billing_model_id: recurring_billing_model,
+    sticky_next_recurring_product_id: 4,
+    sticky_offer_id,
+    sticky_product_id: 3,
+    sticky_quantity: 1,
+    sticky_trial_product_id: 3,
+    sticky_variant_object: undefined,
   },
   {
     imgSrc:
@@ -73,19 +190,15 @@ export const orderBumps: Array<BumpProps> = [
     numPrice: 24.0,
     id: 4348189933668,
     isRecurring: false,
+    sticky_billing_model_id: oto_billing_model,
+    sticky_next_recurring_product_id: undefined,
+    sticky_offer_id,
+    sticky_product_id: 16,
+    sticky_quantity: 1,
+    sticky_trial_product_id: undefined,
+    sticky_variant_object: undefined,
   },
 ];
-
-export interface ProductProps {
-  sku: string;
-  title: string;
-  displayPrice: string;
-  numPrice: number;
-  bestDeal: boolean;
-  dealHeadline: string | undefined;
-  id: number;
-  isRecurring: boolean;
-}
 
 export const ProductSelectorItems: Array<ProductProps> = [
   {
@@ -98,6 +211,12 @@ export const ProductSelectorItems: Array<ProductProps> = [
     dealHeadline: undefined,
     id: 4273995350116,
     isRecurring: false,
+    sticky_billing_model_id: oto_billing_model,
+    sticky_offer_id,
+    sticky_product_id: 39,
+    sticky_quantity: 1,
+    sticky_trial_product_id: undefined,
+    sticky_variant_object: undefined,
   },
   {
     sku: "3STUDS-custom",
@@ -108,39 +227,30 @@ export const ProductSelectorItems: Array<ProductProps> = [
     dealHeadline: `BEST DEAL`,
     id: 6550551625920,
     isRecurring: false,
+    sticky_billing_model_id: oto_billing_model,
+    sticky_offer_id,
+    sticky_product_id: 12,
+    sticky_quantity: 1,
+    sticky_trial_product_id: undefined,
+    sticky_variant_object: undefined,
   },
   {
-    sku: "GOLDEAR-5",
-    title: `5 - Pairs of Gold 2ct Lab Diamond Earrings (Originally $475) Over 92% Off - Only $40`,
-    displayPrice: "$8/Ea + Free Shipping",
-    numPrice: 40.0,
+    sku: "GOLDEAR-3",
+    title: `3 - Pairs of Gold 2ct Lab Diamond Earrings (Originally $475) Over 92% Off - Only $29.94`,
+    displayPrice: "$9.98/Ea + Free Shipping",
+    numPrice: 29.94,
     bestDeal: false,
     dealHeadline: undefined,
     id: 5595271987357,
     isRecurring: false,
+    sticky_billing_model_id: oto_billing_model,
+    sticky_offer_id,
+    sticky_product_id: 39,
+    sticky_quantity: 3,
+    sticky_trial_product_id: undefined,
+    sticky_variant_object: undefined,
   },
 ];
-
-export type OTOProps = {
-  imgOrVideoSrc: string;
-  displayPrice: string;
-  numPrice: number;
-  id: number;
-  sku: string;
-  title: string;
-  type: string;
-  options: Array<OtoOptionProps> | undefined;
-};
-
-export type OtoOptionProps = {
-  sku: string;
-  displayPrice: string;
-  numPrice: number;
-  id: number;
-  ring_size: string;
-  type: string;
-  name: string;
-};
 
 export const OtoDATA: Array<OTOProps> = [
   {
@@ -153,6 +263,11 @@ export const OtoDATA: Array<OTOProps> = [
     title: "1CT Gold Studs",
     type: "OTO",
     options: undefined,
+    sticky_billing_model_id: oto_billing_model,
+    sticky_offer_id,
+    sticky_product_id: 14,
+    sticky_quantity: 1,
+    sticky_variant_object: undefined,
   },
   {
     imgOrVideoSrc:
@@ -163,6 +278,14 @@ export const OtoDATA: Array<OTOProps> = [
     id: 4354929885284,
     title: "Eternity Band",
     type: "OTO",
+    sticky_billing_model_id: oto_billing_model,
+    sticky_offer_id,
+    sticky_product_id: 17,
+    sticky_quantity: 1,
+    sticky_variant_object: {
+      attribute_name: "Size",
+      attribute_value: "5",
+    },
     options: [
       {
         sku: "slvrbngr-5",
@@ -172,6 +295,14 @@ export const OtoDATA: Array<OTOProps> = [
         ring_size: "5",
         type: "OTO",
         name: "5",
+        sticky_billing_model_id: oto_billing_model,
+        sticky_offer_id,
+        sticky_product_id: 17,
+        sticky_quantity: 1,
+        sticky_variant_object: {
+          attribute_name: "Size",
+          attribute_value: "5",
+        },
       },
       {
         sku: "slvrbngr-6",
@@ -181,6 +312,14 @@ export const OtoDATA: Array<OTOProps> = [
         ring_size: "6",
         type: "OTO",
         name: "6",
+        sticky_billing_model_id: oto_billing_model,
+        sticky_offer_id,
+        sticky_product_id: 17,
+        sticky_quantity: 1,
+        sticky_variant_object: {
+          attribute_name: "Size",
+          attribute_value: "6",
+        },
       },
       {
         sku: "slvrbngr-7",
@@ -190,6 +329,14 @@ export const OtoDATA: Array<OTOProps> = [
         ring_size: "7",
         type: "OTO",
         name: "7",
+        sticky_billing_model_id: oto_billing_model,
+        sticky_offer_id,
+        sticky_product_id: 17,
+        sticky_quantity: 1,
+        sticky_variant_object: {
+          attribute_name: "Size",
+          attribute_value: "7",
+        },
       },
       {
         sku: "slvrbngr-8",
@@ -199,6 +346,14 @@ export const OtoDATA: Array<OTOProps> = [
         ring_size: "8",
         type: "OTO",
         name: "8",
+        sticky_billing_model_id: oto_billing_model,
+        sticky_offer_id,
+        sticky_product_id: 17,
+        sticky_quantity: 1,
+        sticky_variant_object: {
+          attribute_name: "Size",
+          attribute_value: "8",
+        },
       },
       {
         sku: "slvrbngr-9",
@@ -208,6 +363,14 @@ export const OtoDATA: Array<OTOProps> = [
         ring_size: "9",
         type: "OTO",
         name: "9",
+        sticky_billing_model_id: oto_billing_model,
+        sticky_offer_id,
+        sticky_product_id: 17,
+        sticky_quantity: 1,
+        sticky_variant_object: {
+          attribute_name: "Size",
+          attribute_value: "9",
+        },
       },
       {
         sku: "slvrbngr-10",
@@ -217,6 +380,14 @@ export const OtoDATA: Array<OTOProps> = [
         ring_size: "10",
         type: "OTO",
         name: "10",
+        sticky_billing_model_id: oto_billing_model,
+        sticky_offer_id,
+        sticky_product_id: 17,
+        sticky_quantity: 1,
+        sticky_variant_object: {
+          attribute_name: "Size",
+          attribute_value: "10.0",
+        },
       },
       {
         sku: "slvrbngr-65",
@@ -226,6 +397,14 @@ export const OtoDATA: Array<OTOProps> = [
         ring_size: "6.5",
         type: "OTO",
         name: "6.5",
+        sticky_billing_model_id: oto_billing_model,
+        sticky_offer_id,
+        sticky_product_id: 17,
+        sticky_quantity: 1,
+        sticky_variant_object: {
+          attribute_name: "Size",
+          attribute_value: "6.5",
+        },
       },
       {
         sku: "slvrbngr-75",
@@ -235,6 +414,14 @@ export const OtoDATA: Array<OTOProps> = [
         ring_size: "7.5",
         type: "OTO",
         name: "7.5",
+        sticky_billing_model_id: oto_billing_model,
+        sticky_offer_id,
+        sticky_product_id: 17,
+        sticky_quantity: 1,
+        sticky_variant_object: {
+          attribute_name: "Size",
+          attribute_value: "7.5",
+        },
       },
       {
         sku: "slvrbngr-85",
@@ -244,6 +431,14 @@ export const OtoDATA: Array<OTOProps> = [
         ring_size: "8.5",
         type: "OTO",
         name: "8.5",
+        sticky_billing_model_id: oto_billing_model,
+        sticky_offer_id,
+        sticky_product_id: 17,
+        sticky_quantity: 1,
+        sticky_variant_object: {
+          attribute_name: "Size",
+          attribute_value: "8.5",
+        },
       },
       {
         sku: "slvrbngr-95",
@@ -253,6 +448,14 @@ export const OtoDATA: Array<OTOProps> = [
         ring_size: "9.5",
         type: "OTO",
         name: "9.5",
+        sticky_billing_model_id: oto_billing_model,
+        sticky_offer_id,
+        sticky_product_id: 17,
+        sticky_quantity: 1,
+        sticky_variant_object: {
+          attribute_name: "Size",
+          attribute_value: "9.5",
+        },
       },
     ],
   },
@@ -266,6 +469,11 @@ export const OtoDATA: Array<OTOProps> = [
     numPrice: 15.0,
     type: "OTO",
     options: null,
+    sticky_billing_model_id: oto_billing_model,
+    sticky_offer_id,
+    sticky_product_id: 37,
+    sticky_quantity: 1,
+    sticky_variant_object: undefined,
   },
   {
     imgOrVideoSrc:
@@ -277,6 +485,11 @@ export const OtoDATA: Array<OTOProps> = [
     numPrice: 25.0,
     type: "OTO",
     options: null,
+    sticky_billing_model_id: oto_billing_model,
+    sticky_offer_id,
+    sticky_product_id: 15,
+    sticky_quantity: 1,
+    sticky_variant_object: undefined,
   },
   {
     imgOrVideoSrc:
@@ -288,5 +501,10 @@ export const OtoDATA: Array<OTOProps> = [
     numPrice: 16.0,
     type: "OTO",
     options: null,
+    sticky_billing_model_id: oto_billing_model,
+    sticky_offer_id,
+    sticky_product_id: 40,
+    sticky_quantity: 1,
+    sticky_variant_object: undefined,
   },
 ];

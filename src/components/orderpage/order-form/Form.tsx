@@ -334,7 +334,8 @@ const Form: FC = () => {
                 {/* small text section */}
                 <Divider />
                 <SecureOrder />
-                <PaymentToggler>
+                {/* ENABLE WHEN PAYPAL IS SETUP */}
+                {/* <PaymentToggler>
                   <Text
                     style={{
                       marginTop: "-.5rem",
@@ -366,7 +367,8 @@ const Form: FC = () => {
                   />
                 ) : (
                   <CreditCardForm />
-                )}
+                )} */}
+                <CreditCardForm />
               </FormContainer>
             </ColumnContent>
           </Column>
@@ -442,6 +444,7 @@ const ContactInfo = ({
               options={null}
               labelStyle={null}
               inputStyle={null}
+              typeCallback={null}
             />
           );
         })}
@@ -574,6 +577,7 @@ const ShippingAddress = ({
                   options={null}
                   labelStyle={null}
                   inputStyle={null}
+                  typeCallback={null}
                 />
               </Fragment>
             );
@@ -592,6 +596,7 @@ const ShippingAddress = ({
               options={states}
               labelStyle={null}
               inputStyle={null}
+              typeCallback={null}
             />
           </div>
 
@@ -606,6 +611,7 @@ const ShippingAddress = ({
             options={null}
             labelStyle={null}
             inputStyle={null}
+            typeCallback={null}
           />
         </InputRow>
       </InputSection>

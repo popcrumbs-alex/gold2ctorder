@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Helmet } from "react-helmet";
-import { useLocation } from "@reach/router";
+import { useLocation, useParams } from "@reach/router";
+import { parse } from "querystring";
 const HelmetWrapper = ({
   pageTitle,
   efScript,
@@ -12,7 +13,15 @@ const HelmetWrapper = ({
 
   const isFromOrderPage: boolean = location?.state?.fromOrderPage || false;
 
-  console.log("location", location, isFromOrderPage);
+  const urlParams = parse(location.search);
+
+  console.log("location", location, isFromOrderPage, urlParams);
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      window.localStorage.setItem("affiliate_obj", JSON.stringify(urlParams));
+    }
+  }, []);
 
   return (
     <Helmet>

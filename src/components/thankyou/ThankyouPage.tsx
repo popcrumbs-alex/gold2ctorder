@@ -8,7 +8,6 @@ import { useContext } from "react";
 import { Theme } from "../../constants/Colors";
 import { ThemeContext } from "../../pages";
 import LoadingSpinner from "../loading/LoadingSpinner";
-import { CLOSE_ORDER } from "../../graphql/mutations/order.mutation";
 import { useEffect } from "react";
 import { navigate } from "gatsby";
 
@@ -131,8 +130,6 @@ const ThankyouPage = () => {
 
   return (
     <Section>
-      {/* an invisible component to fire a mutation */}
-      {orderId && <CompleteOrder orderId={orderId} />}
       <Header>
         <StaticImage
           src="../../images/lululogo.png"
@@ -196,24 +193,6 @@ const ThankyouPage = () => {
       </Content>
     </Section>
   );
-};
-
-const CompleteOrder = ({ orderId }: { orderId: string }) => {
-  const [closeOrder, { error, loading, data }] = useMutation(CLOSE_ORDER);
-
-  useEffect(() => {
-    if (orderId) {
-      closeOrder({
-        variables: {
-          closeOrderInput: { orderId: orderId },
-        },
-      });
-    }
-  }, [orderId]);
-
-  console.log("order completion:", error, data, loading, orderId);
-
-  return <></>;
 };
 
 export default ThankyouPage;
