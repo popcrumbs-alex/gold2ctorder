@@ -1,5 +1,5 @@
 import { useMutation } from "@apollo/client";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import styled from "styled-components";
 import { CREATE_ORDER } from "../../../graphql/mutations/order.mutation";
 import { useAppDispatch, useAppSelector } from "../../../hooks/reduxHooks";
@@ -12,7 +12,9 @@ import {
 import { InputSelector } from "../../../reusable/Inputs";
 import { navigate } from "gatsby";
 import LoadingSpinner from "../../loading/LoadingSpinner";
-import ProductData from "../../../product/SilverStudsProductData";
+import ProductData, {
+  stickyConfig,
+} from "../../../product/SilverStudsProductData";
 
 const Container = styled.form`
   display: flex;
@@ -87,6 +89,8 @@ const CreditCardForm = () => {
 
   const orderState = useAppSelector(selectOrderState);
 
+  console.log("this is my order now!", orderState);
+
   const ef_aff_id =
     typeof window !== "undefined"
       ? window.localStorage.getItem("ef_aff_id")
@@ -98,13 +102,20 @@ const CreditCardForm = () => {
     cvc: "",
   });
 
+  const [creditCardType, setCreditCardType] = useState<string>("");
+
   //graphql data
   const [createOrder, { error, data, loading }] = useMutation(CREATE_ORDER);
 
   const { creditCardNumber, expiry, cvc } = cardForm;
 
+  const [affiliateData, setAffiliateData] = useState(null);
+
   const handleCardNumber = (e: React.FormEvent<HTMLInputElement>) =>
     setCardFormState({ ...cardForm, creditCardNumber: e.currentTarget.value });
+
+  //needed for sticky card processing
+  const handleCreditCardType = (type: string) => setCreditCardType(type);
 
   const handleExpiry = (e: React.FormEvent<HTMLInputElement>) => {
     const removeLetters = new RegExp(/[0-9]|\//, "g");
@@ -166,6 +177,7 @@ const CreditCardForm = () => {
         creditCardNumber: creditCardNumber.replace(/\s/g, ""),
         expiry: expiry.replace(/\//g, ""),
         cvc: cvc,
+        creditCardType,
       };
 
       const { funnel_name } = ProductData;
@@ -181,6 +193,9 @@ const CreditCardForm = () => {
             ef_aff_id: ef_aff_id ? ef_aff_id : "non-ef-order",
             orderType: "credit",
             funnel_name,
+            sticky_shipping_id: stickyConfig.sticky_shipping_id,
+            sticky_campaign_id: stickyConfig.sticky_campaign_id,
+            affiliate_data: affiliateData || undefined,
           },
         },
       });
@@ -193,7 +208,7 @@ const CreditCardForm = () => {
         //set order type for oto process to credit
         window.localStorage.setItem("orderType", "credit");
 
-        navigate("/silverstuds/otos/OneCtGoldStuds", {
+        navigate("/silverstuds/otos/OneCtSilverStuds", {
           state: {
             fromOrderPage: true,
           },
@@ -213,6 +228,23 @@ const CreditCardForm = () => {
     }
   }, [error]);
 
+  //set affiliate data in local state
+  useMemo(() => {
+    //grab affiliate data if coming from a tracking link
+    if (typeof window !== "undefined") {
+      if (window.localStorage.getItem("affiliate_obj")) {
+        setAffiliateData(window.localStorage.getItem("affiliate_obj"));
+      }
+    }
+  }, []);
+
+  console.log(
+    "affiliate daa",
+    affiliateData,
+    orderState,
+    cardForm,
+    creditCardType
+  );
   return (
     <Container onSubmit={(e) => submitOrder(e)}>
       <Row>
@@ -227,6 +259,7 @@ const CreditCardForm = () => {
           options={null}
           labelStyle={null}
           inputStyle={null}
+          typeCallback={handleCreditCardType}
         />
       </Row>
       <Grid>
@@ -242,6 +275,7 @@ const CreditCardForm = () => {
             options={null}
             labelStyle={null}
             inputStyle={null}
+            typeCallback={null}
           />
         </Column>
         <Column>
@@ -256,6 +290,7 @@ const CreditCardForm = () => {
             inputStyle={null}
             labelStyle={null}
             options={null}
+            typeCallback={null}
           />
         </Column>
       </Grid>

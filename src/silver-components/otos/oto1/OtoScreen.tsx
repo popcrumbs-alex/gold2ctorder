@@ -161,12 +161,19 @@ const OtoScreen = () => {
       dispatch(
         addOtoToOrder({
           price: OtoDATA[currentOtoIndex].numPrice,
-          title: "1Ct Gold Studs",
+          title: "1Ct Silver Studs",
           type: "OTO",
           isRecurring: false,
           id: OtoDATA[currentOtoIndex].id,
           displayPrice: OtoDATA[currentOtoIndex].displayPrice,
           sku: OtoDATA[currentOtoIndex].sku,
+          sticky_billing_model_id:
+            OtoDATA[currentOtoIndex].sticky_billing_model_id,
+          sticky_offer_id: OtoDATA[currentOtoIndex].sticky_offer_id,
+          sticky_product_id: OtoDATA[currentOtoIndex].sticky_product_id,
+          sticky_quantity: OtoDATA[currentOtoIndex].sticky_quantity,
+          sticky_trial_product_id: undefined,
+          sticky_variant_object: undefined,
         })
       );
 
@@ -181,6 +188,12 @@ const OtoScreen = () => {
               isRecurring: false,
               type: "OTO",
               id: OtoDATA[currentOtoIndex].id,
+              sticky_billing_model_id:
+                OtoDATA[currentOtoIndex].sticky_billing_model_id,
+              sticky_offer_id: OtoDATA[currentOtoIndex].sticky_offer_id,
+              sticky_product_id: OtoDATA[currentOtoIndex].sticky_product_id,
+              sticky_quantity: OtoDATA[currentOtoIndex].sticky_quantity,
+              sticky_trial_product_id: undefined,
             },
             orderId: currentOrderId,
           },
@@ -287,6 +300,14 @@ const OtoScreen = () => {
                     id: OtoDATA[currentOtoIndex].id,
                     price: OtoDATA[currentOtoIndex].numPrice,
                     isRecurring: false,
+                    sticky_billing_model_id:
+                      OtoDATA[currentOtoIndex].sticky_billing_model_id,
+                    sticky_offer_id: OtoDATA[currentOtoIndex].sticky_offer_id,
+                    sticky_product_id:
+                      OtoDATA[currentOtoIndex].sticky_product_id,
+                    sticky_quantity: OtoDATA[currentOtoIndex].sticky_quantity,
+                    sticky_trial_product_id: undefined,
+                    sticky_variant_object: undefined,
                   },
                 ]}
               />

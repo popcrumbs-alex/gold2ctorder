@@ -165,6 +165,12 @@ const OtoThreeScreen = () => {
       id: OtoDATA[selectedIndex].id,
       displayPrice: OtoDATA[selectedIndex].displayPrice,
       sku: OtoDATA[selectedIndex].sku,
+      sticky_billing_model_id: OtoDATA[selectedIndex].sticky_billing_model_id,
+      sticky_offer_id: OtoDATA[selectedIndex].sticky_offer_id,
+      sticky_product_id: OtoDATA[selectedIndex].sticky_product_id,
+      sticky_quantity: OtoDATA[selectedIndex].sticky_quantity,
+      sticky_trial_product_id: undefined,
+      sticky_variant_object: undefined,
     };
 
     try {
@@ -319,8 +325,15 @@ const PaymentProcessorButton = ({
             id: oto.id,
             price: oto.numPrice,
             isRecurring: false,
+            sticky_billing_model_id: oto.sticky_billing_model_id,
+            sticky_offer_id: oto.sticky_offer_id,
+            sticky_product_id: oto.sticky_product_id,
+            sticky_quantity: oto.sticky_quantity,
+            sticky_trial_product_id: undefined,
+            sticky_variant_object: undefined,
           },
         ]}
+        fromOrderPage={false}
       />
     ),
     credit: (

@@ -9,6 +9,17 @@ export type ProductProp = {
   type: string;
   id: number;
   isRecurring: boolean;
+  sticky_offer_id: number;
+  sticky_product_id: number;
+  sticky_billing_model_id: number;
+  sticky_quantity: number;
+  sticky_trial_product_id: number | undefined;
+  sticky_variant_object:
+    | undefined
+    | {
+        attribute_name: string;
+        attribute_value: string;
+      };
 };
 
 export type ContactInfoProps = {
@@ -28,6 +39,7 @@ export type CardProps = {
   creditCardNumber: number | null;
   expiry: number | null;
   cvc: number | null;
+  creditCardType: string | null;
 };
 
 export type OrderStorageParams = { id: string };
@@ -69,6 +81,7 @@ const initialState: OrderStateProps = {
       creditCardNumber: null,
       expiry: null,
       cvc: null,
+      creditCardType: null,
     },
     orderType: "",
   },
@@ -84,7 +97,7 @@ const orderSlice = createSlice({
       let filtered = copyProducts.filter(
         (product: ProductProp) => product.type !== "main"
       );
-      //TODO write tests for this to make sure singular item is being stored
+
       state.myOrder.products = [...filtered, action.payload];
     },
 

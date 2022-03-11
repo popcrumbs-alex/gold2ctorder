@@ -8,7 +8,7 @@ export class OrderResponse {
   message: string;
   @Field()
   success: boolean;
-  @Field(() => OrderTypeDef)
+  @Field(() => OrderTypeDef, { nullable: true })
   Order: Order;
 }
 
@@ -40,4 +40,24 @@ export class TestResponse {
   success: boolean;
   @Field(() => [TestProduct])
   products: Array<TestProduct>;
+}
+
+@ObjectType()
+export class StickyAuthResponse {
+  @Field()
+  message: string;
+  @Field()
+  success: boolean;
+  @Field({ nullable: true })
+  auth: string;
+}
+
+@ObjectType()
+export class CreateStickyIOOrderResponse {
+  @Field()
+  message: string;
+  @Field()
+  success: boolean;
+  @Field(() => OrderTypeDef, { nullable: true })
+  Order: Order;
 }

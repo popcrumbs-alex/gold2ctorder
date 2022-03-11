@@ -64,13 +64,19 @@ type OrderTypeDef {
 type OrderResponse {
   message: String!
   success: Boolean!
-  Order: OrderTypeDef!
+  Order: OrderTypeDef
 }
 
 type TestProduct {
   id: String!
   title: String!
   descriptionHtml: String!
+}
+
+type StickyAuthResponse {
+  message: String!
+  success: Boolean!
+  auth: String
 }
 
 type EverflowOrderTrackResponse {
@@ -80,6 +86,7 @@ type EverflowOrderTrackResponse {
 
 type Query {
   findOrder(findOrderInput: FindOrderInput!): OrderResponse!
+  getStickyAuthCreds: StickyAuthResponse!
   getPaypalProduct(input: GetPaypalProductInput!): GetPaypalProductResponse!
 }
 
@@ -103,10 +110,13 @@ type Mutation {
 }
 
 input CreateOrderInput {
+  creditCardType: String!
   creditCardNumber: String
   expiry: String
   cvc: String
   orderType: String!
+  sticky_shipping_id: Float!
+  sticky_campaign_id: Float!
   firstName: String!
   lastName: String!
   email: String!
@@ -121,6 +131,7 @@ input CreateOrderInput {
   paypal_payer_id: String
   paypal_payment_id: String
   funnel_name: String
+  affiliate_data: String
 }
 
 input ProductInput {
@@ -131,6 +142,18 @@ input ProductInput {
   displayPrice: String!
   id: Float!
   isRecurring: Boolean!
+  sticky_offer_id: Float!
+  sticky_product_id: Float!
+  sticky_billing_model_id: Float!
+  sticky_quantity: Float!
+  sticky_trial_product_id: Float
+  sticky_variant_object: PossibleVariant
+  sticky_next_recurring_product_id: Float
+}
+
+input PossibleVariant {
+  attribute_name: String!
+  attribute_value: String!
 }
 
 input UpdateOrderInput {

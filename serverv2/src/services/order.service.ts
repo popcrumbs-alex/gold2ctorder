@@ -9,6 +9,7 @@ import {
 import {
   OrderResponse,
   PendingOrdersResponse,
+  StickyAuthResponse,
 } from '../graphql/responses/order.response';
 import {
   CustomerType,
@@ -19,7 +20,11 @@ import { Order, OrderDocument, Product } from 'src/mongo/schemas/order.model';
 import { PaymentService } from './payment.service';
 import { ShopifyService } from './shopify.service';
 import { CustomerService } from './customer.service';
+import axios from 'axios';
 import states from 'src/reusable/states';
+import { config } from 'dotenv';
+
+config();
 
 @Injectable()
 export class OrderService {
@@ -29,6 +34,43 @@ export class OrderService {
     private readonly paymentService: PaymentService,
     private readonly customerService: CustomerService,
   ) {}
+
+  async getStickyIOCredentials(): Promise<StickyAuthResponse> {
+    try {
+      const authRequest = await axios({
+        method: 'post',
+        url: 'https://popbrands.sticky.io/api/v1/validate_credentials',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization:
+            'Basic ' +
+            Buffer.from(
+              process.env.STICKY_USERNAME + ':' + process.env.STICKY_PASSWORD,
+            ).toString('base64'),
+        },
+      });
+
+      if (!authRequest.data.response_code)
+        throw new Error('Not a successful response');
+      console.log('auth request', authRequest.data?.response_code);
+
+      if (authRequest.data?.response_code !== '100')
+        throw new Error('Not a successful request');
+
+      return {
+        message: 'Valid credentials',
+        success: true,
+        auth: authRequest.data.response_code,
+      };
+    } catch (error) {
+      console.error('ERROR', error);
+      return {
+        message: 'Invalid credentials',
+        success: false,
+        auth: null,
+      };
+    }
+  }
 
   async loadPendingOrders(): Promise<PendingOrdersResponse> {
     try {
@@ -120,7 +162,33 @@ export class OrderService {
         state,
         address,
         zip,
+        sticky_campaign_id,
+        sticky_shipping_id,
+        creditCardType,
+        affiliate_data,
       } = input;
+
+      console.log('affiliate data?', JSON.parse(affiliate_data));
+
+      const affiliateDataFormatted: {
+        AFFID: string;
+        C1: string;
+        C2: string;
+        C3: string;
+      } = {
+        AFFID: 'AFFID',
+        C1: 'C1',
+        C2: 'C2',
+        C3: 'C3',
+      };
+      if (affiliate_data) {
+        const affData = JSON.parse(affiliate_data);
+        if (affData.affiliate_id)
+          affiliateDataFormatted.AFFID = affData.affiliate_id;
+        if (affData.sub1) affiliateDataFormatted.C1 = affData.sub1;
+        if (affData.sub2) affiliateDataFormatted.C2 = affData.sub2;
+        if (affData.sub3) affiliateDataFormatted.C3 = affData.sub3;
+      }
 
       if (products.length === 0) {
         throw new Error('Must have products in order to purchase?');
@@ -137,20 +205,12 @@ export class OrderService {
           throw new Error(`A ${inputElement} is required`);
         }
       }
-      console.log('paypal transataction dsifsf', paypal_transaction_id);
-      ///////////////////////////////////////////////////////////////////////
-      const productPrices = products.map((product: Product) => product.price);
-
-      const orderTotal = this.calculateOrderTotal(productPrices);
-      ///////////////////////////////////////////////////////////
-
-      const detectASubscriptionItem =
-        [...products].filter((product: Product) => product.isRecurring).length >
-        0;
 
       const orderStartTime = new Date().toString();
 
-      //NOTE: must create new orders in shopify for each paypal payment
+      //stickyio requires, 2 character length state code
+      const stateAbbr = await this.matchAddressStateWithCode(state);
+
       switch (orderType) {
         case 'paypal':
           console.log('paypal order');
@@ -174,13 +234,7 @@ export class OrderService {
             email,
             order: newPaypalOrder,
           });
-          //if order contains a sub create it in paypal
-          if (detectASubscriptionItem) {
-            await this.paymentService.addSubscriptionToPurchase({
-              ...input,
-              paypal_payer_id,
-            });
-          }
+
           //send the order to shopify
           await this.closeOrder({ orderId: newPaypalOrder._id.toString() });
 
@@ -190,27 +244,30 @@ export class OrderService {
             Order: newPaypalOrder,
           };
         case 'credit':
-          console.log('nmi payment');
-          //pass to nmi payment gateway service for transaction
+          //pass to stickyio order request endpoint
           const paymentRequest = await this.paymentService.authSale({
+            ...input,
             creditCardNumber,
-            cvv: cvc,
+            cvc,
             expiry,
             firstName,
             lastName,
-            amount: orderTotal,
             email,
-            containsRecurringItem: detectASubscriptionItem,
             city,
-            state,
+            state: stateAbbr || state,
             zip,
             address,
+            sticky_campaign_id,
+            sticky_shipping_id,
+            products,
+            creditCardType,
+            affiliate_data: JSON.stringify(affiliateDataFormatted) || undefined,
           });
-          console.log('payment request', paymentRequest);
-          if (paymentRequest.statusMessage !== 'SUCCESS') {
-            throw new Error(paymentRequest.responseObject);
-          }
 
+          if (paymentRequest.statusMessage !== 'SUCCESS')
+            throw new Error(paymentRequest.statusMessage);
+
+          //create order in database
           const newOrder = new this.orderModel({
             ...input,
             orderType: 'credit',
@@ -220,6 +277,10 @@ export class OrderService {
             paypal_transaction_id: paypal_transaction_id
               ? paypal_transaction_id
               : 'non-paypal-transaction',
+            status: 'closed',
+            sticky_order_id: paymentRequest.sticky_order_id,
+            sticky_campaign_id,
+            sticky_shipping_id,
           });
 
           await newOrder.save();
@@ -255,13 +316,12 @@ export class OrderService {
     try {
       const { product, orderId } = updateOrderInput;
 
-      //for paypal, look for previous order to indicate next order will also be a paypal order
       //Step 1 find order in db
       const foundOrder = await this.orderModel.findById(orderId);
 
       if (!foundOrder) throw new Error('Could not locate a current order');
 
-      //multiple payment gateway options
+      //order types so far are paypal and credit
       switch (foundOrder.orderType) {
         case 'paypal':
           //Need to create a whole new order object for dumb paypal
@@ -286,17 +346,78 @@ export class OrderService {
             Order: foundOrder,
           };
         case 'credit':
-          //if order exceeds time limit, prevent updating a closed order.
-          //This is a temporary fix, possibly create new order instead?
-          if (foundOrder.status === 'closed')
-            throw new Error('Can not update a closed order');
+          //new product to be added to order
+          const upsellProduct: {
+            offer_id: number;
+            product_id: number;
+            billing_model_id: number;
+            quantity: number;
+            variant:
+              | [
+                  {
+                    attribute_name: string;
+                    attribute_value: string;
+                  },
+                ]
+              | undefined;
+          } = {
+            offer_id: product.sticky_offer_id,
+            product_id: product.sticky_product_id,
+            billing_model_id: product.sticky_billing_model_id,
+            quantity: product.sticky_quantity,
+            variant: !product.sticky_variant_object
+              ? undefined
+              : [product.sticky_variant_object],
+          };
 
-          //add new product to current product array
+          const data = JSON.stringify({
+            previousOrderId: foundOrder.sticky_order_id,
+            campaignId: foundOrder.sticky_campaign_id,
+            shippingId: foundOrder.sticky_shipping_id,
+            ipAddress: '198.4.3.2',
+            offers: [upsellProduct],
+            notes: 'This is a test order using new_upsell',
+            AFID: 'AFID',
+            SID: 'SID',
+            AFFID: 'AFFID',
+            C1: 'C1',
+            C2: 'C2',
+            C3: 'C3',
+            AID: 'AID',
+            OPT: 'OPT',
+            utm_source: 'source',
+            utm_medium: 'medium',
+            utm_campaign: 'campaign',
+            utm_content: 'content',
+            utm_term: 'term',
+          });
+
+          console.log('data!', data);
+
+          const updateOrderInSticky = await axios({
+            method: 'POST',
+            url: 'https://popbrands.sticky.io/api/v1/new_upsell',
+            headers: {
+              'Content-Type': 'application/json',
+              Authorization: `Basic ${Buffer.from(
+                process.env.STICKY_USERNAME + ':' + process.env.STICKY_PASSWORD,
+              ).toString('base64')}`,
+            },
+            data: data,
+          });
+
+          console.log('updated order', updateOrderInSticky.data);
+
+          if (updateOrderInSticky.data.provider_response_code !== '100') {
+            throw new Error(updateOrderInSticky.data.decline_reason);
+          }
+
+          //add new product to current product array for order db
           const currentProductPrices = [...foundOrder.products, product].map(
             (product: Product) => product.price,
           );
 
-          //Step 2 update transaction amount
+          //Step 2 update transaction amount in db
           const newOrderTotal = this.calculateOrderTotal(currentProductPrices);
           //now add product to db
           foundOrder.products = [...foundOrder.products, product];
@@ -305,26 +426,8 @@ export class OrderService {
           //save in order to get current product total
           await foundOrder.save();
 
-          console.log('updated order', foundOrder.products);
-          //step 3 update transaction auth amount in payment gatewat
-          const updateTransaction = await this.paymentService.updateTransaction(
-            {
-              updatedOrderTotal: newOrderTotal,
-              transactionId: Number(foundOrder.transactionId),
-            },
-          );
-
-          if (!updateTransaction.newTransactionId)
-            throw new Error('Transaction id does not exist');
-          //the new transaction auth returns a new transactionid
-          foundOrder.transactionId = updateTransaction.newTransactionId;
-          //save the transaction id to the db
-          await foundOrder.save();
-
-          console.log('updated transaction', updateTransaction);
-
           return {
-            message: 'Updated a credit transaction',
+            message: 'Updated an order ',
             success: true,
             Order: foundOrder,
           };
@@ -335,6 +438,7 @@ export class OrderService {
     }
   }
 
+  //THIS ROUTE IS DEPRECATED
   async closeOrder(closeOrderInput: CloseOrderInput): Promise<OrderResponse> {
     try {
       const { orderId } = closeOrderInput;

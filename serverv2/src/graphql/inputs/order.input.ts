@@ -1,5 +1,14 @@
 import { Field, InputType } from '@nestjs/graphql';
 
+//this is formatted the same way as the stickyio call is formatted
+@InputType()
+export class PossibleVariant {
+  @Field()
+  attribute_name: string;
+  @Field()
+  attribute_value: string;
+}
+
 @InputType()
 export class ProductInput {
   @Field()
@@ -16,10 +25,26 @@ export class ProductInput {
   id: number;
   @Field()
   isRecurring: boolean;
+  @Field()
+  sticky_offer_id: number;
+  @Field()
+  sticky_product_id: number;
+  @Field()
+  sticky_billing_model_id: number;
+  @Field()
+  sticky_quantity: number;
+  @Field({ nullable: true })
+  sticky_trial_product_id: number;
+  @Field(() => PossibleVariant, { nullable: true })
+  sticky_variant_object: PossibleVariant;
+  @Field({ nullable: true })
+  sticky_next_recurring_product_id: number;
 }
 
 @InputType()
 export class CreateOrderInput {
+  @Field()
+  creditCardType: string;
   @Field({ nullable: true })
   creditCardNumber: string;
   @Field({ nullable: true })
@@ -28,6 +53,10 @@ export class CreateOrderInput {
   cvc: string;
   @Field(() => String)
   orderType: 'paypal' | 'credit';
+  @Field()
+  sticky_shipping_id: number;
+  @Field()
+  sticky_campaign_id: number;
   @Field()
   firstName: string;
   @Field()
@@ -56,6 +85,8 @@ export class CreateOrderInput {
   paypal_payment_id: string | undefined;
   @Field({ nullable: true })
   funnel_name: string;
+  @Field({ nullable: true })
+  affiliate_data: string;
 }
 
 @InputType()

@@ -106,6 +106,14 @@ const BumpComponent = ({
       type: "bump",
       id: orderBumps[index].id,
       isRecurring: orderBumps[index].isRecurring,
+      sticky_billing_model_id: orderBumps[index].sticky_billing_model_id,
+      sticky_offer_id: orderBumps[index].sticky_offer_id,
+      sticky_product_id: orderBumps[index].sticky_product_id,
+      sticky_quantity: orderBumps[index].sticky_quantity,
+      sticky_trial_product_id: orderBumps[index].sticky_trial_product_id,
+      sticky_next_recurring_product_id:
+        orderBumps[index].sticky_next_recurring_product_id,
+      sticky_variant_object: undefined,
     };
     if (selected) {
       dispatch(addBumpInOrder(selectedBump));

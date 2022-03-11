@@ -4,6 +4,7 @@ import {
   BumpProps,
   orderBumps,
   SelectedBump,
+  stickyConfig,
 } from "../../../product/ProductData";
 import { useAppDispatch } from "../../../hooks/reduxHooks";
 import {
@@ -106,6 +107,14 @@ const BumpComponent = ({
       type: "bump",
       id: orderBumps[index].id,
       isRecurring: orderBumps[index].isRecurring,
+      sticky_billing_model_id: stickyConfig.oto_billing_model,
+      sticky_next_recurring_product_id:
+        orderBumps[index].sticky_next_recurring_product_id,
+      sticky_offer_id: stickyConfig.sticky_offer_id,
+      sticky_product_id: orderBumps[index].sticky_product_id,
+      sticky_quantity: orderBumps[index].sticky_quantity,
+      sticky_trial_product_id: orderBumps[index].sticky_trial_product_id,
+      sticky_variant_object: orderBumps[index].sticky_variant_object,
     };
     if (selected) {
       dispatch(addBumpInOrder(selectedBump));

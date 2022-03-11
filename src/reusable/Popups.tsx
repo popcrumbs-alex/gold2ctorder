@@ -117,7 +117,6 @@ const Popups = () => {
 
   const handleReceivePopupData = (data: PopupProps) => {
     if (!queued) {
-      console.log("received!", data);
       setCurrentPopup({ ...data, queued: true });
     }
     return data;
@@ -141,8 +140,6 @@ const Popups = () => {
     }
     return () => clearTimeout();
   }, [queued]);
-
-  console.log("socket", socket);
 
   return queued ? (
     <Popup>

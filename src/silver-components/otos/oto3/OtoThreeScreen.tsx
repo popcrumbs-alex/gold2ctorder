@@ -1,11 +1,12 @@
 import React, { useMemo, useEffect, useState } from "react";
 import styled from "styled-components";
 import Timer from "../../../reusable/Timer";
-import { OtoDATA, OTOProps } from "../../../product/ProductData";
+import { OtoDATA, OTOProps } from "../../../product/SilverStudsProductData";
 import { Link, navigate } from "gatsby";
 import { useAppDispatch, useAppSelector } from "../../../hooks/reduxHooks";
 import {
   addOtoToOrder,
+  ProductProp,
   selectOrderState,
 } from "../../../redux/reducers/order.reducer";
 import { useMutation } from "@apollo/client";
@@ -17,6 +18,7 @@ import {
   EF_TRACK_UPSELL,
 } from "../../../graphql/mutations/everflow.mutations";
 import Paypal from "../../orderpage/order-form/Paypal";
+import { OtoOptionProps } from "../../../product/SilverStudsProductData";
 
 declare const window: any;
 
@@ -157,7 +159,7 @@ const OtoThreeScreen = () => {
   const handleAddOTOToOrder = async (selectedIndex: number) => {
     const currentOrderId = localStorage.getItem("order_id");
 
-    const selectedProduct = {
+    const selectedProduct: ProductProp = {
       price: OtoDATA[selectedIndex].numPrice,
       title: OtoDATA[selectedIndex].title,
       type: "OTO",
@@ -165,6 +167,12 @@ const OtoThreeScreen = () => {
       id: OtoDATA[selectedIndex].id,
       displayPrice: OtoDATA[selectedIndex].displayPrice,
       sku: OtoDATA[selectedIndex].sku,
+      sticky_billing_model_id: OtoDATA[selectedIndex].sticky_billing_model_id,
+      sticky_offer_id: OtoDATA[selectedIndex].sticky_offer_id,
+      sticky_product_id: OtoDATA[selectedIndex].sticky_product_id,
+      sticky_quantity: OtoDATA[selectedIndex].sticky_quantity,
+      sticky_trial_product_id: undefined,
+      sticky_variant_object: undefined,
     };
 
     try {
@@ -318,6 +326,13 @@ const PaymentProcessorButton = ({
             id: oto.id,
             price: oto.numPrice,
             isRecurring: false,
+            sticky_billing_model_id:
+              OtoDATA[selectedIndex].sticky_billing_model_id,
+            sticky_offer_id: OtoDATA[selectedIndex].sticky_offer_id,
+            sticky_product_id: OtoDATA[selectedIndex].sticky_product_id,
+            sticky_quantity: OtoDATA[selectedIndex].sticky_quantity,
+            sticky_trial_product_id: undefined,
+            sticky_variant_object: undefined,
           },
         ]}
       />

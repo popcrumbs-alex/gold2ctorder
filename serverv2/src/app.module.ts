@@ -37,7 +37,6 @@ config();
         dateScalarMode: 'timestamp',
       },
       context: async ({ req, res }) => {
-        console.log('req', req);
         return { req, res };
       },
     }),

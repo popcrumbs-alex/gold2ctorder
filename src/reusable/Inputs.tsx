@@ -64,6 +64,7 @@ export type InputProps = {
   inputStyle: any;
   placeholder: string;
   type: string;
+  typeCallback: any;
 };
 
 export interface SelectInputProps extends TextInputProps {
@@ -168,25 +169,34 @@ export const Select = ({
   );
 };
 
-export const CleaveInput = ({ label, value, callback, type, isRequired }) => (
-  <InputColumn>
-    {label && <Label>{label}</Label>}
-    <Cleave
-      placeholder="Enter your credit card number"
-      options={{ creditCard: true }}
-      onChange={callback}
-      value={value}
-      required={isRequired}
-      style={{
-        padding: "15px",
-        borderRadius: "5px",
-        background: "#eee",
-        border: "1px solid #ddd",
-        marginTop: "5px",
-      }}
-    />
-  </InputColumn>
-);
+export const CleaveInput = ({
+  label,
+  value,
+  callback,
+  type,
+  isRequired,
+  typeCallback,
+}) => {
+  return (
+    <InputColumn>
+      {label && <Label>{label}</Label>}
+      <Cleave
+        placeholder="Enter your credit card number"
+        options={{ creditCard: true, onCreditCardTypeChanged: typeCallback }}
+        onChange={callback}
+        value={value}
+        required={isRequired}
+        style={{
+          padding: "15px",
+          borderRadius: "5px",
+          background: "#eee",
+          border: "1px solid #ddd",
+          marginTop: "5px",
+        }}
+      />
+    </InputColumn>
+  );
+};
 
 //key is restricted, SO DONT TRY ANYTHING AYE?
 const mapsApiKey = "AIzaSyD2NMpaoN7Rd2tLFbSPRVVRxeY5C3xcJc8";
@@ -225,6 +235,7 @@ export const InputSelector = ({
   options,
   labelStyle,
   inputStyle,
+  typeCallback,
 }: InputProps) => {
   if (type === "text" || type === "email") {
     return (
@@ -266,6 +277,7 @@ export const InputSelector = ({
         label={label}
         type={type}
         isRequired={isRequired}
+        typeCallback={typeCallback}
       />
     );
   }

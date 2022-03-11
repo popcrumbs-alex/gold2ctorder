@@ -108,6 +108,14 @@ const ProductSelector = () => {
         displayPrice: ProductSelectorItems[productSelected].displayPrice,
         id: ProductSelectorItems[productSelected].id,
         isRecurring: ProductSelectorItems[productSelected].isRecurring,
+        sticky_offer_id: ProductSelectorItems[productSelected].sticky_offer_id,
+        sticky_product_id:
+          ProductSelectorItems[productSelected].sticky_product_id,
+        sticky_billing_model_id:
+          ProductSelectorItems[productSelected].sticky_billing_model_id,
+        sticky_quantity: ProductSelectorItems[productSelected].sticky_quantity,
+        sticky_trial_product_id:
+          ProductSelectorItems[productSelected].sticky_trial_product_id,
       })
     );
 
