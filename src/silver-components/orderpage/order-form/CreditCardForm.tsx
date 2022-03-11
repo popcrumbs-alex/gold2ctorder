@@ -195,7 +195,7 @@ const CreditCardForm = () => {
             funnel_name,
             sticky_shipping_id: stickyConfig.sticky_shipping_id,
             sticky_campaign_id: stickyConfig.sticky_campaign_id,
-            affiliate_data: affiliateData,
+            affiliate_data: affiliateData || undefined,
           },
         },
       });
