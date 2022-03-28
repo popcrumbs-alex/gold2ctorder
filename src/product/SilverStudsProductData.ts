@@ -6,7 +6,7 @@ export default {
 
 export const stickyConfig = {
   oto_billing_model: 4,
-  recurring_billing_model: 3,
+  recurring_billing_model: 4,
   sticky_campaign_id: 1,
   sticky_offer_id: 1,
   sticky_trial_product_id: 2,
